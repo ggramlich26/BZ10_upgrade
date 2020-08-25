@@ -41,5 +41,35 @@
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/arduino-esp32/variants/nodemcu-32s</locationURI>
 		</link>
+		<link>
+			<name>libraries/Adafruit_GFX_Library</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Adafruit_GFX_Library/1.5.7</locationURI>
+		</link>
+		<link>
+			<name>libraries/Adafruit_ILI9341</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Adafruit_ILI9341/1.5.1</locationURI>
+		</link>
+		<link>
+			<name>libraries/Blynk</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Blynk/0.6.1</locationURI>
+		</link>
+		<link>
+			<name>libraries/EEPROM</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/EEPROM</locationURI>
+		</link>
+		<link>
+			<name>libraries/SPI</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPI</locationURI>
+		</link>
+		<link>
+			<name>libraries/WiFi</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/WiFi</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>
