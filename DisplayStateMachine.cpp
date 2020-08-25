@@ -94,7 +94,13 @@ void DisplayStateMachine::displayBoilerTemp(float temp){
 	DataManager::pushTempBoiler(temp);
 	displayedBoilerTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_RED_X, TEXT_RED_Y, background_red, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
-	tft.setCursor(27,181);
+//	tft.setCursor(27,181);
+	if(displayedBoilerTemp.length() < 5){
+		tft.setCursor(TEXT_RED_X + LETTER_WIDTH/2, TEXT_RED_Y);
+	}
+	else{
+		tft.setCursor(TEXT_RED_X, TEXT_RED_Y);
+	}
 	tft.print(puffer);
 }
 
@@ -107,7 +113,13 @@ void DisplayStateMachine::displayTubeTemp(float temp){
 	DataManager::pushTempTube(temp);
 	displayedTubeTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_BLUE_X, TEXT_BLUE_Y, background_blue, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
-	tft.setCursor(124,71);
+//	tft.setCursor(124,71);
+	if(displayedTubeTemp.length() < 5){
+		tft.setCursor(TEXT_BLUE_X + LETTER_WIDTH/2, TEXT_BLUE_Y);
+	}
+	else{
+		tft.setCursor(TEXT_BLUE_X, TEXT_BLUE_Y);
+	}
 	tft.print(puffer);
 }
 
@@ -120,7 +132,13 @@ void DisplayStateMachine::displayBUTemp(float temp){
 	DataManager::pushTempBU(temp);
 	displayedBUTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_ORANGE_X, TEXT_ORANGE_Y, background_orange, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
-	tft.setCursor(214,181);
+//	tft.setCursor(214,181);
+	if(displayedBUTemp.length() < 5){
+		tft.setCursor(TEXT_ORANGE_X + LETTER_WIDTH/2, TEXT_ORANGE_Y);
+	}
+	else{
+		tft.setCursor(TEXT_ORANGE_X, TEXT_ORANGE_Y);
+	}
 	tft.print(puffer);
 }
 
