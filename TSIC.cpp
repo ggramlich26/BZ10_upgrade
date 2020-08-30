@@ -25,14 +25,9 @@ TSIC::TSIC(int pin) {
 TSIC::~TSIC() {
 }
 
-//void TSIC::enable(TSIC t){
-//	attachInterrupt(t.TSICPin, t.TSIC_ISR, CHANGE);
-//}
-//
-//void TSIC::disable(){
-//	detachInterrupt(TSICPin);
-//}
-
+/// This interrupt service routine has to be called every time the level of the TSIC data pin changes.
+//	The main program is responsible for attaching this interrupt and calling the ISR. Do so by creating a wrapper function
+//	and using attachInterrupts(PIN, wrapperFunction(), CHANGE).
 void TSIC::TSIC_ISR(){
 	long time = micros();
 	switch (state){
@@ -119,6 +114,7 @@ void TSIC::TSIC_ISR(){
 	lastEdgeTime = time;
 }
 
+/// calculates the temperature from the data recieved
 void TSIC::calcTemp(){
 	uint8_t par = 0;;
 	for(uint8_t i = 0; i < 8; i++){
@@ -138,6 +134,7 @@ void TSIC::calcTemp(){
 	temperature = ((double)temp_value / 2047 * 200) - 50;
 }
 
+/// returns the last read temperature from the TSIC
 double TSIC::getTemperature(){
 	return temperature;
 }

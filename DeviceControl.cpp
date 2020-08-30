@@ -20,7 +20,7 @@ DeviceControl::DeviceControl() {
 DeviceControl::~DeviceControl() {
 }
 
-
+/// initializes all pins and interrupts etc. necessary
 void DeviceControl::init(){
 	srData = 0x0000;
 	pumpTickToVolumeFactor = 1;
@@ -49,6 +49,7 @@ void DeviceControl::init(){
 	attachInterrupt(TEMP_TUBE_PIN, tsicTubeWrapper, CHANGE);
 }
 
+/// update routine, that should be called regularly. Some values are only updated through this routine.
 void DeviceControl::update(){
 	//update boiler heater
 	if(boilerLevel == 0){
@@ -91,6 +92,8 @@ void DeviceControl::update(){
 	updateSR();
 }
 
+/// enables the boiler heater
+// @param level: heater level between 0 (off) and 100 (full power)
 void DeviceControl::enableBoilerHeater(int level){
 	if(level < 0) level = 0;
 	else if (level > 100) level = 100;
@@ -105,6 +108,8 @@ void DeviceControl::disableBoilerHeater(){
 	updateSR();
 }
 
+/// enables the brewing unit heater
+// @param level: heater level between 0 (off) and 100 (full power)
 void DeviceControl::enableBUHeater(int level){
 	if(level < 0) level = 0;
 	else if (level > 100) level = 100;
@@ -173,21 +178,25 @@ void DeviceControl::disableLEDRight(){
 	updateSR();
 }
 
+/// enable the water tank empty indicator LED
 void DeviceControl::enableLEDTank(){
 	srData |= (1<<LED_POWER);
 	updateSR();
 }
 
+/// disable the water tank empty indicator LED
 void DeviceControl::disableLEDTank(){
 	srData &= ~(1<<LED_TANK);
 	updateSR();
 }
 
+/// enable the power LED
 void DeviceControl::enableLEDPower(){
 	srData |= (1<<LED_POWER);
 	updateSR();
 }
 
+/// disable the power LED
 void DeviceControl::disableLEDPower(){
 	srData &= ~(1<<LED_POWER);
 	updateSR();

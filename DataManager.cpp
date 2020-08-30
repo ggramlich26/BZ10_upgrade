@@ -187,6 +187,7 @@ void DataManager::init(){
 	}
 }
 
+/// standard update routine
 void DataManager::update(){
 	if(DataManager::getBlynkEnabled()){
 		Blynk.run();
@@ -194,6 +195,7 @@ void DataManager::update(){
 	}
 }
 
+/// sends the current boiler temperature to blynk, if enabled
 void DataManager::pushTempBoiler(double temp){
 	static long lastUpdateTime = 0;
 	if(DataManager::getBlynkEnabled() &&
@@ -204,6 +206,7 @@ void DataManager::pushTempBoiler(double temp){
 	}
 }
 
+/// sends the current BU temperature to blynk, if enabled
 void DataManager::pushTempBU(double temp){
 	static long lastUpdateTime = 0;
 	if(DataManager::getBlynkEnabled() &&
@@ -214,6 +217,7 @@ void DataManager::pushTempBU(double temp){
 	}
 }
 
+/// sends the current tube temperature to blynk, if enabled
 void DataManager::pushTempTube(double temp){
 	static long lastUpdateTime = 0;
 	if(DataManager::getBlynkEnabled() &&
@@ -233,6 +237,9 @@ double DataManager::getTargetTempBU(){
 	return targetTempBU;
 }
 
+// saves a new target temperature for the boiler
+// @param temp: new target temperature
+// @param updateBlynk: updates the target temperature in blynk, if set to true and blynk is enabled
 void DataManager::setTargetTempBoiler(double temp, bool updateBlynk){
 	if(temp > MAX_TEMP_BOILER){
 		temp = MAX_TEMP_BOILER;
@@ -251,6 +258,9 @@ void DataManager::setTargetTempBoiler(double temp, bool updateBlynk){
 	}
 }
 
+// saves a new target temperature for the brewing unit
+// @param temp: new target temperature
+// @param updateBlynk: updates the target temperature in blynk, if set to true and blynk is enabled
 void DataManager::setTargetTempBU(double temp, bool updateBlynk){
 	if(temp > MAX_TEMP_BU){
 		temp = MAX_TEMP_BU;
@@ -281,6 +291,9 @@ double DataManager::getDistributionVolume(){
 	return distributionVolume;
 }
 
+/// saves a new target distribution volume
+// @param volume: the new target volume
+// @param updateBlynk: sends the new value to blynk, if set to true and blynk is enabled
 void DataManager::setDistributionVolume(double volume, bool updateBlynk){
 	if(volume > MAX_DISTRIBUTION_VOLUME) volume = MAX_DISTRIBUTION_VOLUME;
 	else if(volume < MIN_DISTRIBUTION_VOLUME) volume = MIN_DISTRIBUTION_VOLUME;
@@ -299,6 +312,9 @@ double DataManager::getVolumeOffset(){
 	return volumeOffset;
 }
 
+/// saves a new volume offset
+// @param offset: the new volume offset
+// @param updateBlynk: sends the new value to blynk, if set to true and blynk is enabled
 void DataManager::setVolumeOffset(double offset, bool updateBlynk){
 	if(offset > MAX_VOLUME_OFFSET) offset = MAX_VOLUME_OFFSET;
 	if(offset < MIN_VOLUME_OFFSET) offset = MIN_VOLUME_OFFSET;
@@ -325,6 +341,9 @@ double DataManager::getBoilerControllerP(){
 	return boilerControllerP;
 }
 
+/// saves a new boiler controller P parameter
+// @param p: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
 void DataManager::setBoilerControllerP(double p, bool updateBlynk){
 	if(p < MIN_BOILER_CONTROLLER_P) p = MIN_BOILER_CONTROLLER_P;
 	else if(p > MAX_BOILER_CONTROLLER_P) p = MAX_BOILER_CONTROLLER_P;
@@ -340,6 +359,9 @@ double DataManager::getBUControllerP(){
 	return BUControllerP;
 }
 
+/// saves a new BU controller P parameter
+// @param p: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
 void DataManager::setBUControllerP(double p, bool updateBlynk){
 	if(p < MIN_BU_CONTROLLER_P) p = MIN_BU_CONTROLLER_P;
 	else if(p > MAX_BU_CONTROLLER_P) p = MAX_BU_CONTROLLER_P;
@@ -385,6 +407,7 @@ BLYNK_WRITE(V9){
 
 
 
+/// used to make sure valid data is read from EEPROM
 uint32_t DataManager::calculateWIFIChecksum(){
 	uint32_t res = 0;
 	for(uint8_t i = 0, j = 0; i < SSID_MAX_LEN+1; i++, j = (j+1)%CHECKSUM_LEN){
@@ -408,6 +431,10 @@ uint32_t DataManager::calculateWIFIChecksum(){
 	return res;
 }
 
+/// reads data from the EEPROM
+// @param dst: memory address, where the data read is to be stored
+// @param addr: EEPROM start address
+// @param len: length of the data to be read in bytes
 void DataManager::eepromRead(uint8_t *dst, int addr, int len){
 	if(len <= 0){
 		return;
@@ -417,8 +444,14 @@ void DataManager::eepromRead(uint8_t *dst, int addr, int len){
 	}
 }
 
+/// writes data to the EEPROM
+// @param src: memory address, where the data to be written is to be stored
+// @param addr: EEPROM start address
+// @param len: length of the data to be written in bytes
+// @param commit: will finish the EEPROM write with a commit, if true.
+//					Only performing such a commit will make the data being actually written
 void DataManager::eepromWrite(uint8_t *src, int addr, int len, bool commit){
-	if(len <= 0){
+	if(len < 0){
 		return;
 	}
 	for(int i = 0; i < len; i++){
