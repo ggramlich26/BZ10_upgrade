@@ -6,9 +6,11 @@
  */
 
 #include "BoilerStateMachine.h"
+#include "DataManager.h"
 
 BoilerStateMachine::BoilerStateMachine() {
 	state = disabled;
+	quickStart = true;
 	dev = DeviceControl::instance();
 }
 
@@ -27,7 +29,24 @@ void BoilerStateMachine::update(){
 		break;
 	case enabled:
 		//set outputs
-		dev->enableBoilerHeater(100);
+		if(quickStart){
+			dev->enableBoilerHeater(100);
+			if(dev->getBoilerTemp() >= DataManager::getTargetTempBoiler()){
+				quickStart = false;
+			}
+		}
+		else{
+			double diff = DataManager::getTargetTempBoiler() - dev->getBoilerTemp();
+			if(diff <= 0){
+				dev->enableBoilerHeater(0);
+			}
+			else{
+				int heaterValue = DataManager::getBoilerControllerP()*diff;
+				heaterValue = heaterValue>100?100:heaterValue;
+				heaterValue = heaterValue<0?0:heaterValue;
+				dev->enableBoilerHeater(heaterValue);
+			}
+		}
 		//check transitions
 		if(!dev->getBoilerFull()){
 			state = disabled;

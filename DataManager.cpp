@@ -225,11 +225,11 @@ void DataManager::pushTempTube(double temp){
 }
 
 
-inline double DataManager::getTargetTempBoiler(){
+double DataManager::getTargetTempBoiler(){
 	return targetTempBoiler;
 }
 
-inline double DataManager::getTargetTempBU(){
+double DataManager::getTargetTempBU(){
 	return targetTempBU;
 }
 

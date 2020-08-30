@@ -20,6 +20,7 @@ public:
 private:
 	BUStates state;
 	DeviceControl *dev;
+	bool quickStart;
 };
 
 #endif /* BUSTATEMACHINE_H_ */

@@ -20,6 +20,7 @@ public:
 private:
 	BoilerStates state;
 	DeviceControl *dev;
+	bool quickStart;
 };
 
 #endif /* BOILERSTATEMACHINE_H_ */
