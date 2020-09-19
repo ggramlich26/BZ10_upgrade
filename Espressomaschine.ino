@@ -30,6 +30,7 @@ void setup()
 	dispSM = new DisplayStateMachine(brewSM);
 	dev->enableLEDLeft();
 	dev->enableLEDRight();
+	dev->enableLEDPower();
 //	tsic = new TSIC(18);
 //	pinMode(18, INPUT);
 //	attachInterrupt(18, interruptWrapper, CHANGE);
@@ -37,15 +38,15 @@ void setup()
 
 void loop()
 {
-	static long lastTempTime = 0;
+//	static long lastTempTime = 0;
 	boilerSM->update();
 	brewingUnitSM->update();
 	brewSM->update();
 	dispSM->update();
 	DataManager::update();
 	dev->update();
-	if(millis()-lastTempTime > 500){
-		lastTempTime = millis();
-		Serial.println("Temp: " + String(dev->getTubeTemp()));
-	}
+//	if(millis()-lastTempTime > 500){
+//		lastTempTime = millis();
+//		Serial.println("Temp: " + String(dev->getTubeTemp()));
+//	}
 }

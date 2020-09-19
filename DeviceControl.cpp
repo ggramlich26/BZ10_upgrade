@@ -11,6 +11,8 @@ DeviceControl* DeviceControl::_instance = NULL;
 TSIC* DeviceControl::tsicBoiler = NULL;
 TSIC* DeviceControl::tsicBU = NULL;
 TSIC* DeviceControl::tsicTube = NULL;
+long DeviceControl::pumpTicks = 0;
+long DeviceControl::bypassTicks = 0;
 
 
 DeviceControl::DeviceControl() {
@@ -23,10 +25,14 @@ DeviceControl::~DeviceControl() {
 /// initializes all pins and interrupts etc. necessary
 void DeviceControl::init(){
 	srData = 0x0000;
-	pumpTickToVolumeFactor = 1;
-	bypassTickToVolumeFactor = 1;
+	pumpTickToVolumeFactor = 0.219298;
+	bypassTickToVolumeFactor = pumpTickToVolumeFactor;
 	pumpTicks = 0;
 	bypassTicks = 0;
+	boilerPeriodStartTime = 0;
+	BUPeriodStartTime = 0;
+	boilerLevel = 0;
+	BULevel = 0;
 	pinMode(BUTTON_RIGHT_PIN, INPUT_PULLDOWN);
 	pinMode(BUTTON_LEFT_PIN, INPUT_PULLDOWN);
 	pinMode(BREW_MAN_PIN, INPUT_PULLDOWN);
@@ -47,6 +53,8 @@ void DeviceControl::init(){
 	attachInterrupt(TEMP_BOILER_PIN, tsicBoilerWrapper, CHANGE);
 	attachInterrupt(TEMP_BU_PIN, tsicBUWrapper, CHANGE);
 	attachInterrupt(TEMP_TUBE_PIN, tsicTubeWrapper, CHANGE);
+	attachInterrupt(FLOW_PUMP_PIN, pumpFlowmeterISR, RISING);
+	attachInterrupt(FLOW_RET_PIN, bypassFlowmeterISR, RISING);
 }
 
 /// update routine, that should be called regularly. Some values are only updated through this routine.
@@ -229,10 +237,12 @@ bool DeviceControl::getButton2(){
 	return digitalRead(BUTTON_RIGHT_PIN);
 }
 
+//returns the total volume measured by the pump flowmeter since start in ml
 double DeviceControl::getPumpVolume(){
 	return pumpTicks * pumpTickToVolumeFactor;
 }
 
+//returns the total volume measured by the bypass flowmeter since start in ml
 double DeviceControl::getBypassVolume(){
 	return bypassTicks * bypassTickToVolumeFactor;
 }
