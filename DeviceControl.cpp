@@ -33,6 +33,14 @@ void DeviceControl::init(){
 	BUPeriodStartTime = 0;
 	boilerLevel = 0;
 	BULevel = 0;
+	button1LastState = false;
+	button2LastState = false;
+	button1LastChangeTime = 0;
+	button2LastChangeTime = 0;
+	button1ShortPressed = false;
+	button2ShortPressed = false;
+	button1LongPressed = false;
+	button2LongPressed = false;
 	pinMode(BUTTON_RIGHT_PIN, INPUT_PULLDOWN);
 	pinMode(BUTTON_LEFT_PIN, INPUT_PULLDOWN);
 	pinMode(BREW_MAN_PIN, INPUT_PULLDOWN);
@@ -98,6 +106,48 @@ void DeviceControl::update(){
 		}
 	}
 	updateSR();
+
+	//update buttons
+	button1ShortPressed = false;
+	button1LongPressed = false;
+	//button 1
+	if(millis() >= button1LastChangeTime + BUTTON_DEPRELL_TIME){
+		bool state = getButton1();
+		//falling edge
+		if(button1LastState && !state){
+			if(millis() >= button1LastChangeTime + BUTTON_LONG_PRESS_TIME){
+				button1LongPressed = true;
+			}
+			else{
+				button1ShortPressed = true;
+			}
+			button1LastChangeTime = millis();
+		}
+		//rising edge
+		else if(!button1LastChangeTime && state){
+			button1LastChangeTime = millis();
+		}
+	}
+	//button 2
+	button2ShortPressed = false;
+	button2LongPressed = false;
+	if(millis() >= button2LastChangeTime + BUTTON_DEPRELL_TIME){
+		bool state = getButton2();
+		//falling edge
+		if(button2LastState && !state){
+			if(millis() >= button2LastChangeTime + BUTTON_LONG_PRESS_TIME){
+				button2LongPressed = true;
+			}
+			else{
+				button2ShortPressed = true;
+			}
+			button2LastChangeTime = millis();
+		}
+		//rising edge
+		else if(!button2LastChangeTime && state){
+			button2LastChangeTime = millis();
+		}
+	}
 }
 
 /// enables the boiler heater
@@ -257,6 +307,18 @@ double DeviceControl::getBUTemp(){
 
 double DeviceControl::getTubeTemp(){
 	return tsicTube->getTemperature();
+}
+
+bool DeviceControl::getBoilerSensorError(){
+	return tsicBoiler->sensorError();
+}
+
+bool DeviceControl::getBUTempSensorError(){
+	return tsicBU->sensorError();
+}
+
+bool DeviceControl::getTubeTempSensorError(){
+	return tsicTube->sensorError();
 }
 
 void DeviceControl::updateSR(){

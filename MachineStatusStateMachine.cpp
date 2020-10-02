@@ -9,6 +9,8 @@
 #include "DataManager.h"
 
 
+MachineStatusStateMachine* MachineStatusStateMachine::_instance = NULL;
+
 MachineStatusStateMachine::MachineStatusStateMachine() {
 	state = running;
 	lastUserActionTime = millis();
@@ -33,7 +35,7 @@ void MachineStatusStateMachine::update(){
 		dev->disableLEDRight();
 		//check transitions
 		if(millis() < lastUserActionTime + standbyeStartTime ||
-				(wakeupTime != 0 && (millis() > wakeupTime && millis < wakeupTime + standbyeStartTime))){
+				(wakeupTime != 0 && (millis() > wakeupTime && millis() < wakeupTime + standbyeStartTime))){
 			state = running;
 			lastUserActionTime = millis();
 		}
@@ -44,7 +46,7 @@ void MachineStatusStateMachine::update(){
 		dev->enableLEDLeft();
 		dev->enableLEDRight();
 		//check transitions
-		if(dev->getButton1() || millis() > lastUserActionTime + standbyeStartTime){
+		if(dev->getButton1LongPressed() || millis() > lastUserActionTime + standbyeStartTime){
 			state = standbye;
 		}
 		break;

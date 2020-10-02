@@ -5,8 +5,8 @@
  *      Author: tsugua
  */
 
-#ifndef BOILERSTATEMACHINE_H_
-#define BOILERSTATEMACHINE_H_
+#ifndef MACHINESTATUSSTATEMACHINE_H_
+#define MACHINESTATUSSTATEMACHINE_H_
 
 #include "DeviceControl.h"
 
@@ -14,11 +14,18 @@ class MachineStatusStateMachine {
 	enum MachineStatusState {running, standbye};
 
 public:
-	MachineStatusStateMachine();
-	virtual ~MachineStatusStateMachine();
+	static MachineStatusStateMachine *instance(){
+		if(!_instance)
+			_instance = new MachineStatusStateMachine();
+		return _instance;
+	}
 	void update();
 	bool inStandbye();
 private:
+	static MachineStatusStateMachine *_instance;
+	MachineStatusStateMachine();
+	MachineStatusStateMachine (const DeviceControl& );
+	virtual ~MachineStatusStateMachine();
 	MachineStatusState state;
 	DeviceControl *dev;
 	unsigned long lastUserActionTime;
@@ -27,4 +34,4 @@ private:
 	unsigned long standbyeStartTime; //time in ms after which standbye mode will be entered if no user interaction has occured
 };
 
-#endif /* BOILERSTATEMACHINE_H_ */
+#endif /* MACHINESTATUSSTATEMACHINE_H_ */

@@ -26,7 +26,7 @@ void setup()
 	Serial.begin(115200);
 	dev = DeviceControl::instance();
 	DataManager::init();
-	machineStatSM = new MachineStatusStateMachine();
+	machineStatSM = MachineStatusStateMachine::instance();
 	boilerSM = new BoilerStateMachine();
 	brewingUnitSM = new BUStateMachine();
 	brewSM = new BrewStateMachine();

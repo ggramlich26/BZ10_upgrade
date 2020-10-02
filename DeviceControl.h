@@ -12,7 +12,9 @@
 #include "Arduino.h"
 #include "TSIC.h"
 
-#define SSR_PERIOD_TIME		5000
+#define SSR_PERIOD_TIME			5000
+#define	BUTTON_DEPRELL_TIME		300
+#define	BUTTON_LONG_PRESS_TIME	3000
 
 class DeviceControl {
 public:
@@ -43,6 +45,10 @@ public:
 	bool getVolumetricDistribution();
 	bool getButton1();
 	bool getButton2();
+	bool getButton1LongPressed(){return button1LongPressed;}
+	bool getButton1ShortPressed(){return button1ShortPressed;}
+	bool getButton2LongPressed(){return button2LongPressed;}
+	bool getButton2ShortPressed(){return button2ShortPressed;}
 
 	double getPumpVolume();
 	double getBypassVolume();
@@ -50,6 +56,9 @@ public:
 	double getBoilerTemp();
 	double getBUTemp();
 	double getTubeTemp();
+	bool getBoilerSensorError();
+	bool getBUTempSensorError();
+	bool getTubeTempSensorError();
 
 	void enableLEDLeft();
 	void disableLEDLeft();
@@ -80,6 +89,15 @@ private:
 	int boilerLevel;
 	unsigned long BUPeriodStartTime;
 	int BULevel;
+
+	bool button1LastState;
+	bool button2LastState;
+	unsigned long button1LastChangeTime;
+	unsigned long button2LastChangeTime;
+	bool button1LongPressed;
+	bool button2LongPressed;
+	bool button1ShortPressed;
+	bool button2ShortPressed;
 
 	static TSIC *tsicBoiler;
 	static TSIC *tsicBU;

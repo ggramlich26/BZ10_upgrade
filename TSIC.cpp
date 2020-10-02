@@ -20,6 +20,7 @@ TSIC::TSIC(int pin) {
 	parity2=0;
 	bitCounter=0;
 	halfBitTime = 62;
+	lastUpdateTime = millis();
 }
 
 TSIC::~TSIC() {
@@ -114,6 +115,10 @@ void TSIC::TSIC_ISR(){
 	lastEdgeTime = time;
 }
 
+bool TSIC::sensorError(){
+	return millis() >= lastUpdateTime + TSIC_MIN_UPDATE_INTERVAL;
+}
+
 /// calculates the temperature from the data recieved
 void TSIC::calcTemp(){
 	uint8_t par = 0;;
@@ -132,6 +137,7 @@ void TSIC::calcTemp(){
 	}
 	uint16_t temp_value = (((uint16_t)data1)<<8) | data2;
 	temperature = ((double)temp_value / 2047 * 200) - 50;
+	lastUpdateTime = millis();
 }
 
 /// returns the last read temperature from the TSIC
