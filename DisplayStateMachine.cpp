@@ -46,9 +46,9 @@ void DisplayStateMachine::update(){
 	switch (state){
 	case idle:
 		if(millis() >= lastTempUpdateTime + TEMP_UPDATE_INTERVAL_IDLE){
-			displayBoilerTemp(dev->getBoilerTemp());
-			displayBUTemp(dev->getBUTemp());
-			displayTubeTemp(dev->getTubeTemp());
+			displayBoilerTemp(dev->getBoilerTemp(), dev->getBoilerTempSensorError());
+			displayBUTemp(dev->getBUTemp(), dev->getBUTempSensorError());
+			displayTubeTemp(dev->getTubeTemp(), dev->getTubeTempSensorError());
 			lastTempUpdateTime = millis();
 		}
 		if(brewMachine->isBrewing()){
@@ -62,9 +62,9 @@ void DisplayStateMachine::update(){
 		break;
 	case brewing:
 		if(millis() >= lastTempUpdateTime + TEMP_UPDATE_INTERVAL_BREWING){
-			displayBoilerTemp(dev->getBoilerTemp());
-			displayBUTemp(dev->getBUTemp());
-			displayTubeTemp(dev->getTubeTemp());
+			displayBoilerTemp(dev->getBoilerTemp(), dev->getBoilerTempSensorError());
+			displayBUTemp(dev->getBUTemp(), dev->getBUTempSensorError());
+			displayTubeTemp(dev->getTubeTemp(), dev->getTubeTempSensorError());
 			lastTempUpdateTime = millis();
 		}
 		displayTime((millis()-brewingStartTime)/1000);
@@ -85,13 +85,16 @@ void DisplayStateMachine::readBackground(uint16_t *origin, uint16_t *destination
 	}
 }
 
-void DisplayStateMachine::displayBoilerTemp(float temp){
+void DisplayStateMachine::displayBoilerTemp(float temp, bool sensorError){
 	char puffer[7];
 	dtostrf(temp, 2, 1, puffer);
+	if(sensorError)
+		strcpy(puffer, "error");
 	if(displayedBoilerTemp.equals(puffer)){
 		return;
 	}
-	DataManager::pushTempBoiler(temp);
+	if(!sensorError)
+		DataManager::pushTempBoiler(temp);
 	displayedBoilerTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_RED_X, TEXT_RED_Y, background_red, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
 //	tft.setCursor(27,181);
@@ -104,13 +107,16 @@ void DisplayStateMachine::displayBoilerTemp(float temp){
 	tft.print(puffer);
 }
 
-void DisplayStateMachine::displayTubeTemp(float temp){
+void DisplayStateMachine::displayTubeTemp(float temp, bool sensorError){
 	char puffer[7];
 	dtostrf(temp, 2, 1, puffer);
+	if(sensorError)
+		strcpy(puffer, "error");
 	if(displayedTubeTemp.equals(puffer)){
 		return;
 	}
-	DataManager::pushTempTube(temp);
+	if(!sensorError)
+		DataManager::pushTempTube(temp);
 	displayedTubeTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_BLUE_X, TEXT_BLUE_Y, background_blue, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
 //	tft.setCursor(124,71);
@@ -123,13 +129,16 @@ void DisplayStateMachine::displayTubeTemp(float temp){
 	tft.print(puffer);
 }
 
-void DisplayStateMachine::displayBUTemp(float temp){
+void DisplayStateMachine::displayBUTemp(float temp, bool sensorError){
 	char puffer[7];
 	dtostrf(temp, 2, 1, puffer);
+	if(sensorError)
+		strcpy(puffer, "error");
 	if(displayedBUTemp.equals(puffer)){
 		return;
 	}
-	DataManager::pushTempBU(temp);
+	if(!sensorError)
+		DataManager::pushTempBU(temp);
 	displayedBUTemp = String(puffer);
 	tft.drawRGBBitmap(TEXT_ORANGE_X, TEXT_ORANGE_Y, background_orange, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
 //	tft.setCursor(214,181);

@@ -57,9 +57,9 @@ private:
 	String displayedTubeTemp = "";
 
 	void readBackground(uint16_t *origin, uint16_t *destination, uint16_t origin_width, uint16_t x, uint16_t y, uint16_t width, uint16_t height);;
-	void displayBoilerTemp(float temp);
-	void displayBUTemp(float temp);
-	void displayTubeTemp(float temp);
+	void displayBoilerTemp(float temp, bool sensorError);
+	void displayBUTemp(float temp, bool sensorError);
+	void displayTubeTemp(float temp, bool sensorError);
 	void displayTime(int time);
 	void displayWeight(int weight);
 };

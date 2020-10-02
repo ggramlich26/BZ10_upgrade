@@ -309,7 +309,7 @@ double DeviceControl::getTubeTemp(){
 	return tsicTube->getTemperature();
 }
 
-bool DeviceControl::getBoilerSensorError(){
+bool DeviceControl::getBoilerTempSensorError(){
 	return tsicBoiler->sensorError();
 }
 

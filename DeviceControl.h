@@ -56,7 +56,7 @@ public:
 	double getBoilerTemp();
 	double getBUTemp();
 	double getTubeTemp();
-	bool getBoilerSensorError();
+	bool getBoilerTempSensorError();
 	bool getBUTempSensorError();
 	bool getTubeTempSensorError();
 
