@@ -40,6 +40,8 @@ public:
 
 	bool getBoilerFull();			//true if the boiler is sufficiently filled
 	bool getTankFull();	//true if the cold water tank in the back of the machine is full
+	bool getBoilerFillSensorError();	//returns true, if an error for the boiler sensor has been detected, see BrewStateMachine
+	void setBoilerFillSensorError(bool error);
 
 	bool getManualDistribution();
 	bool getVolumetricDistribution();
@@ -89,6 +91,8 @@ private:
 	int boilerLevel;
 	unsigned long BUPeriodStartTime;
 	int BULevel;
+
+	bool boilerFillSensorError;
 
 	bool button1LastState;
 	bool button2LastState;

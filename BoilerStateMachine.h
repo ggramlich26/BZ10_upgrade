@@ -9,6 +9,7 @@
 #define BOILERSTATEMACHINE_H_
 
 #include "DeviceControl.h"
+#include "MachineStatusStateMachine.h"
 
 class BoilerStateMachine {
 	enum BoilerStates {enabled, disabled};
@@ -20,6 +21,7 @@ public:
 private:
 	BoilerStates state;
 	DeviceControl *dev;
+	MachineStatusStateMachine *machStat;
 	bool quickStart;
 };
 

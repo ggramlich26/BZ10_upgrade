@@ -33,6 +33,7 @@ void DeviceControl::init(){
 	BUPeriodStartTime = 0;
 	boilerLevel = 0;
 	BULevel = 0;
+	boilerFillSensorError = false;
 	button1LastState = false;
 	button2LastState = false;
 	button1LastChangeTime = 0;
@@ -319,6 +320,14 @@ bool DeviceControl::getBUTempSensorError(){
 
 bool DeviceControl::getTubeTempSensorError(){
 	return tsicTube->sensorError();
+}
+
+bool DeviceControl::getBoilerFillSensorError(){
+	return boilerFillSensorError;
+}
+
+void DeviceControl::setBoilerFillSensorError(bool error){
+	boilerFillSensorError = error;
 }
 
 void DeviceControl::updateSR(){

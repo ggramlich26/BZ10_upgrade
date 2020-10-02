@@ -11,6 +11,7 @@
 BUStateMachine::BUStateMachine() {
 	state = enabled;
 	dev = DeviceControl::instance();
+	machStat = MachineStatusStateMachine::instance();
 	quickStart = true;
 }
 
@@ -40,13 +41,17 @@ void BUStateMachine::update(){
 			}
 		}
 		//transitions
-		//there are no transitions here sind BU is always turned on
+		if(machStat->inStandbye() || dev->getBUTempSensorError()){
+			state = disabled;
+		}
 		break;
 	case disabled:
 		//outputs
 		dev->disableBUHeater();
 		//transitions
-		state = enabled;
+		if(!machStat->inStandbye() && !dev->getBUTempSensorError()){
+			state = enabled;
+		}
 		break;
 	}
 }

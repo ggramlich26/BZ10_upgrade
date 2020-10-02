@@ -12,6 +12,7 @@ BoilerStateMachine::BoilerStateMachine() {
 	state = disabled;
 	quickStart = true;
 	dev = DeviceControl::instance();
+	machStat = MachineStatusStateMachine::instance();
 }
 
 BoilerStateMachine::~BoilerStateMachine() {
@@ -23,7 +24,8 @@ void BoilerStateMachine::update(){
 		//set outputs
 		dev->disableBoilerHeater();
 		//check transitions
-		if(dev->getBoilerFull()){
+		if(dev->getBoilerFull() && !machStat->inStandbye() &&
+				!dev->getBoilerTempSensorError() && !dev->getBoilerFillSensorError()){
 			state = enabled;
 		}
 		break;
@@ -48,7 +50,8 @@ void BoilerStateMachine::update(){
 			}
 		}
 		//check transitions
-		if(!dev->getBoilerFull()){
+		if(!dev->getBoilerFull() || machStat->inStandbye() ||
+				dev->getBoilerFillSensorError() || dev->getBoilerTempSensorError()){
 			state = disabled;
 		}
 		break;

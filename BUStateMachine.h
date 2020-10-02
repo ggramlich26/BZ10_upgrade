@@ -9,6 +9,7 @@
 #define BUSTATEMACHINE_H_
 
 #include "DeviceControl.h"
+#include "MachineStatusStateMachine.h"
 
 class BUStateMachine {
 	enum BUStates{enabled, disabled};
@@ -20,6 +21,7 @@ public:
 private:
 	BUStates state;
 	DeviceControl *dev;
+	MachineStatusStateMachine *machStat;
 	bool quickStart;
 };
 
