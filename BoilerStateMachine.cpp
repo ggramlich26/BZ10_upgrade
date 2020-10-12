@@ -52,6 +52,10 @@ void BoilerStateMachine::update(){
 		//check transitions
 		if(!dev->getBoilerFull() || machStat->inStandbye() ||
 				dev->getBoilerFillSensorError() || dev->getBoilerTempSensorError()){
+			// reenable faststart after standbye
+			if(machStat->inStandbye()){
+				quickStart = true;
+			}
 			state = disabled;
 		}
 		break;

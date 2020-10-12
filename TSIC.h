@@ -26,10 +26,10 @@ public:
 //	static void enable(TSIC t);
 //	void disable();
 	double getTemperature();
-	void TSIC_ISR();
+	void IRAM_ATTR TSIC_ISR();
 	bool sensorError();
 private:
-	void calcTemp();
+	void IRAM_ATTR calcTemp();
 	int TSICPin;
 	unsigned long lastEdgeTime;
 	unsigned long lastUpdateTime;	//last time a temperature value has been successfully read

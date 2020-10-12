@@ -23,9 +23,12 @@ MachineStatusStateMachine::~MachineStatusStateMachine() {
 }
 
 void MachineStatusStateMachine::update(){
-	if(dev->getButton1() || dev->getButton2() ||
+	bool useraction = false;
+	if(dev->getButton1ShortPressed() || dev->getButton1LongPressed() ||
+			dev->getButton2ShortPressed() || dev->getButton2LongPressed() ||
 			dev->getManualDistribution() || dev->getVolumetricDistribution()){
 		lastUserActionTime = millis();
+		useraction = true;
 	}
 	switch (state){
 	case standbye:
@@ -34,8 +37,7 @@ void MachineStatusStateMachine::update(){
 		dev->disableLEDLeft();
 		dev->disableLEDRight();
 		//check transitions
-		if(millis() < lastUserActionTime + standbyeStartTime ||
-				(wakeupTime != 0 && (millis() > wakeupTime && millis() < wakeupTime + standbyeStartTime))){
+		if(useraction || (wakeupTime != 0 && (millis() > wakeupTime && millis() < wakeupTime + standbyeStartTime))){
 			state = running;
 			lastUserActionTime = millis();
 		}
@@ -46,7 +48,7 @@ void MachineStatusStateMachine::update(){
 		dev->enableLEDLeft();
 		dev->enableLEDRight();
 		//check transitions
-		if(dev->getButton1LongPressed() || millis() > lastUserActionTime + standbyeStartTime){
+		if(dev->getButton1ShortPressed() || millis() > lastUserActionTime + standbyeStartTime){
 			state = standbye;
 		}
 		break;

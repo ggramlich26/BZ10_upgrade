@@ -42,6 +42,10 @@ void BUStateMachine::update(){
 		}
 		//transitions
 		if(machStat->inStandbye() || dev->getBUTempSensorError()){
+			//reenable quick start after standbye
+			if(machStat->inStandbye()){
+				quickStart = true;
+			}
 			state = disabled;
 		}
 		break;

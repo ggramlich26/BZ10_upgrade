@@ -29,7 +29,7 @@ TSIC::~TSIC() {
 /// This interrupt service routine has to be called every time the level of the TSIC data pin changes.
 //	The main program is responsible for attaching this interrupt and calling the ISR. Do so by creating a wrapper function
 //	and using attachInterrupts(PIN, wrapperFunction(), CHANGE).
-void TSIC::TSIC_ISR(){
+void IRAM_ATTR TSIC::TSIC_ISR(){
 	long time = micros();
 	switch (state){
 	case idle:
@@ -120,7 +120,7 @@ bool TSIC::sensorError(){
 }
 
 /// calculates the temperature from the data recieved
-void TSIC::calcTemp(){
+void IRAM_ATTR TSIC::calcTemp(){
 	uint8_t par = 0;;
 	for(uint8_t i = 0; i < 8; i++){
 		par ^= (data1>>i)&0x01;

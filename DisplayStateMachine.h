@@ -34,7 +34,7 @@
 #define	TEXT_BACKGROUND_HEIGHT	LETTER_HEIGHT
 
 class DisplayStateMachine {
-	enum DisplayStates {idle, brewing};
+	enum DisplayStates {idle, brewing, cleaning};
 
 public:
 	DisplayStateMachine(BrewStateMachine *machine);

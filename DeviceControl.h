@@ -84,8 +84,8 @@ private:
 	uint16_t srData;
 	double pumpTickToVolumeFactor;
 	double bypassTickToVolumeFactor;
-	static long pumpTicks;
-	static long bypassTicks;
+//	static volatile long pumpTicks;
+//	static volatile long bypassTicks;
 
 	unsigned long boilerPeriodStartTime;
 	int boilerLevel;
@@ -103,14 +103,20 @@ private:
 	bool button1ShortPressed;
 	bool button2ShortPressed;
 
-	static TSIC *tsicBoiler;
-	static TSIC *tsicBU;
-	static TSIC *tsicTube;
-	static void tsicBoilerWrapper(){tsicBoiler->TSIC_ISR();}
-	static void tsicBUWrapper(){tsicBU->TSIC_ISR();}
-	static void tsicTubeWrapper(){tsicTube->TSIC_ISR();}
-	static void pumpFlowmeterISR(){pumpTicks++;}
-	static void bypassFlowmeterISR(){bypassTicks++;}
+//	static TSIC *tsicBoiler;
+//	static TSIC *tsicBU;
+//	static TSIC *tsicTube;
+//	static void tsicBoilerWrapper(){
+//		tsicBoiler->TSIC_ISR();
+//	}
+//	static void tsicBUWrapper(){
+//		tsicBU->TSIC_ISR();
+//	}
+//	static void tsicTubeWrapper(){
+//		tsicTube->TSIC_ISR();
+//	}
+//	static void pumpFlowmeterISR(){pumpTicks++;}
+//	static void bypassFlowmeterISR(){bypassTicks++;}
 };
 
 #endif /* DEVICECONTROL_H_ */

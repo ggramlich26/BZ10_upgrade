@@ -36,6 +36,8 @@ void DisplayStateMachine::init(){
 //  tft.println(String((char)9) + "C");
 	tft.drawBitmap(10, 17, image_data_scale_small, 41, 40, ILI9341_WHITE);
 	tft.drawBitmap(226, 16, image_data_timer_small, 33, 43, ILI9341_WHITE);
+	displayTime(0);
+	displayWeight(0);
 }
 
 void DisplayStateMachine::update(){
@@ -51,25 +53,56 @@ void DisplayStateMachine::update(){
 			displayTubeTemp(dev->getTubeTemp(), dev->getTubeTempSensorError());
 			lastTempUpdateTime = millis();
 		}
-		if(brewMachine->isBrewing()){
-			brewingStartTime = millis();
+
+		//transitions
+		if(brewMachine->isBrewing() || brewMachine->isPreinfusing()){
+			brewingStartTime = 0;
 			brewingStartPumpVolume = dev->getPumpVolume();
 			brewingStartBypassVolume = dev->getBypassVolume();
 			displayTime(0);
 			displayWeight(0);
 			state = brewing;
 		}
+		else if(brewMachine->isCleaning()){
+			state = cleaning;
+		}
 		break;
 	case brewing:
+	{
+		if(brewMachine->isBrewing() && brewingStartTime == 0){	//preinfusion done
+			brewingStartTime = millis();
+		}
 		if(millis() >= lastTempUpdateTime + TEMP_UPDATE_INTERVAL_BREWING){
 			displayBoilerTemp(dev->getBoilerTemp(), dev->getBoilerTempSensorError());
 			displayBUTemp(dev->getBUTemp(), dev->getBUTempSensorError());
 			displayTubeTemp(dev->getTubeTemp(), dev->getTubeTempSensorError());
 			lastTempUpdateTime = millis();
 		}
-		displayTime((millis()-brewingStartTime)/1000);
-		displayWeight((dev->getPumpVolume()-brewingStartPumpVolume)-(dev->getBypassVolume()-brewingStartBypassVolume));
-		if(!brewMachine->isBrewing()){
+		if(brewMachine->isBrewing()){// do not update time during preinfusion
+			displayTime((millis()-brewingStartTime)/1000);
+		}
+		int weight = (dev->getPumpVolume()-brewingStartPumpVolume)-(dev->getBypassVolume()-brewingStartBypassVolume) -
+				DataManager::getVolumeOffset();
+		displayWeight(weight>=0?weight:0);	//display 0 while weight smaller than zero
+
+		//transitions
+		if(!brewMachine->isBrewing() && !brewMachine->isPreinfusing()){
+			state = idle;
+		}
+		break;
+	}
+	case cleaning:
+		if(millis() >= lastTempUpdateTime + TEMP_UPDATE_INTERVAL_IDLE){
+			displayBoilerTemp(dev->getBoilerTemp(), dev->getBoilerTempSensorError());
+			displayBUTemp(dev->getBUTemp(), dev->getBUTempSensorError());
+			displayTubeTemp(dev->getTubeTemp(), dev->getTubeTempSensorError());
+			lastTempUpdateTime = millis();
+		}
+		displayTime(0);
+		displayWeight(brewMachine->getCurrentCleaningCycle());
+
+		//transitions
+		if(!brewMachine->isCleaning()){
 			state = idle;
 		}
 		break;

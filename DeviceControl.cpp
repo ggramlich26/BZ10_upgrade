@@ -8,12 +8,23 @@
 #include "DeviceControl.h"
 
 DeviceControl* DeviceControl::_instance = NULL;
-TSIC* DeviceControl::tsicBoiler = NULL;
-TSIC* DeviceControl::tsicBU = NULL;
-TSIC* DeviceControl::tsicTube = NULL;
-long DeviceControl::pumpTicks = 0;
-long DeviceControl::bypassTicks = 0;
+//TSIC* DeviceControl::tsicBoiler = NULL;
+//TSIC* DeviceControl::tsicBU = NULL;
+//TSIC* DeviceControl::tsicTube = NULL;
+//volatile long DeviceControl::pumpTicks = 0;
+//volatile long DeviceControl::bypassTicks = 0;
 
+static TSIC *tsicBoiler;
+static TSIC *tsicBU;
+static TSIC *tsicTube;
+static volatile long pumpTicks;
+static volatile long bypassTicks;
+
+void IRAM_ATTR tsicBoilerWrapper(){tsicBoiler->TSIC_ISR();}
+void IRAM_ATTR tsicBUWrapper(){tsicBU->TSIC_ISR();}
+void IRAM_ATTR tsicTubeWrapper(){tsicTube->TSIC_ISR();}
+void IRAM_ATTR pumpFlowmeterISR(){pumpTicks++;}
+void IRAM_ATTR bypassFlowmeterISR(){bypassTicks++;}
 
 DeviceControl::DeviceControl() {
 	init();
@@ -125,9 +136,10 @@ void DeviceControl::update(){
 			button1LastChangeTime = millis();
 		}
 		//rising edge
-		else if(!button1LastChangeTime && state){
+		else if(!button1LastState && state){
 			button1LastChangeTime = millis();
 		}
+		button1LastState = state;
 	}
 	//button 2
 	button2ShortPressed = false;
@@ -145,9 +157,10 @@ void DeviceControl::update(){
 			button2LastChangeTime = millis();
 		}
 		//rising edge
-		else if(!button2LastChangeTime && state){
+		else if(!button2LastState && state){
 			button2LastChangeTime = millis();
 		}
+		button2LastState = state;
 	}
 }
 
