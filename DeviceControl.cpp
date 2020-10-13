@@ -53,7 +53,7 @@ void DeviceControl::init(){
 	button2ShortPressed = false;
 	button1LongPressed = false;
 	button2LongPressed = false;
-	pinMode(BUTTON_RIGHT_PIN, INPUT_PULLDOWN);
+	pinMode(BUTTON_RIGHT_PIN, INPUT);
 	pinMode(BUTTON_LEFT_PIN, INPUT_PULLDOWN);
 	pinMode(BREW_MAN_PIN, INPUT_PULLDOWN);
 	pinMode(BREW_VOL_PIN, INPUT_PULLDOWN);
@@ -298,7 +298,7 @@ bool DeviceControl::getButton1(){
 }
 
 bool DeviceControl::getButton2(){
-	return digitalRead(BUTTON_RIGHT_PIN);
+	return !digitalRead(BUTTON_RIGHT_PIN);
 }
 
 //returns the total volume measured by the pump flowmeter since start in ml
