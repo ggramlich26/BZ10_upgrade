@@ -15,11 +15,6 @@ BrewStateMachine *brewSM;
 DisplayStateMachine *dispSM;
 MachineStatusStateMachine *machineStatSM;
 DeviceControl *dev;
-//TSIC *tsic;
-
-//void interruptWrapper(){
-//	tsic->TSIC_ISR();
-//}
 
 void setup()
 {
@@ -31,14 +26,11 @@ void setup()
 	brewingUnitSM = new BUStateMachine();
 	brewSM = new BrewStateMachine();
 	dispSM = new DisplayStateMachine(brewSM);
-//	tsic = new TSIC(18);
-//	pinMode(18, INPUT);
-//	attachInterrupt(18, interruptWrapper, CHANGE);
+	Serial.println("Espresso machine initialized");
 }
 
 void loop()
 {
-//	static long lastTempTime = 0;
 	machineStatSM->update();
 	boilerSM->update();
 	brewingUnitSM->update();
@@ -46,8 +38,8 @@ void loop()
 	dispSM->update();
 	DataManager::update();
 	dev->update();
-//	if(millis()-lastTempTime > 500){
-//		lastTempTime = millis();
-//		Serial.println("Temp: " + String(dev->getTubeTemp()));
-//	}
+
+	if(dev->getButton1LongPressed()){
+		DataManager::setBlynkEnabled(!DataManager::getBlynkEnabled());
+	}
 }

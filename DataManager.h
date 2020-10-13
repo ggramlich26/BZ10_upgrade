@@ -44,6 +44,8 @@
 #define	IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL		3000
 #define	BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL	500
 
+#define WIFI_CONNECT_INTERVAL					10000	//interval in which the device tries to connect to wifi
+
 
 class DataManager {
 public:
@@ -70,6 +72,8 @@ public:
 	static bool getBlynkEnabled();
 	static void setBlynkEnabled(bool enabled);
 
+	static bool getWifiConnected();
+
 	static void init();
 	static void update();
 private:
@@ -95,6 +99,10 @@ private:
 	static uint32_t calculateWIFIChecksum();
 	static void eepromWrite(uint8_t *src, int addr, int len, bool commit);
 	static void eepromRead(uint8_t *dst, int addr, int len);
+
+	static void initBlynk();
+	static bool blynkInitialized;
+	static unsigned long lastWifiConnectTryTime;
 };
 #endif /* DATAMANAGER_H_ */
 

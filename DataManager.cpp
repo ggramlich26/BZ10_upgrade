@@ -26,6 +26,8 @@ double DataManager::distributionVolume;
 double DataManager::volumeOffset;
 double DataManager::boilerControllerP;
 double DataManager::BUControllerP;
+bool DataManager::blynkInitialized;
+unsigned long DataManager::lastWifiConnectTryTime;
 DeviceControl* DataManager::dev;
 
 //	Blynk pins
@@ -38,6 +40,10 @@ DeviceControl* DataManager::dev;
 //	V7: volume offset
 //	V8: Boiler P param
 //	V9: BU P param
+//todo from here
+//	V10: Preinfusion buildup time
+//	V11: Preinfusion wait time
+//	V12: Standbye wakeup timer
 
 //	Flash address parameters
 #define SSID_MAX_LEN				30
@@ -80,6 +86,8 @@ BlynkTimer timer;
 
 void DataManager::init(){
 	dev = DeviceControl::instance();
+	blynkInitialized = false;
+	lastWifiConnectTryTime = 0;
 
 	//read from flash/blynk (update each other) or use default values
 	EEPROM.begin(EEPROM_SIZE);
@@ -176,20 +184,25 @@ void DataManager::init(){
 
 	if(DataManager::getBlynkEnabled()){
 		WiFi.setHostname(hostName);
-		Blynk.begin(auth, ssid, password);
-		//write current values to cloud
-		Blynk.virtualWrite(V4, targetTempBoiler);
-		Blynk.virtualWrite(V5, targetTempBU);
-		Blynk.virtualWrite(V6, distributionVolume);
-		Blynk.virtualWrite(V7, volumeOffset);
-		Blynk.virtualWrite(V8, boilerControllerP);
-		Blynk.virtualWrite(V9, BUControllerP);
+		WiFi.begin(ssid, password);
+		lastWifiConnectTryTime = millis();
+		delay(500);
+		if(WiFi.isConnected()){
+			initBlynk();
+		}
 	}
 }
 
 /// standard update routine
 void DataManager::update(){
-	if(DataManager::getBlynkEnabled()){
+	if(DataManager::getBlynkEnabled() && !WiFi.isConnected() && millis() >= lastWifiConnectTryTime + WIFI_CONNECT_INTERVAL){
+		WiFi.begin(ssid, password);
+		lastWifiConnectTryTime = millis();
+	}
+	if(DataManager::getBlynkEnabled() && !blynkInitialized && WiFi.isConnected()){
+		initBlynk();
+	}
+	if(DataManager::getBlynkEnabled() && blynkInitialized){
 		Blynk.run();
 		timer.run();
 	}
@@ -198,7 +211,7 @@ void DataManager::update(){
 /// sends the current boiler temperature to blynk, if enabled
 void DataManager::pushTempBoiler(double temp){
 	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() &&
+	if(DataManager::getBlynkEnabled() && blynkInitialized &&
 			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
 					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
 		lastUpdateTime = millis();
@@ -209,7 +222,7 @@ void DataManager::pushTempBoiler(double temp){
 /// sends the current BU temperature to blynk, if enabled
 void DataManager::pushTempBU(double temp){
 	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() &&
+	if(DataManager::getBlynkEnabled() && blynkInitialized &&
 			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
 					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
 		lastUpdateTime = millis();
@@ -220,7 +233,7 @@ void DataManager::pushTempBU(double temp){
 /// sends the current tube temperature to blynk, if enabled
 void DataManager::pushTempTube(double temp){
 	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() &&
+	if(DataManager::getBlynkEnabled() && blynkInitialized &&
 			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
 					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
 		lastUpdateTime = millis();
@@ -253,7 +266,7 @@ void DataManager::setTargetTempBoiler(double temp, bool updateBlynk){
 
 	targetTempBoiler = temp;
 	eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V4, targetTempBoiler);
 	}
 }
@@ -274,7 +287,7 @@ void DataManager::setTargetTempBU(double temp, bool updateBlynk){
 
 	targetTempBU = temp;
 	eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V5, targetTempBU);
 	}
 }
@@ -303,7 +316,7 @@ void DataManager::setDistributionVolume(double volume, bool updateBlynk){
 
 	distributionVolume = volume;
 	eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V6, distributionVolume);
 	}
 }
@@ -323,7 +336,7 @@ void DataManager::setVolumeOffset(double offset, bool updateBlynk){
 	}
 	volumeOffset = offset;
 	eepromWrite((uint8_t*)&volumeOffset, VOL_OFFSET_ADDR, VOL_OFFSET_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V7, volumeOffset);
 	}
 }
@@ -333,8 +346,14 @@ bool DataManager::getBlynkEnabled(){
 }
 
 void DataManager::setBlynkEnabled(bool enabled){
+	if(enabled && !blynkInitialized && !WiFi.isConnected()){
+		WiFi.setHostname(hostName);
+		WiFi.begin(ssid, password);
+		lastWifiConnectTryTime = millis();
+	}
 	blynkEnabled = enabled;
-	//todo: possibly run initialization or deinitialization
+	uint8_t temp = blynkEnabled?0xFF:0x00;
+	eepromWrite((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN, true);
 }
 
 double DataManager::getBoilerControllerP(){
@@ -350,7 +369,7 @@ void DataManager::setBoilerControllerP(double p, bool updateBlynk){
 	if(boilerControllerP == p) return;
 	boilerControllerP = p;
 	eepromWrite((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V8, boilerControllerP);
 	}
 }
@@ -368,10 +387,28 @@ void DataManager::setBUControllerP(double p, bool updateBlynk){
 	if(BUControllerP == p) return;
 	BUControllerP = p;
 	eepromWrite((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN, true);
-	if(getBlynkEnabled() && updateBlynk){
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		Blynk.virtualWrite(V9, BUControllerP);
 	}
 
+}
+
+/// initialize Blynk by creating the connection and writing current values
+void DataManager::initBlynk(){
+	Blynk.begin(auth, ssid, password);
+	//write current values to cloud
+	Blynk.virtualWrite(V4, targetTempBoiler);
+	Blynk.virtualWrite(V5, targetTempBU);
+	Blynk.virtualWrite(V6, distributionVolume);
+	Blynk.virtualWrite(V7, volumeOffset);
+	Blynk.virtualWrite(V8, boilerControllerP);
+	Blynk.virtualWrite(V9, BUControllerP);
+
+	blynkInitialized = true;
+}
+
+bool DataManager::getWifiConnected(){
+	return WiFi.isConnected();
 }
 
 
@@ -405,6 +442,11 @@ BLYNK_WRITE(V9){
 	DataManager::setBUControllerP(param.asDouble(), false);
 }
 
+//////////////////////////////////////////////////////////////////
+//																//
+//				EEPROM functions								//
+//																//
+//////////////////////////////////////////////////////////////////
 
 
 /// used to make sure valid data is read from EEPROM

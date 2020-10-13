@@ -45,6 +45,28 @@ void DisplayStateMachine::update(){
 	static long brewingStartTime = 0;
 	static double brewingStartPumpVolume = 0;
 	static double brewingStartBypassVolume = 0;
+
+	//update no wifi and blynk enabled icons
+	if(DataManager::getBlynkEnabled()){
+		if(!DataManager::getWifiConnected() && !noWifiDisplayed){
+			noWifiDisplayed = true;
+			blynkDisplayed = false;
+			tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
+			tft.drawBitmap(145, 200, image_data_no_wifi_small, 30, 24, ILI9341_WHITE);
+		}
+		else if(DataManager::getWifiConnected() && !blynkDisplayed){
+			blynkDisplayed = true;
+			noWifiDisplayed = false;
+			tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
+			tft.drawBitmap(145, 200, image_data_blynk_small, 30, 30, ILI9341_WHITE);
+		}
+	}
+	else if(noWifiDisplayed || blynkDisplayed){
+		noWifiDisplayed = false;
+		blynkDisplayed = false;
+		tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
+	}
+
 	switch (state){
 	case idle:
 		if(millis() >= lastTempUpdateTime + TEMP_UPDATE_INTERVAL_IDLE){

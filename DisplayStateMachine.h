@@ -17,6 +17,8 @@
 #include "graphics/Background_V2_no_symbol.h"
 #include "graphics/scale_small.h"
 #include "graphics/timer_small.h"
+#include "graphics/blynk_small.h"
+#include "graphics/no_wifi_small.h"
 
 #define	TEMP_UPDATE_INTERVAL_IDLE		1000
 #define	TEMP_UPDATE_INTERVAL_BREWING	500
@@ -55,6 +57,8 @@ private:
 	String displayedBoilerTemp = "";
 	String displayedBUTemp = "";
 	String displayedTubeTemp = "";
+	bool blynkDisplayed = false;
+	bool noWifiDisplayed = false;
 
 	void readBackground(uint16_t *origin, uint16_t *destination, uint16_t origin_width, uint16_t x, uint16_t y, uint16_t width, uint16_t height);;
 	void displayBoilerTemp(float temp, bool sensorError);
