@@ -14,9 +14,7 @@ MachineStatusStateMachine* MachineStatusStateMachine::_instance = NULL;
 MachineStatusStateMachine::MachineStatusStateMachine() {
 	state = running;
 	lastUserActionTime = millis();
-	wakeupTime = 0;	//todo: set through dataManager
 	dev = DeviceControl::instance();
-	standbyeStartTime = 90*60*1000;	//todo: set through dataManager
 }
 
 MachineStatusStateMachine::~MachineStatusStateMachine() {
@@ -31,13 +29,16 @@ void MachineStatusStateMachine::update(){
 		useraction = true;
 	}
 	switch (state){
-	case standbye:
+	case standby:
 		//set outputs
 		dev->disableLEDPower();
 		dev->disableLEDLeft();
 		dev->disableLEDRight();
 		//check transitions
-		if(useraction || (wakeupTime != 0 && (millis() > wakeupTime && millis() < wakeupTime + standbyeStartTime))){
+		if(useraction || (DataManager::getStandbyWakeupTime() != 0 &&
+				(millis() > DataManager::getStandbyWakeupTime() &&
+						(millis() < DataManager::getStandbyWakeupTime() + DataManager::getStandbyStartTime() ||
+								DataManager::getStandbyStartTime() == 0)))){
 			state = running;
 			lastUserActionTime = millis();
 		}
@@ -48,8 +49,10 @@ void MachineStatusStateMachine::update(){
 		dev->enableLEDLeft();
 		dev->enableLEDRight();
 		//check transitions
-		if(dev->getButton1ShortPressed() || millis() > lastUserActionTime + standbyeStartTime){
-			state = standbye;
+		if(dev->getButton1ShortPressed() ||
+				(millis() > lastUserActionTime + DataManager::getStandbyStartTime() &&
+						DataManager::getStandbyStartTime() != 0)){
+			state = standby;
 		}
 		break;
 	}
@@ -57,5 +60,5 @@ void MachineStatusStateMachine::update(){
 }
 
 bool MachineStatusStateMachine::inStandbye(){
-	return standbye == state;
+	return standby == state;
 }

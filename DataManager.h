@@ -41,8 +41,15 @@
 #define	MAX_BU_CONTROLLER_P						100
 #define	MIN_BU_CONTROLLER_P						0.01
 
+#define DEFAULT_PREINFUSION_BUILDUP_TIME		2000
+#define	MAX_PREINFUSION_BUILDUP_TIME			20000
+#define	DEFAULT_PREINFUSION_WAIT_TIME			5000
+#define	MAX_PREINFUSION_WAIT_TIME				20000
+
 #define	IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL		3000
 #define	BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL	500
+
+#define DEFAULT_STANDBY_START_TIME				90*60*1000 // time after which standby mode will be entered if no user action
 
 #define WIFI_CONNECT_INTERVAL					10000	//interval in which the device tries to connect to wifi
 
@@ -68,6 +75,16 @@ public:
 	static void setBoilerControllerP(double p, bool updateBlynk);
 	static double getBUControllerP();
 	static void setBUControllerP(double p, bool updateBlynk);
+
+	static int getPreinfusionBuildupTime();
+	static void setPreinfusionBuildupTime(int time, bool updateBlynk);
+	static int getPreinfusionWaitTime();
+	static void setPreinfusionWaitTime(int time, bool updateBlynk);
+
+	static void setStandbyStartTime(int time, bool updateBlynk);
+	static int getStandbyStartTime();
+	static unsigned long getStandbyWakeupTime();
+	static void setStandbyWakeupTime(unsigned long time, bool updateBlynk);
 
 	static bool getBlynkEnabled();
 	static void setBlynkEnabled(bool enabled);
@@ -95,6 +112,11 @@ private:
 
 	static double boilerControllerP;
 	static double BUControllerP;
+
+	static int preinfusionBuildupTime;
+	static int preinfusionWaitTime;
+	static unsigned long standbyWakeupTime;
+	static int standbyStartTime;	//time after wich standby mode will be entered
 
 	static uint32_t calculateWIFIChecksum();
 	static void eepromWrite(uint8_t *src, int addr, int len, bool commit);

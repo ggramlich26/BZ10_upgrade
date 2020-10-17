@@ -11,7 +11,7 @@
 #include "DeviceControl.h"
 
 class MachineStatusStateMachine {
-	enum MachineStatusState {running, standbye};
+	enum MachineStatusState {running, standby};
 
 public:
 	static MachineStatusStateMachine *instance(){
@@ -29,9 +29,8 @@ private:
 	MachineStatusState state;
 	DeviceControl *dev;
 	unsigned long lastUserActionTime;
-	unsigned long wakeupTime;	//time in ms after machine start when the machine will wake up from standbye. 0 to disable
+//	unsigned long wakeupTime;	//time in ms after machine start when the machine will wake up from standby. 0 to disable
 								//automated wakeup function
-	unsigned long standbyeStartTime; //time in ms after which standbye mode will be entered if no user interaction has occured
 };
 
 #endif /* MACHINESTATUSSTATEMACHINE_H_ */

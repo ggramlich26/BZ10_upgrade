@@ -27,8 +27,6 @@ private:
 	BrewStates state;
 	DeviceControl *dev;
 	MachineStatusStateMachine *machStat;
-	unsigned long preinfusionBuildupTime;
-	unsigned long preinfusionWaitTime;
 	unsigned long cleaningBuildupTime;
 	unsigned long cleaningFlushingTime;
 	int numberCleaningCycles;

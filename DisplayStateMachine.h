@@ -10,6 +10,7 @@
 #include "HW_config.h"
 #include "BrewStateMachine.h"
 #include "DeviceControl.h"
+#include "MachineStatusStateMachine.h"
 
 #include "SPI.h"
 #include <Adafruit_GFX.h>
@@ -19,6 +20,7 @@
 #include "graphics/timer_small.h"
 #include "graphics/blynk_small.h"
 #include "graphics/no_wifi_small.h"
+#include "graphics/standby.h"
 
 #define	TEMP_UPDATE_INTERVAL_IDLE		1000
 #define	TEMP_UPDATE_INTERVAL_BREWING	500
@@ -36,7 +38,7 @@
 #define	TEXT_BACKGROUND_HEIGHT	LETTER_HEIGHT
 
 class DisplayStateMachine {
-	enum DisplayStates {idle, brewing, cleaning};
+	enum DisplayStates {idle, brewing, cleaning, standby};
 
 public:
 	DisplayStateMachine(BrewStateMachine *machine);
@@ -52,6 +54,7 @@ private:
 	DeviceControl *dev;
 	DisplayStates state;
 	BrewStateMachine *brewMachine;
+	MachineStatusStateMachine *machStat;
 	int displayedTime = -1;
 	int displayedWeight = -1;
 	String displayedBoilerTemp = "";
@@ -61,6 +64,7 @@ private:
 	bool noWifiDisplayed = false;
 
 	void readBackground(uint16_t *origin, uint16_t *destination, uint16_t origin_width, uint16_t x, uint16_t y, uint16_t width, uint16_t height);;
+	void drawBackground();
 	void displayBoilerTemp(float temp, bool sensorError);
 	void displayBUTemp(float temp, bool sensorError);
 	void displayTubeTemp(float temp, bool sensorError);

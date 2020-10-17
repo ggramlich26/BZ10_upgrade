@@ -15,10 +15,10 @@ DisplayStateMachine::DisplayStateMachine(BrewStateMachine *machine) {
 }
 
 DisplayStateMachine::~DisplayStateMachine() {
-	// TODO Auto-generated destructor stub
 }
 
 void DisplayStateMachine::init(){
+	machStat = MachineStatusStateMachine::instance();
 	state = idle;
 	tft.begin();
 	tft.setRotation(1);
@@ -31,6 +31,10 @@ void DisplayStateMachine::init(){
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setFont();
 	tft.setTextSize(3);
+	drawBackground();
+}
+
+void DisplayStateMachine::drawBackground(){
 	tft.drawRGBBitmap(0, 0, (uint16_t*)image_data_Background_V2_no_symbol, 320, 240);
 //  tft.setCursor(138,140);
 //  tft.println(String((char)9) + "C");
@@ -47,7 +51,7 @@ void DisplayStateMachine::update(){
 	static double brewingStartBypassVolume = 0;
 
 	//update no wifi and blynk enabled icons
-	if(DataManager::getBlynkEnabled()){
+	if(DataManager::getBlynkEnabled() && state != standby){
 		if(!DataManager::getWifiConnected() && !noWifiDisplayed){
 			noWifiDisplayed = true;
 			blynkDisplayed = false;
@@ -61,9 +65,9 @@ void DisplayStateMachine::update(){
 			tft.drawBitmap(145, 200, image_data_blynk_small, 30, 30, ILI9341_WHITE);
 		}
 	}
-	else if(noWifiDisplayed || blynkDisplayed){
-		noWifiDisplayed = false;
+	else if((noWifiDisplayed || blynkDisplayed) && state != standby){
 		blynkDisplayed = false;
+		noWifiDisplayed = false;
 		tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
 	}
 
@@ -77,7 +81,12 @@ void DisplayStateMachine::update(){
 		}
 
 		//transitions
-		if(brewMachine->isBrewing() || brewMachine->isPreinfusing()){
+		if(machStat->inStandbye()){
+			tft.fillRect(0, 0, 320, 240, ILI9341_BLACK);
+			tft.drawBitmap((320-158)/2, (240-180)/2, image_data_standby, 158, 180, 0b0001100011100011);
+			state = standby;
+		}
+		else if(brewMachine->isBrewing() || brewMachine->isPreinfusing()){
 			brewingStartTime = 0;
 			brewingStartPumpVolume = dev->getPumpVolume();
 			brewingStartBypassVolume = dev->getBypassVolume();
@@ -128,6 +137,20 @@ void DisplayStateMachine::update(){
 			state = idle;
 		}
 		break;
+	case standby:
+		//transitions
+		if(!machStat->inStandbye()){
+			//get everything drawn again
+			noWifiDisplayed = false;
+			blynkDisplayed = false;
+			displayedTime = -1;
+			displayedWeight = -1;
+			displayedBoilerTemp = "";
+			displayedBUTemp = "";
+			displayedTubeTemp = "";
+			drawBackground();
+			state = idle;
+		}
 	}
 }
 

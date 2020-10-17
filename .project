@@ -67,6 +67,11 @@
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPI</locationURI>
 		</link>
 		<link>
+			<name>libraries/Time</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Time/1.5.0</locationURI>
+		</link>
+		<link>
 			<name>libraries/WiFi</name>
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/WiFi</locationURI>

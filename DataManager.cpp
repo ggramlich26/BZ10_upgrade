@@ -15,6 +15,8 @@
 #include "Arduino.h"
 #include "EEPROM.h"
 #include <stdint.h>
+#include <WidgetRTC.h>
+#include <Time.h>
 
 
 bool DataManager::blynkEnabled;
@@ -28,22 +30,26 @@ double DataManager::boilerControllerP;
 double DataManager::BUControllerP;
 bool DataManager::blynkInitialized;
 unsigned long DataManager::lastWifiConnectTryTime;
+int DataManager::preinfusionBuildupTime;
+int DataManager::preinfusionWaitTime;
+unsigned long DataManager::standbyWakeupTime;
+int DataManager::standbyStartTime;
 DeviceControl* DataManager::dev;
 
 //	Blynk pins
-// 	V1: Boiler temperature
-//	V2: BU temperature
-//	V3: Tube temperature
-//	V4: Boiler target temperature
-//	V5: BU target temperature
-//	V6: distribution volume
-//	V7: volume offset
+// 	V1: Boiler temperature in °C
+//	V2: BU temperature in °C
+//	V3: Tube temperature in °C
+//	V4: Boiler target temperature in °C
+//	V5: BU target temperature in °C
+//	V6: distribution volume in ml (integers only)
+//	V7: volume offset in ml (integers only)
 //	V8: Boiler P param
 //	V9: BU P param
-//todo from here
-//	V10: Preinfusion buildup time
-//	V11: Preinfusion wait time
-//	V12: Standbye wakeup timer
+//	V10: Preinfusion buildup time in s (fractions are ok)
+//	V11: Preinfusion wait time in s (fractions are ok)
+//	V12: Standbye wakeup timer: in s after midnight (regular time widget), 0 to disable
+//	V13: Standby start time: time after which the machine goes into standby mode if no user interaction occurs, in s, 0 to disable
 
 //	Flash address parameters
 #define SSID_MAX_LEN				30
@@ -66,9 +72,15 @@ DeviceControl* DataManager::dev;
 #define	BU_CONTROLLER_P_LEN			8
 #define	BLYNK_ENABLED_ADDR			141
 #define	BLYNK_ENABLED_LEN			1
+#define	PREINFUSION_BUILDUP_TIME_ADDR	142
+#define	PREINFUSION_BUILDUP_TIME_LEN	4
+#define	PREINFUSION_WAIT_TIME_ADDR		146
+#define	PREINFUSION_WAIT_TIME_LEN		4
+#define STANDBY_START_TIME_ADDR		150
+#define	STANDBY_START_TIME_LEN		4
 
 
-#define CHECKSUM_ADDR				142
+#define CHECKSUM_ADDR				154
 #define	CHECKSUM_LEN				4
 #define	EEPROM_SIZE					200
 char ssid[SSID_MAX_LEN+1];
@@ -82,6 +94,7 @@ char hostName[HOST_NAME_MAX_LEN+1];
 char auth[] = "odArqE_fTz-LOqvk9ot0U2Anlo7P9oGR";
 
 BlynkTimer timer;
+WidgetRTC rtc;
 
 
 void DataManager::init(){
@@ -116,6 +129,10 @@ void DataManager::init(){
 	blynkEnabled = temp==0xFF;
 	eepromRead((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN);
 	eepromRead((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN);
+	eepromRead((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN);
+	eepromRead((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN);
+	eepromRead((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN);
+	standbyWakeupTime = 0;
 //	Serial.println("Boiler target: " + String(targetTempBoiler));
 //	Serial.println("BU target: " + String(targetTempBU));
 //	Serial.println("distribution volume: " + String(distributionVolume));
@@ -162,7 +179,8 @@ void DataManager::init(){
 	}
 	//if EEPROM not initialized yet, write default values
 	if(isnan(targetTempBU) || isnan(targetTempBoiler) || isnan(distributionVolume) || isnan(volumeOffset) ||
-			isnan(boilerControllerP) || isnan(BUControllerP)){
+			isnan(boilerControllerP) || isnan(BUControllerP) || isnan(preinfusionBuildupTime) ||
+			isnan(preinfusionWaitTime) || isnan(standbyStartTime)){
 		Serial.println("Writing default values");
 		targetTempBoiler = DEFAULT_TEMP_BOILER;
 		targetTempBU = DEFAULT_TEMP_BU;
@@ -171,6 +189,9 @@ void DataManager::init(){
 		blynkEnabled = DEFAULT_BLYNK_ENABLED;
 		boilerControllerP = DEFAULT_BOILER_CONTROLLER_P;
 		BUControllerP = DEFAULT_BU_CONTROLLER_P;
+		preinfusionBuildupTime = DEFAULT_PREINFUSION_BUILDUP_TIME;
+		preinfusionWaitTime = DEFAULT_PREINFUSION_WAIT_TIME;
+		standbyStartTime = DEFAULT_STANDBY_START_TIME;
 		eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, false);
 		eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, false);
 		eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, false);
@@ -179,6 +200,9 @@ void DataManager::init(){
 		eepromWrite((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN, false);
 		eepromWrite((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN, false);
 		eepromWrite((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN, false);
+		eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, false);
+		eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, false);
+		eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, false);
 		EEPROM.commit();
 	}
 
@@ -403,12 +427,110 @@ void DataManager::initBlynk(){
 	Blynk.virtualWrite(V7, volumeOffset);
 	Blynk.virtualWrite(V8, boilerControllerP);
 	Blynk.virtualWrite(V9, BUControllerP);
+	Blynk.virtualWrite(V10, preinfusionBuildupTime/1000);
+	Blynk.virtualWrite(V11, preinfusionWaitTime/1000);
+	if(standbyWakeupTime > 0){
+		unsigned long realTime = ((unsigned long)hour()*60*60+minute()*60+second());
+		unsigned long time = (standbyWakeupTime - millis())/1000 + realTime;
+		Blynk.virtualWrite(V12, time%(24*60*60), 0, "Europe/Berlin");
+	}
+	else
+		Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
+	if(standbyStartTime > 0)
+		Blynk.virtualWrite(V13, standbyStartTime/1000, 0, "Europe/Berlin");
+	else
+		Blynk.virtualWrite(V13, "", 0, "Europe/Berlin");
+
+	setSyncInterval(10 * 60); // Sync interval for RTC in seconds (10 minutes)
 
 	blynkInitialized = true;
 }
 
 bool DataManager::getWifiConnected(){
 	return WiFi.isConnected();
+}
+
+int DataManager::getPreinfusionBuildupTime(){
+	return preinfusionBuildupTime;
+}
+
+/// sets the preinfusion pressure buildup time
+// @param time time in ms, 0 to disable preinfusion
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setPreinfusionBuildupTime(int time, bool updateBlynk){
+	if(time > MAX_PREINFUSION_BUILDUP_TIME) time = MAX_PREINFUSION_BUILDUP_TIME;
+	else if(time < 0) time = 0;
+	if(preinfusionBuildupTime == time) return;
+	preinfusionBuildupTime = time;
+	eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V10, preinfusionBuildupTime/1000);
+	}
+}
+
+int DataManager::getPreinfusionWaitTime(){
+	return preinfusionWaitTime;
+}
+
+/// sets the preinfusion waiting time
+// @param time time in ms
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setPreinfusionWaitTime(int time, bool updateBlynk){
+	if(time > MAX_PREINFUSION_WAIT_TIME) time = MAX_PREINFUSION_WAIT_TIME;
+	else if(time < 0) time = 0;
+	if(preinfusionWaitTime == time) return;
+	preinfusionWaitTime = time;
+	eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V11, preinfusionWaitTime/1000);
+	}
+}
+
+/// returns the time in ms after system start when the machine should wake up from standby
+unsigned long DataManager::getStandbyWakeupTime(){
+	return standbyWakeupTime;
+}
+
+/// sets the time when the machine should wake up from standby
+// @param time time in s after midnight, 0 to disable
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setStandbyWakeupTime(unsigned long time, bool updateBlynk){
+	unsigned long realTime = ((unsigned long)hour()*60*60+minute()*60+second());
+	//if it is later than the wakeup time, add one day to it
+	if(time > 0 && time < realTime){
+		time += 24*60*60;
+	}
+	//disable wakeup if 0
+	if(time > 0){
+		standbyWakeupTime = millis()+(time-realTime)*1000;
+	}
+	else{
+		standbyWakeupTime = 0;
+	}
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		if(time >= 0)
+			Blynk.virtualWrite(V12, time%(24*60*60), 0, "Europe/Berlin");
+		else
+			Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
+	}
+}
+
+/// sets the time after which the machine will go in standby mode if no user interaction occurs
+// @param time time in ms
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setStandbyStartTime(int time, bool updateBlynk){
+	if(time < 0) time = 0;
+	if(standbyStartTime == time) return;
+	standbyStartTime = time;
+	eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V13, standbyStartTime/1000);
+	}
+}
+
+/// returns the time in ms after which the machine goes into standby if no user interaction occurs
+int DataManager::getStandbyStartTime(){
+	return standbyStartTime;
 }
 
 
@@ -440,6 +562,28 @@ BLYNK_WRITE(V8){
 
 BLYNK_WRITE(V9){
 	DataManager::setBUControllerP(param.asDouble(), false);
+}
+
+BLYNK_WRITE(V10){
+	DataManager::setPreinfusionBuildupTime((int)(param.asDouble()*1000), false);
+}
+
+BLYNK_WRITE(V11){
+	DataManager::setPreinfusionWaitTime((int)(param.asDouble()*1000), false);
+}
+
+BLYNK_WRITE(V12){
+	DataManager::setStandbyWakeupTime(param.asLong(), false);
+}
+
+BLYNK_WRITE(V13){
+	DataManager::setStandbyStartTime(param.asInt()*1000, false);
+	Serial.println(String("StandbyStartTime: ") + param.asString());
+}
+
+BLYNK_CONNECTED() {
+  // Synchronize time on connection
+  rtc.begin();
 }
 
 //////////////////////////////////////////////////////////////////

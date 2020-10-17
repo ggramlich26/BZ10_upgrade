@@ -9,8 +9,6 @@
 #include "DataManager.h"
 
 BrewStateMachine::BrewStateMachine() {
-	preinfusionBuildupTime = 5000; //todo: set via dataManager
-	preinfusionWaitTime = 5000; //todo: set via dateManager
 	cleaningBuildupTime = 20000;
 	cleaningFlushingTime = 20000;
 	numberCleaningCycles = 10;
@@ -45,7 +43,7 @@ void BrewStateMachine::update(){
 			state = refill_boiler;
 		}
 		else if(dev->getManualDistribution()){
-			if(preinfusionBuildupTime > 0){
+			if(DataManager::getPreinfusionBuildupTime() > 0){
 				state = preinf_buildup;
 			}
 			else{
@@ -53,7 +51,7 @@ void BrewStateMachine::update(){
 			}
 		}
 		else if(dev->getVolumetricDistribution()){
-			if(preinfusionBuildupTime > 0){
+			if(DataManager::getPreinfusionBuildupTime() > 0){
 				state = preinf_buildup;
 			}
 			else{
@@ -203,7 +201,7 @@ void BrewStateMachine::update(){
 			preinfusionStartTime = 0;
 			state = error_tank_empty;
 		}
-		else if(millis() >= preinfusionStartTime + preinfusionBuildupTime){
+		else if(millis() >= preinfusionStartTime + DataManager::getPreinfusionBuildupTime()){
 			preinfusionStartTime = 0;
 			state = preinf_wait;
 		}
@@ -228,7 +226,7 @@ void BrewStateMachine::update(){
 			preinfusionStartTime = 0;
 			state = error_tank_empty;
 		}
-		else if(millis() >= preinfusionStartTime + preinfusionWaitTime){
+		else if(millis() >= preinfusionStartTime + DataManager::getPreinfusionWaitTime()){
 			preinfusionStartTime = 0;
 			if(dev->getManualDistribution()){
 				state = dist_man;
