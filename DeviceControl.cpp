@@ -38,8 +38,8 @@ void DeviceControl::init(){
 	srData = 0x0000;
 	pumpTickToVolumeFactor = 0.219298;
 	bypassTickToVolumeFactor = pumpTickToVolumeFactor;
-	pumpTicks = 0;
-	bypassTicks = 0;
+	pumpTicks = 5;
+	bypassTicks = 5;
 	boilerPeriodStartTime = 0;
 	BUPeriodStartTime = 0;
 	boilerLevel = 0;

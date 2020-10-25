@@ -48,8 +48,9 @@ DeviceControl* DataManager::dev;
 //	V9: BU P param
 //	V10: Preinfusion buildup time in s (fractions are ok)
 //	V11: Preinfusion wait time in s (fractions are ok)
-//	V12: Standbye wakeup timer: in s after midnight (regular time widget), 0 to disable
-//	V13: Standby start time: time after which the machine goes into standby mode if no user interaction occurs, in s, 0 to disable
+//	V12: Standbye wakeup timer: in s after midnight (Blynk time widget), 0 to disable
+//	V13: Standby start time: time after which the machine goes into standby mode if no user interaction occurs,
+			//in s, 0 to disable (Blynk time widget)
 
 //	Flash address parameters
 #define SSID_MAX_LEN				30
