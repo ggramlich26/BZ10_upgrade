@@ -22,7 +22,9 @@ You can use the following virtual pins for communication with your espresso mach
 - V8: Boiler heater controller P parameter (input)
 - V9: BU heater controller P parameter (input)
 - V10: Preinfusion buildup time in s (input, fractions ok)
-- V11
+- V11: Preinfusion wait time in s (input, fractions ok)
+- V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
+- V13: Standby start t
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
@@ -87,6 +89,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgzNDc3MDE0LC0xNzEyNTQ3ODQsMjExND
+eyJoaXN0b3J5IjpbNzY2MTc5ODA3LC0xNzEyNTQ3ODQsMjExND
 I2Mjc1MCwtMTY1MDEyODAwNV19
 -->
