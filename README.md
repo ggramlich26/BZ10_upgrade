@@ -11,8 +11,8 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 ## Building the project
 ## Setting up Blynk
 ## Code overview
-The entire code is
+The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle and a last one is responsible for the overall machine state including standby functionality. In order to achieve
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDQwMzU5NzksLTE2NTAxMjgwMDVdfQ
+eyJoaXN0b3J5IjpbLTE3NzQ3NTIxMjgsLTE2NTAxMjgwMDVdfQ
 ==
 -->
