@@ -10,13 +10,13 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Automated cleaning cycle: Ten cycles of switching distribution on and off for 20 seconds each by pressing only one button
 
 ## Building the project
-##
+## Setting your WiFi credentials
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
 - V1: Boiler temperature in °C (display)
 - V2: BU temperature in °C (display)
 - V3: Tube temperature in °C (display)
-- V4: Boiler target temperature in °C (input)
+- V4: Boiler target temperature in °C (Numeric Input widget, values 0-1)
 - V5: Brewing unit target temperature in °C (input)
 - V6: Distribution volume in ml (input, integers only)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (input, integers only)
@@ -90,6 +90,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzkwNzI1MiwtMTcxMjU0Nzg0LDIxMTQyNj
-I3NTAsLTE2NTAxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbLTUyNDQyMzk2MywtMTcxMjU0Nzg0LDIxMT
+QyNjI3NTAsLTE2NTAxMjgwMDVdfQ==
 -->
