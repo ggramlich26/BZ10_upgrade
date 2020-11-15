@@ -16,9 +16,21 @@ The machine functionality is based on state machines. There are two state machin
 Besides machine logic, a faster library for TSIC temperature sensors has been developed.
 ### Brewing state machine
 ### Boiler state machine
+```mermaid
+graph LR
+A[Square Rect] -- Link text --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
+```
+
+```mermaid
+graph 
+```
 ### BU state machine
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM0MzcyNDk5MywtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTE5MTM3MTUyNjAsLTE2NTAxMjgwMDVdfQ
+==
 -->
