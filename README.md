@@ -18,8 +18,8 @@ You can use the following virtual pins for communication with your espresso mach
 - V3: Tube temperature in °C (display)
 - V4: Boiler target temperature in °C (Numeric Input widget, values 0-120, step size 0.5)
 - V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
-- V6: Distribution volume in ml (Numeric Input widget)
-- V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (input, integers only)
+- V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
+- V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
 - V8: Boiler heater controller P parameter (input)
 - V9: BU heater controller P parameter (input)
 - V10: Preinfusion buildup time in s (input, fractions ok)
@@ -91,6 +91,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjUzMTU5ODk5LC0xNzEyNTQ3ODQsMjExND
-I2Mjc1MCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTc4MTAxOTMxNSwtMTcxMjU0Nzg0LDIxMT
+QyNjI3NTAsLTE2NTAxMjgwMDVdfQ==
 -->
