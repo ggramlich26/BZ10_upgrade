@@ -48,10 +48,10 @@ start-->enabled
 ```mermaid
 graph LR
 start(Start)
-enabled(Enabled)
-disabled(D
+running(Running)
+standby(Standby)
+running --"standby pressed OR <br> no input to standby time reached"-->standby
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MDc1MTYxODQsLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbMTYyMTAzNzIxMywtMTY1MDEyODAwNV19
 -->
