@@ -19,7 +19,12 @@ Besides machine logic, a faster library for TSIC temperature sensors has been de
 graph LR
 idle(IDLE)
 refill_boiler(Refill Boiler)
-preinfusion_buildup(Pre
+preinfusion_buildup(Preinfusion <br> Buildup)
+preinfusion_wait(Preinfusion <br> Wait)
+vol_dist(Volumetric <br> Distribution)
+man_dist(Manual <br> Distribution)
+vol_dist_finished(Volumetric <br> Distribution <br> Finished)
+error_wat
 ```
 ### Boiler heater state machine
 ```mermaid
@@ -53,5 +58,5 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQzNTUyMTY0LC0xNjUwMTI4MDA1XX0=
+eyJoaXN0b3J5IjpbLTM0ODI2NjAzOSwtMTY1MDEyODAwNV19
 -->
