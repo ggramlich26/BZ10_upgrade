@@ -37,6 +37,8 @@ idle-->man_dist
 vol_dist-->vol_dist_finished
 refill_boiler-->error_boiler
 preinfusion_buildup-->error_tank
+vol_dist-->error_tank
+man_dist-->error_tank
 
 ```
 ### Boiler heater state machine
@@ -71,6 +73,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcxNDMzODE2NywyMTE0MjYyNzUwLC0xNj
+eyJoaXN0b3J5IjpbMTY5OTExODM4NCwyMTE0MjYyNzUwLC0xNj
 UwMTI4MDA1XX0=
 -->
