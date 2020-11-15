@@ -18,19 +18,11 @@ Besides machine logic, a faster library for TSIC temperature sensors has been de
 ### Boiler heater state machine
 ```mermaid
 graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
-
-```mermaid
-graph LR
 enabled(Enabled)
 disabled(Disabled)
 start(Start)
 enabled -- Water level low OR standby OR <br> boiler temperature sensor error OR <br>boiler fill probe error--> disabled
-disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperature sensor error OR <br> !boiler fill probe error-->enabled
+disabled -- Water level sufficiently high OR <br> !standby OR <br> !boiler temperature sensor error OR <br> !boiler fill probe error-->enabled
 start --> enabled
 ```
 ### Brewing unit heater state machine
@@ -39,7 +31,7 @@ graph LR
 start(Start)
 enabled(Enabled)
 disabled(Disabled)
-enabled --"standbye OR BU temperature sensor error"-->disabled
+enabled --"standbye OR <br> BU temperature sensor error"-->disabled
 disabled --"!standbye AND !BU temperature sensor error"-->enabled
 start-->enabled
 ```
@@ -55,6 +47,5 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMDM2NTU1NzEsLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbMzczMzY4MDk1LC0xNjUwMTI4MDA1XX0=
 -->
