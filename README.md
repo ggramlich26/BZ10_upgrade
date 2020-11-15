@@ -17,6 +17,8 @@ You can use the following virtual pins for communication with your espresso mach
 - V3: Tube temperature in °C (display)
 - V4: Boiler target temperature in °C (input)
 - V5: Brewing unit target temperature in °C (input)
+- V6: Distribution volume in ml (input, integers only)
+- V7: Volume offset in ml. This makes up for the water going through the hx 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
@@ -81,6 +83,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMzNjM3MzM2MiwtMTcxMjU0Nzg0LDIxMT
-QyNjI3NTAsLTE2NTAxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbLTE5NzExMjM3MTEsLTE3MTI1NDc4NCwyMT
+E0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
