@@ -12,7 +12,7 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 ## Building the project
 ## Setting up Blynk
 ## Code overview
-The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
+The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `State machines/StateIn order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
 Besides machine logic, a faster library for TSIC temperature sensors has been developed.
 ### Brewing state machine
 **not complete yet**
@@ -74,6 +74,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1OTYxNjk3NiwyMTE0MjYyNzUwLC0xNj
+eyJoaXN0b3J5IjpbMTYxNjEyOTY4MywyMTE0MjYyNzUwLC0xNj
 UwMTI4MDA1XX0=
 -->
