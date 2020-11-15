@@ -28,6 +28,7 @@ error_tank("Error: <br> H2O Tank Empty")
 error_boiler("Error: <br> Boiler Fill Probe")
 
 idle--"boiler empty"-->refill_boiler
+refill_boiler--"!boiler empty OR <br> standby"-->idle
 ```
 ### Boiler heater state machine
 ```mermaid
@@ -61,5 +62,5 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTQzMjQyNjc3LC0xNjUwMTI4MDA1XX0=
+eyJoaXN0b3J5IjpbOTE2MzYxMzQ0LC0xNjUwMTI4MDA1XX0=
 -->
