@@ -28,13 +28,14 @@ C --> D
 graph LR
 enabled(Enabled)
 disabled(Disabled)
+start(Start)
 enabled -- Water level low OR standby OR <br> boiler temperatur sensor error OR <br>boiler fill probe error--> disabled
 disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperatur sensor error OR <br> !boiler fill probe error-->enabled
---> disabled
+start --> enabled
 ```
 ### BU state machine
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU3NjIxNjQ3MiwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTMxNjA1OTg1MCwtMTY1MDEyODAwNV19
 -->
