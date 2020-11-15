@@ -15,7 +15,7 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
 Besides machine logic, a faster library for TSIC temperature sensors has been developed.
 ### Brewing state machine
-### Boiler state machine
+### Boiler heater state machine
 ```mermaid
 graph LR
 A[Square Rect] -- Link text --> B((Circle))
@@ -33,9 +33,14 @@ enabled -- Water level low OR standby OR <br> boiler temperatur sensor error OR 
 disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperatur sensor error OR <br> !boiler fill probe error-->enabled
 start --> enabled
 ```
-### BU state machine
+### Brewing unit heater state machine
+```ermaid
+graph LR
+
+```
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMxNjA1OTg1MCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTEzMDk0NDY5MDUsLTE2NTAxMjgwMDVdfQ
+==
 -->
