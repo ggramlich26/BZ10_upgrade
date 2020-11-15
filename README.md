@@ -51,8 +51,10 @@ start(Start)
 running(Running)
 standby(Standby)
 running --"standby pressed OR <br> no input for too long"-->standby
-standby--""-->
+standby--"any button pressed OR <br> wakeup time reached"-->running
+start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkzOTg4NDQzMCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTEyMDM2NTU1NzEsLTE2NTAxMjgwMDVdfQ
+==
 -->
