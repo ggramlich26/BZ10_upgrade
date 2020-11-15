@@ -20,10 +20,10 @@ You can use the following virtual pins for communication with your espresso mach
 - V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
 - V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
-- V8: Boiler heater controller P parameter (input)
+- V8: Boiler heater controller P parameter (Numeric Input widget, values )
 - V9: BU heater controller P parameter (input)
-- V10: Preinfusion buildup time in s (input, fractions ok)
-- V11: Preinfusion wait time in s (input, fractions ok)
+- V10: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
+- V11: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
@@ -91,6 +91,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc4MTAxOTMxNSwtMTcxMjU0Nzg0LDIxMT
-QyNjI3NTAsLTE2NTAxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbLTE4ODk5MTQ1OTIsLTE3MTI1NDc4NCwyMT
+E0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
