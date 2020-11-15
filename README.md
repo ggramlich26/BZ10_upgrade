@@ -24,7 +24,7 @@ preinfusion_wait(Preinfusion <br> Wait)
 vol_dist(Volumetric <br> Distribution)
 man_dist(Manual <br> Distribution)
 vol_dist_finished(Volumetric <br> Distribution <br> Finished)
-error_wat
+error_tank("Error: <br> H_2_O")
 ```
 ### Boiler heater state machine
 ```mermaid
@@ -58,5 +58,5 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM0ODI2NjAzOSwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbNzA0MzI4NTk5LC0xNjUwMTI4MDA1XX0=
 -->
