@@ -1,5 +1,6 @@
 # Bezzera BZ10 Upgrade
-This Project 
+This Project is a replacement for the original Bezzera BZ10 electronics bringing many new features including the following:
+- 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMyMTc2ODU2MCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbMTY3NDE3ODQ2NywtMTY1MDEyODAwNV19
 -->
