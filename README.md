@@ -32,7 +32,11 @@ refill_boiler--"!boiler empty OR <br> standby"-->idle
 idle--"dist_vol AND <br>preinf. wait > 0"-->preinfusion_buildup
 preinfusion_buildup--"Preinfusion buildup <br> time reached"-->preinfusion_wait
 preinfusion_wait-->vol_dist
-idle->vol_dist
+idle-->vol_dist
+idle-->man_dist
+vol_dist-->vol_dist_finished
+refill_boiler-->error_boiler
+preinfusion_buildup-->error_tank
 
 ```
 ### Boiler heater state machine
@@ -67,6 +71,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzAyNTcwMzQxLDIxMTQyNjI3NTAsLTE2NT
-AxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbMTcxNDMzODE2NywyMTE0MjYyNzUwLC0xNj
+UwMTI4MDA1XX0=
 -->
