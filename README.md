@@ -8,8 +8,11 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Preinfusion (time based)
 - WIFI: All parameters (temperatures, distribution volume, wake up time, etc.) can be set with a smartphone
 
-
+## Building the project
+## Setting up Blynk
+## Code overview
+The entire code is
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMjg3OTUwOTUsLTE2NTAxMjgwMDVdfQ
+eyJoaXN0b3J5IjpbLTEzMDQwMzU5NzksLTE2NTAxMjgwMDVdfQ
 ==
 -->
