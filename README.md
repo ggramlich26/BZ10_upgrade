@@ -39,12 +39,12 @@ graph LR
 start(Start)
 enabled(Enabled)
 disabled(Disabled)
-enabled --"Standbye OR BU temperature sensor error"-->disabled
-disabled --""-->enabled
+enabled --"standbye OR BU temperature sensor error"-->disabled
+disabled --"!standbye AND !BU temperature sensor error"-->enabled
+start-->enabled
 ```
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzODIyMTEyOTksLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbMTY2MzE3MjAwLC0xNjUwMTI4MDA1XX0=
 -->
