@@ -29,8 +29,8 @@ graph LR
 enabled(Enabled)
 disabled(Disabled)
 start(Start)
-enabled -- Water level low OR standby OR <br> boiler temperatur sensor error OR <br>boiler fill probe error--> disabled
-disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperatur sensor error OR <br> !boiler fill probe error-->enabled
+enabled -- Water level low OR standby OR <br> boiler temperature sensor error OR <br>boiler fill probe error--> disabled
+disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperature sensor error OR <br> !boiler fill probe error-->enabled
 start --> enabled
 ```
 ### Brewing unit heater state machine
@@ -39,10 +39,12 @@ graph LR
 start(Start)
 enabled(Enabled)
 disabled(Disabled)
-enabled --"Standbye | BU temp sensor error"-->disabled
+enabled --"Standbye OR BU temperature sensor error"-->disabled
+disabled --""-->enabled
 ```
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg2NDY4ODI4MSwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTEzODIyMTEyOTksLTE2NTAxMjgwMDVdfQ
+==
 -->
