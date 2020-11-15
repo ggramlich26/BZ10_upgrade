@@ -25,12 +25,15 @@ C --> D
 ```
 
 ```mermaid
-graph 
+graph LR
+enabled(Enabled)
+disabled(Disabled)
+enabled -- Water level low OR standby OR
+fdjao--> disabled
 ```
 ### BU state machine
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MTM3MTUyNjAsLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbMTIzODQ3NDI3NywtMTY1MDEyODAwNV19
 -->
