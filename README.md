@@ -44,7 +44,14 @@ disabled --"!standbye AND !BU temperature sensor error"-->enabled
 start-->enabled
 ```
 ### Display state machine
-### Device status state machine
+### Machine status state machine
+```mermaid
+graph LR
+start(Start)
+enabled(Enabled)
+disabled(D
+```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY2MzE3MjAwLC0xNjUwMTI4MDA1XX0=
+eyJoaXN0b3J5IjpbLTE0MDc1MTYxODQsLTE2NTAxMjgwMDVdfQ
+==
 -->
