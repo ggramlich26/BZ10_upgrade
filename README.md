@@ -16,9 +16,9 @@ You can use the following virtual pins for communication with your espresso mach
 - V1: Boiler temperature in °C (display)
 - V2: BU temperature in °C (display)
 - V3: Tube temperature in °C (display)
-- V4: Boiler target temperature in °C (Numeric Input widget, values 0-1)
-- V5: Brewing unit target temperature in °C (input)
-- V6: Distribution volume in ml (input, integers only)
+- V4: Boiler target temperature in °C (Numeric Input widget, values 0-120, step size 0.5)
+- V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
+- V6: Distribution volume in ml (Numeric Input widget)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (input, integers only)
 - V8: Boiler heater controller P parameter (input)
 - V9: BU heater controller P parameter (input)
@@ -26,6 +26,7 @@ You can use the following virtual pins for communication with your espresso mach
 - V11: Preinfusion wait time in s (input, fractions ok)
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
+You can use a SuperChart Widget for V1-V3
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
@@ -90,6 +91,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUyNDQyMzk2MywtMTcxMjU0Nzg0LDIxMT
-QyNjI3NTAsLTE2NTAxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbNjUzMTU5ODk5LC0xNzEyNTQ3ODQsMjExND
+I2Mjc1MCwtMTY1MDEyODAwNV19
 -->
