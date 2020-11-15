@@ -28,12 +28,11 @@ C --> D
 graph LR
 enabled(Enabled)
 disabled(Disabled)
-enabled -- Water level low OR standby OR
-fdjao--> disabled
+enabled -- Water level low OR standby OR boiler temperatur sensor error OR boiler fill probe error--> disabled
 ```
 ### BU state machine
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIzODQ3NDI3NywtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbMTA4MTUzOTQyNiwtMTY1MDEyODAwNV19
 -->
