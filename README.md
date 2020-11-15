@@ -34,13 +34,15 @@ disabled -- Water level sufficiently high OR <br> !standby OR !boiler temperatur
 start --> enabled
 ```
 ### Brewing unit heater state machine
-```ermaid
+```mermaid
 graph LR
-
+start(Start)
+enabled(Enabled)
+disabled(Disabled)
+enabled --"Standbye | BU temp sensor error"-->disabled
 ```
 ### Display state machine
 ### Device status state machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDk0NDY5MDUsLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbMTg2NDY4ODI4MSwtMTY1MDEyODAwNV19
 -->
