@@ -10,6 +10,7 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Automated cleaning cycle: Ten cycles of switching distribution on and off for 20 seconds each by pressing only one button
 
 ## Building the project
+##
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
 - V1: Boiler temperature in °C (display)
@@ -24,7 +25,7 @@ You can use the following virtual pins for communication with your espresso mach
 - V10: Preinfusion buildup time in s (input, fractions ok)
 - V11: Preinfusion wait time in s (input, fractions ok)
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
-- V13: Standby start t
+- V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
@@ -89,6 +90,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzY2MTc5ODA3LC0xNzEyNTQ3ODQsMjExND
-I2Mjc1MCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbNzkwNzI1MiwtMTcxMjU0Nzg0LDIxMTQyNj
+I3NTAsLTE2NTAxMjgwMDVdfQ==
 -->
