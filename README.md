@@ -95,7 +95,8 @@ start-->running
 ## The Hardware
 There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCPCB or Seeedstudio. At the moment I also have a few available from my order, that I could have sent to you for very little money. In case you have trouble soldering SMD (surface mounted device) components, we could also discuss having an assembled PCB shipped to you.
 ### Hardware on the PCB
-You will need all need the components listed below to complete the PCB. All of them can be 
+You will need all need the components listed below to complete the PCB. All of them can be bought from standard suppliers, including Reichelt, Farnell, Mouser etc.
+
 Resistors, all 0603:
 - 2.2k, 1 piece
 - 4.7k, 2 pieces
@@ -136,9 +137,10 @@ Connectors:
 - connectors RM 5, 1 row, 2 positions, 13 pieces
 
 ### Hardware off the PCB in the machine
-- Arduino SSR board with 4 SSRs 
+- Arduino SSR board with 4 SSRs (e.g. [SSR on Amazon](https://www.amazon.de/Ecloud-4-Channel-Trigger-SSR-Modul-Brett-Arduino-resistivem/dp/B01E6KUMTI/ref=sr_1_4?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=arduino%20ssr%204&qid=1605773053&quartzVehicle=812-409&replacementKeywords=arduino%20ssr&sr=8-4))
+- 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzA5MTgyODUsLTUzOTgxNDgwMywyNz
-k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
-MDA1XX0=
+eyJoaXN0b3J5IjpbNTMyMjY2NzQxLC01Mzk4MTQ4MDMsMjc5OD
+gwMzgxLC0xNzEyNTQ3ODQsMjExNDI2Mjc1MCwtMTY1MDEyODAw
+NV19
 -->
