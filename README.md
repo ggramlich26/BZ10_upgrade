@@ -93,8 +93,8 @@ start-->running
 ```
 
 ## The Hardware
-There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCP
+There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCPCB or Seeedstudio. At the moment I also have a few available from my order, that I could have sent to you for very little money. In case you have trouble soldering SMD (surface mounted device) components, we could also discuss having an assemble
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEwMDkzOTE2MywyNzk4ODAzODEsLTE3MT
+eyJoaXN0b3J5IjpbMTAyMTkxNDI3OSwyNzk4ODAzODEsLTE3MT
 I1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
