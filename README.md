@@ -96,10 +96,14 @@ start-->running
 There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCPCB or Seeedstudio. At the moment I also have a few available from my order, that I could have sent to you for very little money. In case you have trouble soldering SMD (surface mounted device) components, we could also discuss having an assembled PCB shipped to you.
 ### Hardware on the PCB
 You will need the following components to assemble the PCB:
-Resistors:
+Resistors, all 0603:
+- test
+
+Capacitors, all 0603:
 - 
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUzOTgxNDgwMywyNzk4ODAzODEsLTE3MT
-I1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
+eyJoaXN0b3J5IjpbLTE3OTMwNjAxNzUsLTUzOTgxNDgwMywyNz
+k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
+MDA1XX0=
 -->
