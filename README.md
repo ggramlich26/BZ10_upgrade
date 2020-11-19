@@ -140,7 +140,7 @@ You will need all need the components listed below to complete the PCB. All of t
 **Boards:**
 |Value|Package | Quantity | Link |
 |--|--|--|--
-| ESP32 nodeMCU||1||
+| ESP32 nodeMCU||1|[from far east](https://www.aliexpress.com/item/32867696371.html?spm=a2g0s.9042311.0.0.27424c4dZ5DEit)|
 
 **Connectors:**
 |Value|rows|positions|m/f| Quantity | Link |
@@ -161,7 +161,8 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
+- 5V power supply
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2Mzk4MzkyODksNjM3NDQzOTksLTIxMD
+eyJoaXN0b3J5IjpbLTE4NDEyNjMxMjMsNjM3NDQzOTksLTIxMD
 I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
