@@ -37,64 +37,11 @@ The machine functionality is based on state machines. There are two state machin
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
 Besides machine logic, a faster library for TSIC temperature sensors has been developed.
 ### Brewing state machine
-**not complete yet**
-```mermaid
-graph LR
-idle(IDLE)
-refill_boiler(Refill Boiler)
-preinfusion_buildup(Preinfusion <br> Buildup)
-preinfusion_wait(Preinfusion <br> Wait)
-vol_dist(Volumetric <br> Distribution)
-man_dist(Manual <br> Distribution)
-vol_dist_finished(Volumetric <br> Distribution <br> Finished)
-error_tank("Error: <br> H2O Tank Empty")
-error_boiler("Error: <br> Boiler Fill Probe")
-
-idle--"boiler empty"-->refill_boiler
-refill_boiler--"!boiler empty OR <br> standby"-->idle
-idle--"dist_vol AND <br>preinf. wait > 0"-->preinfusion_buildup
-preinfusion_buildup--"Preinfusion buildup <br> time reached"-->preinfusion_wait
-preinfusion_wait-->vol_dist
-idle-->vol_dist
-idle-->man_dist
-vol_dist-->vol_dist_finished
-refill_boiler-->error_boiler
-preinfusion_buildup-->error_tank
-vol_dist-->error_tank
-man_dist-->error_tank
-
-```
 ### Boiler heater state machine
-```mermaid
-graph LR
-enabled(Enabled)
-disabled(Disabled)
-start(Start)
-enabled -- Water level low OR standby OR <br> boiler temperature sensor error OR <br>boiler fill probe error--> disabled
-disabled -- Water level sufficiently high OR <br> !standby OR <br> !boiler temperature sensor error OR <br> !boiler fill probe error-->enabled
-start --> enabled
-```
 ### Brewing unit heater state machine
-```mermaid
-graph LR
-start(Start)
-enabled(Enabled)
-disabled(Disabled)
-enabled --"standbye OR <br> BU temperature sensor error"-->disabled
-disabled --"!standbye AND !BU temperature sensor error"-->enabled
-start-->enabled
-```
 ### Display state machine
 ### Machine status state machine
-```mermaid
-graph LR
-start(Start)
-running(Running)
-standby(Standby)
-running --"standby pressed OR <br> no input for too long"-->standby
-standby--"any button pressed OR <br> wakeup time reached"-->running
-start-->running
-```
+
 
 ## The Hardware
 There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCPCB or Seeedstudio. At the moment I also have a few available from my order, that I could have sent to you for very little money. In case you have trouble soldering SMD (surface mounted device) components, we could also discuss having an assembled PCB shipped to you.
@@ -164,7 +111,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NzgxMzg5MDMsLTE4MjkxMDk2NDcsNj
-M3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUy
-OTcwXX0=
+eyJoaXN0b3J5IjpbMjEzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNz
+Q0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3
+MF19
 -->
