@@ -137,11 +137,10 @@ You will need all need the components listed below to complete the PCB. All of t
  NE555D|SO-8|1|[farnell](https://de.farnell.com/texas-instruments/ne555d/precision-timers-linear/dp/3121191?st=ne555d)
  MCP6002-E/SN|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
 
-
-Boards:
+**Boards:**
 - ESP32 nodeMCU
 
-Connectors:
+**Connectors:**
 - pinheader 1 row, 3 positions, 5 male and 5 female pieces (for temperature and flow sensors)
 - pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
 - pinheader (m+f) 1 row, 6 positions, 1 male and 2 female pieces (for SSR board)
@@ -155,5 +154,5 @@ Connectors:
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
