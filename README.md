@@ -138,9 +138,9 @@ Connectors:
 
 ### Hardware off the PCB in the machine
 - Arduino SSR board with 4 SSRs (e.g. [SSR on Amazon](https://www.amazon.de/Ecloud-4-Channel-Trigger-SSR-Modul-Brett-Arduino-resistivem/dp/B01E6KUMTI/ref=sr_1_4?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=arduino%20ssr%204&qid=1605773053&quartzVehicle=812-409&replacementKeywords=arduino%20ssr&sr=8-4))
-- 
+- Two SSRs for 230V, switchable by 3-5VDC (called SSR-40 DA)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTMyMjY2NzQxLC01Mzk4MTQ4MDMsMjc5OD
-gwMzgxLC0xNzEyNTQ3ODQsMjExNDI2Mjc1MCwtMTY1MDEyODAw
-NV19
+eyJoaXN0b3J5IjpbMTc4ODg0MjI3NywtNTM5ODE0ODAzLDI3OT
+g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
+MDVdfQ==
 -->
