@@ -95,7 +95,7 @@ start-->running
 ## The Hardware
 There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCPCB or Seeedstudio. At the moment I also have a few available from my order, that I could have sent to you for very little money. In case you have trouble soldering SMD (surface mounted device) components, we could also discuss having an assembled PCB shipped to you.
 ### Hardware on the PCB
-You will need the following components to assemble the PCB:
+You will need all need the components listed below to complete the PCB. All of them can be 
 Resistors, all 0603:
 - 2.2k, 1 piece
 - 4.7k, 2 pieces
@@ -136,8 +136,9 @@ Connectors:
 - connectors RM 5, 1 row, 2 positions, 13 pieces
 
 ### Hardware off the PCB in the machine
+- Arduino SSR board with 4 SSRs 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ0NTc2NjU1MywtNTM5ODE0ODAzLDI3OT
-g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
-MDVdfQ==
+eyJoaXN0b3J5IjpbLTEwNzA5MTgyODUsLTUzOTgxNDgwMywyNz
+k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
+MDA1XX0=
 -->
