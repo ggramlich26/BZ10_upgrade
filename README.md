@@ -138,6 +138,9 @@ You will need all need the components listed below to complete the PCB. All of t
  MCP6002-E/SN|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
 
 **Boards:**
+|Value|Package | Quantity | Link |
+|--|--|--|--
+| ESP32 nodeMCU||1||
 - ESP32 nodeMCU
 
 **Connectors:**
@@ -154,5 +157,6 @@ You will need all need the components listed below to complete the PCB. All of t
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMT
+c3MDUyOTcwXX0=
 -->
