@@ -14,6 +14,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - Blynk (Version 0.6.1)
 - TFT_eSPI (Version 1.4.16)
 - Time (Version 1.5.0)
+
 ## Setting your WiFi credentials
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -145,7 +146,7 @@ Connectors:
 - SPI TFT Display 320x240 Pixels with ILI9341 (e.g. [Display on Amazon](https://www.amazon.de/gp/product/B01E0MGZU2/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1))
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5Njg1Mjc5NDksMTY1MzM2Mjc3OSwtNT
-M5ODE0ODAzLDI3OTg4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3
-NTAsLTE2NTAxMjgwMDVdfQ==
+eyJoaXN0b3J5IjpbMzczMzA0NjczLC0xOTY4NTI3OTQ5LDE2NT
+MzNjI3NzksLTUzOTgxNDgwMywyNzk4ODAzODEsLTE3MTI1NDc4
+NCwyMTE0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
