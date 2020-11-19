@@ -101,35 +101,42 @@ There are eagle layout and gerber files available for a PCB designed with this p
 ### Hardware on the PCB
 You will need all need the components listed below to complete the PCB. All of them can be bought from standard suppliers, including Reichelt, Farnell, Mouser etc.
 
-Resistors, all 0603:
-- 2.2k, 1 piece
-- 4.7k, 2 pieces
-- 10k, 5 pieces
-- 22k, 1 piece
-- 47k, 2 pieces
-- 100k, 1 piece
-- 220k, 2 pieces
-- 330k, 3 pieces
-- 1M, 1 piece
-- 4.7M, 1 piece
+**Resistors:**
+|Value|Package | Quantity | Link |
+|--|--|--|--
+|2.2k|0603|1
+|4.7k|0603|2
+|10k|0603|5
+|22k|0603|1
+|47k|0603|2
+|100k|0603|1
+220k|0603|2
+330k|0603|3
+1M|0603|1
+4.7M|0603|1
 
-Capacitors, all 0603:
-- 2.2 nF, 1 piece
-- 10 nF, 2 pieces
-- 22 nF, 1 piece
-- 100 nF 1 piece
+**Capacitors:**
+|Value|Package | Quantity | Link |
+|--|--|--|--
+2.2n|0603|1
+10n|0603|2
+22n|0603|1
+100n|0603|1
 
-Transistors:
-- IRLML5203, 1 piece, MICRO3 package
-- BSS138BK, 6 pieces, SOT-23 package
 
-Diodes:
-- BAS21, 2 pices, SOT-23 package
+**Semiconductors:**
+|Value|Package | Quantity | Link |
+|--|--|--|--
+| **Transistors**|
+ IRLML5203|MICRO3|1|[farnell](https://de.farnell.com/infineon/irlml5203trpbf/mosfet-p-kanal-30v-3a-sot23/dp/9103511?st=irlml5203)
+ BSS138BK|SOT-23|6|[farnell](https://de.farnell.com/nexperia/bss138bk-215/mosfet-n-kanal-60v-0-36a-sot23/dp/2053833?st=bss138bk)
+ **Diodes**|
+ BAS21|SOT-23|2|[farnell](https://de.farnell.com/diodes-inc/bas21/schaltdiode-250v-0-25w-sot23-3/dp/1902406?st=bas21)
+ **ICs**|
+ MCP23017SO|SO28W|1|[farnell](https://de.farnell.com/microchip/mcp23017-e-so/16bit-expander-i-o-i2c-i-f-smd/dp/1332087?st=mcp23017)
+ NE555D|SO-8|1|[farnell](https://de.farnell.com/texas-instruments/ne555d/precision-timers-linear/dp/3121191?st=ne555d)
+ MCP6002-E/SN|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
 
-ICs:
-- MCP23017SO, 1 piece, SO28W package
-- NE555D, 1 piece, SO-8 package
-- MCP6002-E/SN, 1 piece, SOIC-8 package
 
 Boards:
 - ESP32 nodeMCU
@@ -146,10 +153,7 @@ Connectors:
 - SPI TFT Display 320x240 Pixels with ILI9341 (e.g. [Display on Amazon](https://www.amazon.de/gp/product/B01E0MGZU2/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1))
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time
 - TSIC 306 temperature sensors, 3 pieces
-- Flow sensors, 2 pieces
+- Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc2NzkxMDUzMiwzNzMzMDQ2NzMsLTE5Nj
-g1Mjc5NDksMTY1MzM2Mjc3OSwtNTM5ODE0ODAzLDI3OTg4MDM4
-MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgwMDVdfQ
-==
+eyJoaXN0b3J5IjpbLTE3NzA1Mjk3MF19
 -->
