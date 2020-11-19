@@ -145,12 +145,12 @@ You will need all need the components listed below to complete the PCB. All of t
 **Connectors:**
 |Value|rows|positions|m/f| Quantity | Link |
 |--|--|--|--|--|--
-pinheader|1|3|f|5|connecting temperature and flow sensors
-pinheader|1|3|m|5|possibly soldering to temperature and flow sensor wires
-pinheader|1|9|f|2|display
-pinheader|1|9|m|1|display
-pinheader|1|6|f|2|connecting arduino SSR board
-pinheader|1|6|m|1|connecting arduino SSR board
+pinheader 2,54|1|3|f|5|connecting temperature and flow sensors
+pinheader 2,54|1|3|m|5|possibly soldering to temperature and flow sensor wires
+pinheader 2,54|1|9|f|2|display
+pinheader 2,54|1|9|m|1|display
+pinheader 2,54|1|6|f|2|connecting arduino SSR board
+pinheader 2,54|1|6|m|1|connecting arduino SSR board
 wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
 
 
@@ -162,6 +162,6 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4OD
-cyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTE2Mzk4MzkyODksNjM3NDQzOTksLTIxMD
+I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
