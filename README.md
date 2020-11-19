@@ -151,11 +151,8 @@ pinheader|1|9|f|2|display
 pinheader|1|9|m|1|display
 pinheader|1|6|f|2|connecting arduino SSR board
 pinheader|1|6|m|1|connecting arduino SSR board
-wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else
-- pinheader 1 row, 3 positions, 5 male and 5 female pieces (for temperature and flow sensors)
-- pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
-- pinheader (m+f) 1 row, 6 positions, 1 male and 2 female pieces (for SSR board)
-- connectors RM 5, 1 row, 2 positions, 13 pieces
+wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
+
 
 ### Hardware off the PCB in the machine
 - Arduino SSR board with 4 SSRs (e.g. [Arduino SSR module on Amazon](https://www.amazon.de/Ecloud-4-Channel-Trigger-SSR-Modul-Brett-Arduino-resistivem/dp/B01E6KUMTI/ref=sr_1_4?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=arduino%20ssr%204&qid=1605773053&quartzVehicle=812-409&replacementKeywords=arduino%20ssr&sr=8-4))
@@ -165,6 +162,6 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMzNTc1MTc0NCwtMjEwMjkyNTk1MywtNz
-g4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4OD
+cyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
