@@ -97,13 +97,14 @@ There are eagle layout and gerber files available for a PCB designed with this p
 ### Hardware on the PCB
 You will need the following components to assemble the PCB:
 Resistors, all 0603:
-- test
+- 10k, 5 pieces
+- 330k, 3 pieces
 
 Capacitors, all 0603:
 - 
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTMwNjAxNzUsLTUzOTgxNDgwMywyNz
+eyJoaXN0b3J5IjpbLTE0MzY2MTMyMzksLTUzOTgxNDgwMywyNz
 k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
 MDA1XX0=
 -->
