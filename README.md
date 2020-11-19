@@ -116,15 +116,18 @@ Capacitors, all 0603:
 
 Transistors:
 - IRLML5203, 1 piece
-- BSS138BK
+- BSS138BK, 6 pieces, SOT-23 package
 
 ICs:
 - MCP23017SO, 1 piece
 - NE555D, 1 piece, SO-8 package
 
+Connectors:
+- pinheader (1 row, 3 positions, 5 pieces
+- pinheader 1
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYyOTgxMjIzMCwtNTM5ODE0ODAzLDI3OT
-g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
-MDVdfQ==
+eyJoaXN0b3J5IjpbODcxODgzOTkwLC01Mzk4MTQ4MDMsMjc5OD
+gwMzgxLC0xNzEyNTQ3ODQsMjExNDI2Mjc1MCwtMTY1MDEyODAw
+NV19
 -->
