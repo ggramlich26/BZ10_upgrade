@@ -91,7 +91,10 @@ running --"standby pressed OR <br> no input for too long"-->standby
 standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
+
+## The Hardware
+There are eagle layout and gerber files available for a PCB designed with this project. You can simply send those files to a manufacturer such as JLCP
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc2NzE2NDA4NywyNzk4ODAzODEsLTE3MT
+eyJoaXN0b3J5IjpbMjEwMDkzOTE2MywyNzk4ODAzODEsLTE3MT
 I1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
