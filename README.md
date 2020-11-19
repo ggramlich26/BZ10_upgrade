@@ -118,18 +118,23 @@ Transistors:
 - IRLML5203, 1 piece
 - BSS138BK, 6 pieces, SOT-23 package
 
+Diodes:
+
 ICs:
 - MCP23017SO, 1 piece
 - NE555D, 1 piece, SO-8 package
 
+Boards:
+- ESP32 nodeMCU
+
 Connectors:
 - pinheader 1 row, 3 positions, 5 male and 5 female pieces (for temperature and flow sensors)
 - pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
-- pinheader (m+f) 1 row, 6 positions, 1 piece (for SSR board)
+- pinheader (m+f) 1 row, 6 positions, 1 male and 2 female pieces (for SSR board)
 - connectors RM 5, 1 row, 2 positions, 13 pieces
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUzODU2NjkxNSwtNTM5ODE0ODAzLDI3OT
-g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
-MDVdfQ==
+eyJoaXN0b3J5IjpbLTIxMTUwMTg1NDYsLTUzOTgxNDgwMywyNz
+k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
+MDA1XX0=
 -->
