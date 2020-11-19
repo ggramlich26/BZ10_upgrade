@@ -145,12 +145,12 @@ You will need all need the components listed below to complete the PCB. All of t
 **Connectors:**
 |Value|rows|positions|m/f| Quantity | Link |
 |--|--|--|--|--|--
-pinheader 2,54|1|3|f|5|connecting temperature and flow sensors
-pinheader 2,54|1|3|m|5|possibly soldering to temperature and flow sensor wires
-pinheader 2,54|1|9|f|2|display
-pinheader 2,54|1|9|m|1|display
-pinheader 2,54|1|6|f|2|connecting arduino SSR board
-pinheader 2,54|1|6|m|1|connecting arduino SSR board
+pinheader 2.54mm|1|3|f|5|connecting temperature and flow sensors
+pinheader 2.54mm|1|3|m|5|possibly soldering to temperature and flow sensor wires
+pinheader 2.54mm|1|9|f|2|display
+pinheader 2.54mm|1|9|m|1|display
+pinheader 2.54mm|1|6|f|2|connecting arduino SSR board
+pinheader 2.54mm|1|6|m|1|connecting arduino SSR board
 wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
 
 
@@ -164,6 +164,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMD
-I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTE4NzgxMzg5MDMsLTE4MjkxMDk2NDcsNj
+M3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUy
+OTcwXX0=
 -->
