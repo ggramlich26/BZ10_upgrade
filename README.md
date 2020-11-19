@@ -145,10 +145,10 @@ Connectors:
 - Two SSRs for 230V, switchable by 3-5VDC (called SSR-40 DA) for boiler heater and electric brewing unit heater (e.g. [SSR on Amazon](https://www.amazon.de/KKmoon-24V-380V-SSR-40-Relaismodul-Temperaturregler/dp/B010Q6898C/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=ssr&qid=1605773227&sr=8-3))
 - SPI TFT Display 320x240 Pixels with ILI9341 (e.g. [Display on Amazon](https://www.amazon.de/gp/product/B01E0MGZU2/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1))
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time
-- TSIC temperature sensors
-- Flow sensors
+- TSIC 306 temperature sensors, 3 pieces
+- Flow sensors, 2 pieces
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNTkzMzM2NiwzNzMzMDQ2NzMsLTE5Nj
+eyJoaXN0b3J5IjpbMTc2NzkxMDUzMiwzNzMzMDQ2NzMsLTE5Nj
 g1Mjc5NDksMTY1MzM2Mjc3OSwtNTM5ODE0ODAzLDI3OTg4MDM4
 MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgwMDVdfQ
 ==
