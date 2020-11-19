@@ -119,10 +119,12 @@ Transistors:
 - BSS138BK, 6 pieces, SOT-23 package
 
 Diodes:
+- BAS21, 2 pices, SOT-23 package
 
 ICs:
 - MCP23017SO, 1 piece
 - NE555D, 1 piece, SO-8 package
+- MCP6002-E/SN, 1 piece, SOIC-8 package
 
 Boards:
 - ESP32 nodeMCU
@@ -134,7 +136,7 @@ Connectors:
 - connectors RM 5, 1 row, 2 positions, 13 pieces
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMTUwMTg1NDYsLTUzOTgxNDgwMywyNz
+eyJoaXN0b3J5IjpbLTEyNDMzNDQwNDcsLTUzOTgxNDgwMywyNz
 k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
 MDA1XX0=
 -->
