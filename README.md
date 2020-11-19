@@ -10,6 +10,7 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Automated cleaning cycle: Ten cycles of switching distribution on and off for 20 seconds each by pressing only one button
 
 ## Building the project
+This project is set up to be built with Eclipse Sloeber, which adds Arduino support to the Eclipse IDE.
 ## Setting your WiFi credentials
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -91,6 +92,6 @@ standby--"any button pressed OR <br> wakeup time reached"-->running
 start-->running
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjc5ODgwMzgxLC0xNzEyNTQ3ODQsMjExND
-I2Mjc1MCwtMTY1MDEyODAwNV19
+eyJoaXN0b3J5IjpbLTc2NzE2NDA4NywyNzk4ODAzODEsLTE3MT
+I1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4MDA1XX0=
 -->
