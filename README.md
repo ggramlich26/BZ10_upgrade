@@ -10,7 +10,8 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Automated cleaning cycle: Ten cycles of switching distribution on and off for 20 seconds each by pressing only one button
 
 ## Building the project
-This project is set up to be built with Eclipse Sloeber, which adds Arduino support to the Eclipse IDE.
+This project is set up to be built with Eclipse Sloeber, which adds Arduino support to the Eclipse IDE. It uses the following Libraries:
+- 
 ## Setting your WiFi credentials
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -142,7 +143,7 @@ Connectors:
 - SPI TFT Display 320x240 Pixels with ILI9341 (e.g. [Display on Amazon](https://www.amazon.de/gp/product/B01E0MGZU2/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1))
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY1MzM2Mjc3OSwtNTM5ODE0ODAzLDI3OT
-g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
-MDVdfQ==
+eyJoaXN0b3J5IjpbLTg3OTYzMTg2MCwxNjUzMzYyNzc5LC01Mz
+k4MTQ4MDMsMjc5ODgwMzgxLC0xNzEyNTQ3ODQsMjExNDI2Mjc1
+MCwtMTY1MDEyODAwNV19
 -->
