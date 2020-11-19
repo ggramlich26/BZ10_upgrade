@@ -123,12 +123,13 @@ ICs:
 - NE555D, 1 piece, SO-8 package
 
 Connectors:
-- pinheader (m+f) 1 row, 3 positions, 5 pieces (for temperature and flow sensors)
-- pinheader (m+f) 1 row, 9 positions, 1 piece (for display)
-- pinheader (m+f) 1 row, 6 positions, 1 piece (for SSR board
+- pinheader 1 row, 3 positions, 5 male and 5 female pieces (for temperature and flow sensors)
+- pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
+- pinheader (m+f) 1 row, 6 positions, 1 piece (for SSR board)
+- connectors RM 5, 1 row, 2 positions, 13 pieces
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NzA4NzU3MTksLTUzOTgxNDgwMywyNz
-k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
-MDA1XX0=
+eyJoaXN0b3J5IjpbMTUzODU2NjkxNSwtNTM5ODE0ODAzLDI3OT
+g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
+MDVdfQ==
 -->
