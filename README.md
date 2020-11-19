@@ -145,7 +145,10 @@ You will need all need the components listed below to complete the PCB. All of t
 **Connectors:**
 |Value|rows|positions|m/f| Quantity | Link |
 |--|--|--|--|--|--
-pin
+pinheader|1|3|f|5|connecting temperature and flow sensors
+pinheader|1|3|m|5|possibly soldering to temperature and flow sensor wires
+pinheader|1|9|f|2|display
+pinheader|1|9|m|1
 - pinheader 1 row, 3 positions, 5 male and 5 female pieces (for temperature and flow sensors)
 - pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
 - pinheader (m+f) 1 row, 6 positions, 1 male and 2 female pieces (for SSR board)
@@ -159,6 +162,6 @@ pin
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA5ODgxOTkzOCwtMjEwMjkyNTk1MywtNz
-g4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbLTIwNjEyNjg3MzYsLTIxMDI5MjU5NTMsLT
+c4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
