@@ -98,13 +98,19 @@ There are eagle layout and gerber files available for a PCB designed with this p
 You will need the following components to assemble the PCB:
 Resistors, all 0603:
 - 10k, 5 pieces
+- 220k, 
 - 330k, 3 pieces
+- 1M, 1 piece
+- 4.7M, 1 piece
 
 Capacitors, all 0603:
-- 
+- 2.2 nF, 1 piece
+- 10 nF, 2 pieces
+- 22 nF, 1 piece
+- 100 nF 1 piece
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MzY2MTMyMzksLTUzOTgxNDgwMywyNz
-k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
-MDA1XX0=
+eyJoaXN0b3J5IjpbMTE1MzM1Nzc1OCwtNTM5ODE0ODAzLDI3OT
+g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
+MDVdfQ==
 -->
