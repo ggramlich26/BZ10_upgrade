@@ -116,9 +116,15 @@ Capacitors, all 0603:
 
 Transistors:
 - IRLML5203, 1 piece
+- BSS138BK
+
+ICs:
+- MCP23017SO, 1 piece
+- NE555D, 1 piece, SO-8 package
+
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQzNzQyMTk1NywtNTM5ODE0ODAzLDI3OT
+eyJoaXN0b3J5IjpbMTYyOTgxMjIzMCwtNTM5ODE0ODAzLDI3OT
 g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
 MDVdfQ==
 -->
