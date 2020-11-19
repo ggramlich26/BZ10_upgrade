@@ -115,14 +115,14 @@ Capacitors, all 0603:
 - 100 nF 1 piece
 
 Transistors:
-- IRLML5203, 1 piece
+- IRLML5203, 1 piece, MICRO3 package
 - BSS138BK, 6 pieces, SOT-23 package
 
 Diodes:
 - BAS21, 2 pices, SOT-23 package
 
 ICs:
-- MCP23017SO, 1 piece
+- MCP23017SO, 1 piece, SO28W package
 - NE555D, 1 piece, SO-8 package
 - MCP6002-E/SN, 1 piece, SOIC-8 package
 
@@ -134,9 +134,10 @@ Connectors:
 - pinheader (m+f) 1 row, 9 positions, 1 male and 2 female piece (for display)
 - pinheader (m+f) 1 row, 6 positions, 1 male and 2 female pieces (for SSR board)
 - connectors RM 5, 1 row, 2 positions, 13 pieces
+
 ### Hardware off the PCB in the machine
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNDMzNDQwNDcsLTUzOTgxNDgwMywyNz
-k4ODAzODEsLTE3MTI1NDc4NCwyMTE0MjYyNzUwLC0xNjUwMTI4
-MDA1XX0=
+eyJoaXN0b3J5IjpbLTQ0NTc2NjU1MywtNTM5ODE0ODAzLDI3OT
+g4MDM4MSwtMTcxMjU0Nzg0LDIxMTQyNjI3NTAsLTE2NTAxMjgw
+MDVdfQ==
 -->
