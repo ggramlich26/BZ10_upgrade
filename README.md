@@ -73,7 +73,7 @@ You will need all need the components listed below to complete the PCB. All of t
 
 
 **Semiconductors:**
-|Value|Package | Quantity | Link |
+|Name|Package | Quantity | Link |
 |--|--|--|--
 | **Transistors**|
  IRLML5203|MICRO3|1|[farnell](https://de.farnell.com/infineon/irlml5203trpbf/mosfet-p-kanal-30v-3a-sot23/dp/9103511?st=irlml5203)
@@ -86,12 +86,12 @@ You will need all need the components listed below to complete the PCB. All of t
  MCP6002-E/SN|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
 
 **Boards:**
-|Value|Package | Quantity | Link |
+|Name|Package | Quantity | Link |
 |--|--|--|--
 | ESP32 nodeMCU||1|[from far east](https://www.aliexpress.com/item/32867696371.html?spm=a2g0s.9042311.0.0.27424c4dZ5DEit)|
 
 **Connectors:**
-|Value|rows|positions|m/f| Quantity | Link |
+|Name|rows|positions|m/f| Quantity | Comment |
 |--|--|--|--|--|--
 pinheader 2.54mm|1|3|f|5|connecting temperature and flow sensors
 pinheader 2.54mm|1|3|m|5|possibly soldering to temperature and flow sensor wires
@@ -112,7 +112,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIzNDgxMjY4NCwyMTM0ODc2MTgsLTE4Mj
-kxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkw
-NCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0OD
+c2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMs
+LTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
