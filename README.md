@@ -14,6 +14,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - Blynk (Version 0.6.1)
 - TFT_eSPI (Version 1.4.16)
 - Time (Version 1.5.0)
+- MCP23017 (Version	1.1.2), not Adafruit MCP23017!
 
 ## Setting your WiFi credentials
 ## Setting up Blynk
@@ -111,7 +112,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNz
-Q0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3
-MF19
+eyJoaXN0b3J5IjpbLTIzNDgxMjY4NCwyMTM0ODc2MTgsLTE4Mj
+kxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkw
+NCwtMTc3MDUyOTcwXX0=
 -->
