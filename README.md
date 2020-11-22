@@ -18,14 +18,16 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 
 Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory.
 
+**Before building** you need to set your own
+
 ## Setting your WiFi credentials
 The machine can be configured to connect to your own home WiFi network via a simple web interface:
- 1. Turn the machine off
- 2. Set the brewing switch to manual mode, hold both buttons pressed
- 3. Turn the machine on while holding the buttons pressed. You can release them once the right LED starts blinking
+ 1. Turn the machine off.
+ 2. Set the brewing switch to manual mode, hold both buttons pressed.
+ 3. Turn the machine on while holding the buttons pressed. You can release them once the right LED starts blinking.
  4. Connect with any device to the WiFi network "Espresso" using the password "CoffeeLove" without the ".
  5. Open your web browser and type 192.168.4.1 into address bar, hit enter.
- 6. Now you will be presented a prompt to enter the new SSID (your WiFi name) and password
+ 6. Now you will be presented a prompt to enter the new SSID (your WiFi name) and password. You can also give your machine a name in your WiFi Network. Finish by hitting the "Set" button.
 
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -122,7 +124,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTczODQ0OTI0NSw4MjU4MTE2NSwtMjM0OD
-EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
-MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbLTE1MDQ2NjA1NTksODI1ODExNjUsLTIzND
+gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
+LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
