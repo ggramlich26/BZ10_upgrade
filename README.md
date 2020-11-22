@@ -47,7 +47,9 @@ You can use the following virtual pins for communication with your espresso mach
 You can use a SuperChart Widget for V1-V3
 
 ## Usage
-
+Your new espresso machine has a lot more functions than before. This is how you can use them
+- Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
+- Flip your distribution switch in the 
 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
@@ -128,7 +130,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDYyMzU0MTU3LDgyNTgxMTY1LC0yMzQ4MT
-I2ODQsMjEzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0y
-MTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbMTk0ODU2MDk4NSw4MjU4MTE2NSwtMjM0OD
+EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
+MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
