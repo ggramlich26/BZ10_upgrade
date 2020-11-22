@@ -48,10 +48,10 @@ You can use a SuperChart Widget for V1-V3
 
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
-- Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
-- Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
-- Preinfusion: If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
-- Standby: Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
+- **Standard manual distribution:** Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
+- **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
+- **Preinfusion:** If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
+- **Standby:** Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
 - **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
 - **Disable WiFi:** You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the Blynk symbol crossed out on the display and once you restart your machine it won't even connect to your WiFi network any more. To enable Blynk (and WiFi) again, just press the left button for 3s or longer again. 
@@ -136,7 +136,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIzODQ4MjAxNSw4MjU4MTE2NSwtMjM0OD
-EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
-MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzND
+gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
+LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
