@@ -58,5 +58,4 @@
 #define TFT_RST		16
 #define TFT_LED		2
 
-
 #endif /* HW_CONFIG_H_ */

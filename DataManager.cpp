@@ -7,6 +7,8 @@
 
 #include "DataManager.h"
 #include "DeviceControl.h"
+#include "Webserver.h"
+#include "WIFI_config.h"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -35,6 +37,7 @@ int DataManager::preinfusionWaitTime;
 unsigned long DataManager::standbyWakeupTime;
 int DataManager::standbyStartTime;
 DeviceControl* DataManager::dev;
+bool DataManager::scheduleRestart;
 
 //	Blynk pins
 // 	V1: Boiler temperature in °C
@@ -88,11 +91,7 @@ char ssid[SSID_MAX_LEN+1];
 char password[WIFI_PW_MAX_LEN+1];
 char hostName[HOST_NAME_MAX_LEN+1];
 
-#define	DEFAULT_SSID		"Hulapalu"
-#define	DEFAULT_PASSWORD	"thebestAK13top"
-#define	DEFAULT_HOST_NAME	"Espressomaschine"
-
-char auth[] = "odArqE_fTz-LOqvk9ot0U2Anlo7P9oGR";
+char auth[] = BLYNK_AUTH_KEY;
 
 BlynkTimer timer;
 WidgetRTC rtc;
@@ -102,6 +101,7 @@ void DataManager::init(){
 	dev = DeviceControl::instance();
 	blynkInitialized = false;
 	lastWifiConnectTryTime = 0;
+	scheduleRestart = false;
 
 	//read from flash/blynk (update each other) or use default values
 	EEPROM.begin(EEPROM_SIZE);
@@ -144,7 +144,7 @@ void DataManager::init(){
 
 	//enter wifi setup mode
 	if(dev->getManualDistribution() && dev->getButton1() && dev->getButton2()){
-
+		WIFISetupMode();
 	}
 	//if wifi not intialized correctly, use default values
 	else if(checksum != calculateWIFIChecksum()){
@@ -652,5 +652,66 @@ void DataManager::eepromWrite(uint8_t *src, int addr, int len, bool commit){
 	}
 }
 
+/**
+ * Enters wifi setup mode: machine will create an access point with default SSID and password.
+ * On the machine IP address (192.168.4.1) will be a webserver running to set up the new WIFI credentials
+ * No regular operation will be possible in this mode
+ */
+void DataManager::WIFISetupMode(){
+	WiFi.softAP(DEFAULT_SSID, DEFAULT_PASSWORD);
+	IPAddress IP = WiFi.softAPIP();
+	Serial.print("AP IP address: ");
+	Serial.println(IP);
+	webserver_init();
+	while(1){
+		dev->enableLEDRight();
+		dev->update();
+		delay(500);
+		dev->disableLEDRight();
+		dev->update();
+		delay(500);
+		if(scheduleRestart){
+			scheduleRestart = false;
+			delay(1000);
+			ESP.restart();
+		}
+	}
+}
 
-
+String DataManager::setWIFICredentials(const char* newSSID, const char* newPassword, const char* newHostName){
+	if(newSSID != NULL && strcmp(newSSID, "") != 0){
+		for(uint8_t i = 0; i < SSID_MAX_LEN+1; i++){
+			EEPROM.write(SSID_ADDR + i, newSSID[i]);
+			ssid[i] = newSSID[i];
+			if(newSSID[i] == '\0'){
+				break;
+			}
+		}
+	}
+	if(newPassword != NULL && strcmp(newPassword, "") != 0){
+		for(uint8_t i = 0; i < WIFI_PW_MAX_LEN+1; i++){
+			EEPROM.write(WIFI_PW_ADDR + i, newPassword[i]);
+			password[i] = newPassword[i];
+			if(newPassword[i] == '\0'){
+				break;
+			}
+		}
+	}
+	if(newHostName != NULL && strcmp(newHostName, "") != 0){
+		for(uint8_t i = 0; i < HOST_NAME_MAX_LEN+1; i++){
+			EEPROM.write(HOST_NAME_ADDR + i, newHostName[i]);
+			hostName[i] = newHostName[i];
+			if(newHostName[i] == '\0'){
+				break;
+			}
+		}
+	}
+	uint32_t checksum = calculateWIFIChecksum();
+	for(uint8_t i = 0; i < CHECKSUM_LEN; i++){
+		EEPROM.write(CHECKSUM_ADDR+i, (uint8_t)(checksum>>(8*i)));
+	}
+	EEPROM.commit();
+	scheduleRestart = true;
+	return "Successfully set new WIFI credentials. You can change them again by restarting your machine while having both "
+			"buttons pressed and the distribution switch set to manual distribution.";
+}

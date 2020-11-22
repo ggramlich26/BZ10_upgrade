@@ -91,6 +91,8 @@ public:
 
 	static bool getWifiConnected();
 
+	static String setWIFICredentials(const char* newSSID, const char* newPassword, const char* newHostName);
+
 	static void init();
 	static void update();
 private:
@@ -121,6 +123,9 @@ private:
 	static uint32_t calculateWIFIChecksum();
 	static void eepromWrite(uint8_t *src, int addr, int len, bool commit);
 	static void eepromRead(uint8_t *dst, int addr, int len);
+	static void WIFISetupMode();
+
+	static bool scheduleRestart;
 
 	static void initBlynk();
 	static bool blynkInitialized;
