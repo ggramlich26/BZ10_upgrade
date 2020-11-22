@@ -23,7 +23,9 @@ The machine can be configured to connect to your own home WiFi network via a sim
  1. Turn the machine off
  2. Set the brewing switch to manual mode, hold both buttons pressed
  3. Turn the machine on while holding the buttons pressed. You can release them once the right LED starts blinking
- 4. Connect with any device to the WiFi network "Espresso" using the 
+ 4. Connect with any device to the WiFi network "Espresso" using the password "CoffeeLove" without the ".
+ 5. Open your web browser and type 192.168.4.1 into address bar, hit enter.
+ 6. Now you will be presented a prompt to enter the new SSID (your WiFi name) and password
 
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -120,7 +122,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNjM3MDY1NTYsODI1ODExNjUsLTIzND
-gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
-LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTczODQ0OTI0NSw4MjU4MTE2NSwtMjM0OD
+EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
+MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
