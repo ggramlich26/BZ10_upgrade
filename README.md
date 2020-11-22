@@ -54,7 +54,7 @@ Your new espresso machine has a lot more functions than before. This is how you 
 - Standby: Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
 - Automated wake up from standby: Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - Automated cleaning cycle: Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
-- Disable WiFi: You got everything set up and don't want your machine to be in the internet any more? 
+- Disable WiFi: You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the Blynk symbol crossed out on the display and once you restart your machine it won't even connect to your WiFi network any more. To enable Blynk (and WiFi) again, just press the left button for 3s or longer again. 
 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
@@ -135,7 +135,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg5MzQxMjY4Niw4MjU4MTE2NSwtMjM0OD
-EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
-MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbMjIzMTc2MTU1LDgyNTgxMTY1LC0yMzQ4MT
+I2ODQsMjEzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0y
+MTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3MF19
 -->
