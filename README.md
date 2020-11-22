@@ -21,7 +21,9 @@ Some libraries are also added as source code. If you use the Arduino IDE, please
 ## Setting your WiFi credentials
 The machine can be configured to connect to your own home WiFi network via a simple web interface:
  1. Turn the machine off
- 2. Set the brewing switch to manual mod
+ 2. Set the brewing switch to manual mode, hold both buttons pressed
+ 3. Turn the machine on while holding the buttons pressed. You can release them once the right LED starts blinking
+ 4. Connect with any device to the WiFi network "Espresso" using the 
 
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
@@ -118,7 +120,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgzNzAzODA1NSw4MjU4MTE2NSwtMjM0OD
-EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
-MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
+eyJoaXN0b3J5IjpbLTExNjM3MDY1NTYsODI1ODExNjUsLTIzND
+gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
+LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
