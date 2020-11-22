@@ -45,6 +45,10 @@ You can use the following virtual pins for communication with your espresso mach
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
+
+## Usage
+
+
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
 In order to make the program more flexible for other hardware, a hardware abstraction class has been written (`dev.c`). Adapting this class will allow the project to run on a different hardware as well.
@@ -124,7 +128,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NzIyMDI2NjYsODI1ODExNjUsLTIzND
-gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
-LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbNDYyMzU0MTU3LDgyNTgxMTY1LC0yMzQ4MT
+I2ODQsMjEzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0y
+MTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3MF19
 -->
