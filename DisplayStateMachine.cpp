@@ -20,7 +20,9 @@ DisplayStateMachine::~DisplayStateMachine() {
 void DisplayStateMachine::init(){
 	machStat = MachineStatusStateMachine::instance();
 	state = idle;
-	tft.begin();
+	dev->enableDisplayBacklight();
+	tft.init();
+	tft.fillScreen(TFT_BLACK);
 	tft.setRotation(1);
 
 	readBackground((uint16_t*)image_data_Background_V2_no_symbol, background_red, 320, TEXT_RED_X, TEXT_RED_Y, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
@@ -28,18 +30,18 @@ void DisplayStateMachine::init(){
 	readBackground((uint16_t*)image_data_Background_V2_no_symbol, background_orange, 320, TEXT_ORANGE_X, TEXT_ORANGE_Y, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
 
 	tft.setCursor(0,0);
-	tft.setTextColor(ILI9341_WHITE);
-	tft.setFont();
+	tft.setTextFont(1);
+	tft.setTextColor(TFT_WHITE);
 	tft.setTextSize(3);
 	drawBackground();
 }
 
 void DisplayStateMachine::drawBackground(){
-	tft.drawRGBBitmap(0, 0, (uint16_t*)image_data_Background_V2_no_symbol, 320, 240);
+	tft.pushImage(0, 0, 320, 240, (uint16_t*)image_data_Background_V2_no_symbol);
 //  tft.setCursor(138,140);
 //  tft.println(String((char)9) + "C");
-	tft.drawBitmap(10, 17, image_data_scale_small, 41, 40, ILI9341_WHITE);
-	tft.drawBitmap(226, 16, image_data_timer_small, 33, 43, ILI9341_WHITE);
+	tft.drawBitmap(10, 17, image_data_scale_small, 41, 40, TFT_WHITE);
+	tft.drawBitmap(226, 16, image_data_timer_small, 33, 43, TFT_WHITE);
 	displayTime(0);
 	displayWeight(0);
 }
@@ -55,20 +57,20 @@ void DisplayStateMachine::update(){
 		if(!DataManager::getWifiConnected() && !noWifiDisplayed){
 			noWifiDisplayed = true;
 			blynkDisplayed = false;
-			tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
-			tft.drawBitmap(145, 200, image_data_no_wifi_small, 30, 24, ILI9341_WHITE);
+			tft.fillRect(145, 200, 30, 30, TFT_BLACK);
+			tft.drawBitmap(145, 200, image_data_no_wifi_small, 30, 24, TFT_WHITE);
 		}
 		else if(DataManager::getWifiConnected() && !blynkDisplayed){
 			blynkDisplayed = true;
 			noWifiDisplayed = false;
-			tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
-			tft.drawBitmap(145, 200, image_data_blynk_small, 30, 30, ILI9341_WHITE);
+			tft.fillRect(145, 200, 30, 30, TFT_BLACK);
+			tft.drawBitmap(145, 200, image_data_blynk_small, 30, 30, TFT_WHITE);
 		}
 	}
 	else if((noWifiDisplayed || blynkDisplayed) && state != standby){
 		blynkDisplayed = false;
 		noWifiDisplayed = false;
-		tft.fillRect(145, 200, 30, 30, ILI9341_BLACK);
+		tft.fillRect(145, 200, 30, 30, TFT_BLACK);
 	}
 
 	switch (state){
@@ -82,8 +84,9 @@ void DisplayStateMachine::update(){
 
 		//transitions
 		if(machStat->inStandbye()){
-			tft.fillRect(0, 0, 320, 240, ILI9341_BLACK);
+			tft.fillRect(0, 0, 320, 240, TFT_BLACK);
 			tft.drawBitmap((320-158)/2, (240-180)/2, image_data_standby, 158, 180, 0b0001100011100011);
+			dev->disableDisplayBacklight();
 			state = standby;
 		}
 		else if(brewMachine->isBrewing() || brewMachine->isPreinfusing()){
@@ -140,6 +143,7 @@ void DisplayStateMachine::update(){
 	case standby:
 		//transitions
 		if(!machStat->inStandbye()){
+			dev->enableDisplayBacklight();
 			//get everything drawn again
 			noWifiDisplayed = false;
 			blynkDisplayed = false;
@@ -174,7 +178,7 @@ void DisplayStateMachine::displayBoilerTemp(float temp, bool sensorError){
 	if(!sensorError)
 		DataManager::pushTempBoiler(temp);
 	displayedBoilerTemp = String(puffer);
-	tft.drawRGBBitmap(TEXT_RED_X, TEXT_RED_Y, background_red, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
+	tft.pushImage(TEXT_RED_X, TEXT_RED_Y, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT, background_red);
 //	tft.setCursor(27,181);
 	if(displayedBoilerTemp.length() < 5){
 		tft.setCursor(TEXT_RED_X + LETTER_WIDTH/2, TEXT_RED_Y);
@@ -196,7 +200,7 @@ void DisplayStateMachine::displayTubeTemp(float temp, bool sensorError){
 	if(!sensorError)
 		DataManager::pushTempTube(temp);
 	displayedTubeTemp = String(puffer);
-	tft.drawRGBBitmap(TEXT_BLUE_X, TEXT_BLUE_Y, background_blue, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
+	tft.pushImage(TEXT_BLUE_X, TEXT_BLUE_Y, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT, background_blue);
 //	tft.setCursor(124,71);
 	if(displayedTubeTemp.length() < 5){
 		tft.setCursor(TEXT_BLUE_X + LETTER_WIDTH/2, TEXT_BLUE_Y);
@@ -218,7 +222,7 @@ void DisplayStateMachine::displayBUTemp(float temp, bool sensorError){
 	if(!sensorError)
 		DataManager::pushTempBU(temp);
 	displayedBUTemp = String(puffer);
-	tft.drawRGBBitmap(TEXT_ORANGE_X, TEXT_ORANGE_Y, background_orange, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT);
+	tft.pushImage(TEXT_ORANGE_X, TEXT_ORANGE_Y, TEXT_BACKGROUND_WIDTH, TEXT_BACKGROUND_HEIGHT, background_orange);
 //	tft.setCursor(214,181);
 	if(displayedBUTemp.length() < 5){
 		tft.setCursor(TEXT_ORANGE_X + LETTER_WIDTH/2, TEXT_ORANGE_Y);
@@ -234,9 +238,9 @@ void DisplayStateMachine::displayTime(int time){
 		return;
 	}
 	displayedTime = time;
-	tft.fillRect(268, 28, 2*15+3, 21, ILI9341_BLACK);
+	tft.fillRect(268, 28, 2*15+3, 21, TFT_BLACK);
 	tft.setCursor(268,28);
-	tft.println(time);
+	tft.print(time);
 }
 
 void DisplayStateMachine::displayWeight(int weight){
@@ -244,7 +248,7 @@ void DisplayStateMachine::displayWeight(int weight){
 		return;
 	}
 	displayedWeight = weight;
-	tft.fillRect(58, 28, 2*15+3, 21, ILI9341_BLACK);
+	tft.fillRect(58, 28, 2*15+3, 21, TFT_BLACK);
 	tft.setCursor(58,28);
 	tft.println(String(weight));
 }

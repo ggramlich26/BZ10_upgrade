@@ -13,8 +13,7 @@
 #include "MachineStatusStateMachine.h"
 
 #include "SPI.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_ILI9341.h>
+#include <TFT_eSPI.h>
 #include "graphics/Background_V2_no_symbol.h"
 #include "graphics/scale_small.h"
 #include "graphics/timer_small.h"
@@ -46,7 +45,7 @@ public:
 	void update();
 private:
 	void init();
-	Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
+	TFT_eSPI tft = TFT_eSPI();
 	uint16_t background_red[TEXT_BACKGROUND_WIDTH*TEXT_BACKGROUND_HEIGHT];
 	uint16_t background_blue[TEXT_BACKGROUND_WIDTH*TEXT_BACKGROUND_HEIGHT];
 	uint16_t background_orange[TEXT_BACKGROUND_WIDTH*TEXT_BACKGROUND_HEIGHT];

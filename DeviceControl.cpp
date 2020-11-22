@@ -33,9 +33,12 @@ DeviceControl::DeviceControl() {
 DeviceControl::~DeviceControl() {
 }
 
+MCP23017 mcp = MCP23017(MCP_ADDR);
 /// initializes all pins and interrupts etc. necessary
 void DeviceControl::init(){
-	srData = 0x0000;
+	Wire.begin();
+	mcpWriteBuffer = 0x0000;
+	mcpReadBuffer = 0x0000;
 	pumpTickToVolumeFactor = 0.219298;
 	bypassTickToVolumeFactor = pumpTickToVolumeFactor;
 	pumpTicks = 5;
@@ -53,20 +56,39 @@ void DeviceControl::init(){
 	button2ShortPressed = false;
 	button1LongPressed = false;
 	button2LongPressed = false;
-	pinMode(BUTTON_RIGHT_PIN, INPUT);
-	pinMode(BUTTON_LEFT_PIN, INPUT_PULLDOWN);
-	pinMode(BREW_MAN_PIN, INPUT_PULLDOWN);
-	pinMode(BREW_VOL_PIN, INPUT_PULLDOWN);
+
+	mcp.init();
+
+    BUHeaterOff(false);
+    boilerHeaterOff(false);
+    disablePump();
+    disableBrewingValve();
+    disableBoilerValve();
+    disableLEDLeft();
+    disableLEDRight();
+    disableLEDPower();
+    disableLEDTank();
+    mcp.write(mcpWriteBuffer);
+
+	uint16_t mcp_ddr = 0x0000;
+	mcp_ddr |= (1<<TANK_PIN)|(1<<BUTTON_LEFT_PIN)|(1<<BUTTON_RIGHT_PIN)|
+			(1<<BREW_VOL_PIN)|(1<<BREW_MAN_PIN);
+	//configure MCP23017 input/output pins
+    mcp.portMode(MCP23017_PORT::A, (uint8_t)mcp_ddr);
+    mcp.portMode(MCP23017_PORT::B, (uint8_t)(mcp_ddr>>8));
+
+    mcpReadBuffer = mcp.read();
+
 	pinMode(TEMP_BOILER_PIN, INPUT);
 	pinMode(TEMP_BU_PIN, INPUT);
 	pinMode(TEMP_TUBE_PIN, INPUT);
 	pinMode(FLOW_PUMP_PIN, INPUT);
 	pinMode(FLOW_RET_PIN, INPUT);
-	pinMode(SOUND_DIGITAL_PIN, INPUT);
-	pinMode(SR_RCK, OUTPUT);
-	pinMode(SR_SCK, OUTPUT);
-	pinMode(SR_SER, OUTPUT);
-	updateSR();
+	pinMode(PROBE_DIGITAL_PIN, INPUT);
+	pinMode(TFT_LED, OUTPUT);
+	digitalWrite(TFT_LED, LOW);
+
+
 	tsicBoiler = new TSIC(TEMP_BOILER_PIN);
 	tsicBU = new TSIC(TEMP_BU_PIN);
 	tsicTube = new TSIC(TEMP_TUBE_PIN);
@@ -81,44 +103,55 @@ void DeviceControl::init(){
 void DeviceControl::update(){
 	//update boiler heater
 	if(boilerLevel == 0){
-		srData &= ~(1<<BOILER_HEATER);
+//		mcpWriteBuffer &= ~(1<<BOILER_HEATER);
+		boilerHeaterOff(false);
 	}
 	else if(boilerLevel == 100){
-		srData |= (1<<BOILER_HEATER);
+//		mcpWriteBuffer |= (1<<BOILER_HEATER);
+		boilerHeaterOn(false);
 	}
 	else{
 		if(millis() >= boilerPeriodStartTime + SSR_PERIOD_TIME){
 			boilerPeriodStartTime = millis();
-			srData |= (1<<BOILER_HEATER);
+//			mcpWriteBuffer |= (1<<BOILER_HEATER);
+			boilerHeaterOn(false);
 		}
 		else if(millis() < boilerPeriodStartTime + boilerLevel/100.0*SSR_PERIOD_TIME){
-			srData |= (1<<BOILER_HEATER);
+//			mcpWriteBuffer |= (1<<BOILER_HEATER);
+			boilerHeaterOn(false);
 		}
 		else{
-			srData &= ~(1<<BOILER_HEATER);
+//			mcpWriteBuffer &= ~(1<<BOILER_HEATER);
+			boilerHeaterOff(false);
 		}
 	}
 	//update BU heater
 	if(BULevel == 0){
-		srData &= ~(1<<BU_HEATER);
+//		mcpWriteBuffer &= ~(1<<BU_HEATER);
+		BUHeaterOff(false);
 	}
 	else if(BULevel == 100){
-		srData |= (1<<BU_HEATER);
+//		mcpWriteBuffer |= (1<<BU_HEATER);
+		BUHeaterOn(false);
 	}
 	else{
 		if(millis() >= BUPeriodStartTime + SSR_PERIOD_TIME){
 			BUPeriodStartTime = millis();
-			srData |= (1<<BU_HEATER);
+//			mcpWriteBuffer |= (1<<BU_HEATER);
+			BUHeaterOn(false);
 		}
 		else if(millis() < BUPeriodStartTime + BULevel/100.0*SSR_PERIOD_TIME){
-			srData |= (1<<BU_HEATER);
+//			mcpWriteBuffer |= (1<<BU_HEATER);
+			BUHeaterOn(false);
 		}
 		else{
-			srData &= ~(1<<BU_HEATER);
+//			mcpWriteBuffer &= ~(1<<BU_HEATER);
+			BUHeaterOff(false);
 		}
 	}
-	updateSR();
+	mcp.write(mcpWriteBuffer);
 
+	mcpReadBuffer = mcp.read();
 	//update buttons
 	button1ShortPressed = false;
 	button1LongPressed = false;
@@ -170,14 +203,11 @@ void DeviceControl::enableBoilerHeater(int level){
 	if(level < 0) level = 0;
 	else if (level > 100) level = 100;
 	boilerLevel = level;
-//	srData |= (1<<BOILER_HEATER);
-//	updateSR();
 }
 
 void DeviceControl::disableBoilerHeater(){
 	boilerLevel = 0;
-	srData &= ~(1<<BOILER_HEATER);
-	updateSR();
+	boilerHeaterOff(true);
 }
 
 /// enables the brewing unit heater
@@ -186,97 +216,140 @@ void DeviceControl::enableBUHeater(int level){
 	if(level < 0) level = 0;
 	else if (level > 100) level = 100;
 	BULevel = level;
-//	srData |= (1<<BU_HEATER);
-//	updateSR();
 }
 
 void DeviceControl::disableBUHeater(){
 	BULevel = 0;
-	srData &= ~(1<<BU_HEATER);
-	updateSR();
+	BUHeaterOff(true);
 }
 
 void DeviceControl::enablePump(){
-	srData |= (1<<PUMP);
-	updateSR();
+#ifdef PUMP_LOW_LEVEL_TRIGGER
+	bool update = ((mcpWriteBuffer & (1<<PUMP))>0);
+	mcpWriteBuffer &= ~(1<<PUMP);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = !((mcpWriteBuffer & (1<<PUMP))>0);
+	mcpWriteBuffer |= (1<<PUMP);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 void DeviceControl::disablePump(){
-	srData &= ~(1<<PUMP);
-	updateSR();
+#ifdef PUMP_LOW_LEVEL_TRIGGER
+	bool update = !((mcpWriteBuffer & (1<<PUMP))>0);
+	mcpWriteBuffer |= (1<<PUMP);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = ((mcpWriteBuffer & (1<<PUMP))>0);
+	mcpWriteBuffer &= ~(1<<PUMP);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 //make water flow to brewing unit instead of sink
 void DeviceControl::enableBrewingValve(){
-	srData |= (1<<BU_VALVE);
-	updateSR();
+#ifdef BOILER_VALVE_LOW_LEVEL_TRIGGER
+	bool update = ((mcpWriteBuffer & (1<<BU_VALVE))>0);
+	mcpWriteBuffer &= ~(1<<BU_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = !((mcpWriteBuffer & (1<<BU_VALVE))>0);
+	mcpWriteBuffer |= (1<<BU_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 //make water flow to sink instead of brewing unit
 void DeviceControl::disableBrewingValve(){
-	srData &= ~(1<<BU_VALVE);
-	updateSR();
+#ifdef BOILER_VALVE_LOW_LEVEL_TRIGGER
+	bool update = !((mcpWriteBuffer & (1<<BU_VALVE))>0);
+	mcpWriteBuffer |= (1<<BU_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = ((mcpWriteBuffer & (1<<BU_VALVE))>0);
+	mcpWriteBuffer &= ~(1<<BU_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 //make water flow into boiler
 void DeviceControl::enableBoilerValve(){
-	srData |= (1<<BOILER_VALVE);
-	updateSR();
+#ifdef BOILER_VALVE_LOW_LEVEL_TRIGGER
+	bool update = ((mcpWriteBuffer & (1<<BOILER_VALVE))>0);
+	mcpWriteBuffer &= ~(1<<BOILER_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = !((mcpWriteBuffer & (1<<BOILER_VALVE))>0);
+	mcpWriteBuffer |= (1<<BOILER_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 //make water flow to brewing heater
 void DeviceControl::disableBoilerValve(){
-	srData &= ~(1<<BOILER_VALVE);
-	updateSR();
+#ifdef BOILER_VALVE_LOW_LEVEL_TRIGGER
+	bool update = !((mcpWriteBuffer & (1<<BOILER_VALVE))>0);
+	mcpWriteBuffer |= (1<<BOILER_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = ((mcpWriteBuffer & (1<<BOILER_VALVE))>0);
+	mcpWriteBuffer &= ~(1<<BOILER_VALVE);
+	if(update)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
 
 void DeviceControl::enableLEDLeft(){
-	srData |= (1<<LED_LEFT);
-	updateSR();
+	mcpWriteBuffer |= (1<<LED_LEFT);
 }
 
 void DeviceControl::disableLEDLeft(){
-	srData &= ~(1<<LED_LEFT);
-	updateSR();
+	mcpWriteBuffer &= ~(1<<LED_LEFT);
 }
 
 void DeviceControl::enableLEDRight(){
-	srData |= (1<<LED_RIGHT);
-	updateSR();
+	mcpWriteBuffer |= (1<<LED_RIGHT);
 }
 
 void DeviceControl::disableLEDRight(){
-	srData &= ~(1<<LED_RIGHT);
-	updateSR();
+	mcpWriteBuffer &= ~(1<<LED_RIGHT);
 }
 
 /// enable the water tank empty indicator LED
 void DeviceControl::enableLEDTank(){
-	srData |= (1<<LED_POWER);
-	updateSR();
+	mcpWriteBuffer |= (1<<LED_POWER);
 }
 
 /// disable the water tank empty indicator LED
 void DeviceControl::disableLEDTank(){
-	srData &= ~(1<<LED_TANK);
-	updateSR();
+	mcpWriteBuffer &= ~(1<<LED_TANK);
 }
 
 /// enable the power LED
 void DeviceControl::enableLEDPower(){
-	srData |= (1<<LED_POWER);
-	updateSR();
+	mcpWriteBuffer |= (1<<LED_POWER);
 }
 
 /// disable the power LED
 void DeviceControl::disableLEDPower(){
-	srData &= ~(1<<LED_POWER);
-	updateSR();
+	mcpWriteBuffer &= ~(1<<LED_POWER);
 }
 
 bool DeviceControl::getBoilerFull(){
 	return true; //todo delete
-	return digitalRead(SOUND_DIGITAL_PIN);
+	return digitalRead(PROBE_DIGITAL_PIN);
 }
 
 bool DeviceControl::getTankFull(){
@@ -285,20 +358,19 @@ bool DeviceControl::getTankFull(){
 }
 
 bool DeviceControl::getManualDistribution(){
-	return digitalRead(BREW_MAN_PIN);
+	return (mcpReadBuffer & (1<<BREW_MAN_PIN))>0;
 }
 
 bool DeviceControl::getVolumetricDistribution(){
-	return digitalRead(BREW_VOL_PIN);
-	return false;
+	return (mcpReadBuffer & (1<<BREW_VOL_PIN))>0;
 }
 
 bool DeviceControl::getButton1(){
-	return digitalRead(BUTTON_LEFT_PIN);
+	return (mcpReadBuffer & (1<<BUTTON_LEFT_PIN))>0;
 }
 
 bool DeviceControl::getButton2(){
-	return !digitalRead(BUTTON_RIGHT_PIN);
+	return (mcpReadBuffer & (1<<BUTTON_RIGHT_PIN))>0;
 }
 
 //returns the total volume measured by the pump flowmeter since start in ml
@@ -343,9 +415,90 @@ void DeviceControl::setBoilerFillSensorError(bool error){
 	boilerFillSensorError = error;
 }
 
-void DeviceControl::updateSR(){
-	digitalWrite(SR_RCK, LOW);
-	shiftOut(SR_SER, SR_SCK, MSBFIRST, (srData >> 8));
-	shiftOut(SR_SER, SR_SCK, MSBFIRST, srData);
-	digitalWrite(SR_RCK, HIGH);
+/*** "Stupid" function for triggering the boiler heater SSR
+ * @param send: if true and boiler heater had not been turned on before,
+ * 				MCP23017 will be updated instantly
+ */
+void DeviceControl::boilerHeaterOn(bool send){
+#ifdef BOILER_HEATER_LOW_LEVEL_TRIGGER
+	bool update = ((mcpWriteBuffer & (1<<BOILER_HEATER))>0);
+	mcpWriteBuffer &= ~(1<<BOILER_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = !((mcpWriteBuffer & (1<<BOILER_HEATER))>0);
+	mcpWriteBuffer |= (1<<BOILER_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#endif
 }
+
+/*** "Stupid" function for triggering the boiler heater SSR
+ * @param send: if true and boiler heater had been turned on before,
+ * 				MCP23017 will be updated instantly
+ */
+void DeviceControl::boilerHeaterOff(bool send){
+#ifdef BOILER_HEATER_LOW_LEVEL_TRIGGER
+	bool update = !((mcpWriteBuffer & (1<<BOILER_HEATER))>0);
+	mcpWriteBuffer |= (1<<BOILER_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = ((mcpWriteBuffer & (1<<BOILER_HEATER))>0);
+	mcpWriteBuffer &= ~(1<<BOILER_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#endif
+}
+
+/*** "Stupid" function for triggering the brewing unit heater SSR
+ * @param send: if true and BU heater had not been turned on before,
+ * 				MCP23017 will be updated instantly
+ *
+ */
+void DeviceControl::BUHeaterOn(bool send){
+#ifdef BU_HEATER_LOW_LEVEL_TRIGGER
+	bool update = ((mcpWriteBuffer & (1<<BU_HEATER))>0);
+	mcpWriteBuffer &= ~(1<<BU_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = !((mcpWriteBuffer & (1<<BU_HEATER))>0);
+	mcpWriteBuffer |= (1<<BU_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#endif
+}
+
+/*** "Stupid" function for triggering the brewing unit heater SSR
+ * @param send: if true and BU heater had been turned on before,
+ * 				MCP23017 will be updated instantly
+ *
+ */
+void DeviceControl::BUHeaterOff(bool send){
+#ifdef BU_HEATER_LOW_LEVEL_TRIGGER
+	bool update = !((mcpWriteBuffer & (1<<BU_HEATER))>0);
+	mcpWriteBuffer |= (1<<BU_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#else
+	bool update = ((mcpWriteBuffer & (1<<BU_HEATER))>0);
+	mcpWriteBuffer &= ~(1<<BU_HEATER);
+	if(update && send)
+		mcp.write(mcpWriteBuffer);
+#endif
+}
+
+void DeviceControl::enableDisplayBacklight(){
+	digitalWrite(TFT_LED, LOW);
+}
+
+void DeviceControl::disableDisplayBacklight(){
+	digitalWrite(TFT_LED, HIGH);
+}
+//void DeviceControl::updateSR(){
+//	digitalWrite(SR_RCK, LOW);
+//	shiftOut(SR_SER, SR_SCK, MSBFIRST, (srData >> 8));
+//	shiftOut(SR_SER, SR_SCK, MSBFIRST, srData);
+//	digitalWrite(SR_RCK, HIGH);
+//}

@@ -42,16 +42,6 @@
 			<locationURI>WORKSPACE_LOC/arduino-esp32/variants/nodemcu-32s</locationURI>
 		</link>
 		<link>
-			<name>libraries/Adafruit_GFX_Library</name>
-			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Adafruit_GFX_Library/1.5.7</locationURI>
-		</link>
-		<link>
-			<name>libraries/Adafruit_ILI9341</name>
-			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Adafruit_ILI9341/1.5.1</locationURI>
-		</link>
-		<link>
 			<name>libraries/Blynk</name>
 			<type>2</type>
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Blynk/0.6.1</locationURI>
@@ -62,9 +52,29 @@
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/EEPROM</locationURI>
 		</link>
 		<link>
+			<name>libraries/FS</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/FS</locationURI>
+		</link>
+		<link>
+			<name>libraries/MCP23017</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/MCP23017/1.1.2</locationURI>
+		</link>
+		<link>
 			<name>libraries/SPI</name>
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPI</locationURI>
+		</link>
+		<link>
+			<name>libraries/SPIFFS</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPIFFS</locationURI>
+		</link>
+		<link>
+			<name>libraries/TFT_eSPI</name>
+			<type>2</type>
+			<location>/home/tsugua/Arduino/libraries/TFT_eSPI</location>
 		</link>
 		<link>
 			<name>libraries/Time</name>
@@ -75,6 +85,11 @@
 			<name>libraries/WiFi</name>
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/WiFi</locationURI>
+		</link>
+		<link>
+			<name>libraries/Wire</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/Wire</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

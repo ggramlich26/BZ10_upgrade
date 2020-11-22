@@ -142,9 +142,12 @@ void DataManager::init(){
 //	Serial.println("SSID: " + String(ssid));
 //	Serial.println("password: " + String(password));
 
-	//possibly reset Wifi credentials
-	if((dev->getManualDistribution() && dev->getButton1() && dev->getButton2())
-			|| checksum != calculateWIFIChecksum()){
+	//enter wifi setup mode
+	if(dev->getManualDistribution() && dev->getButton1() && dev->getButton2()){
+
+	}
+	//if wifi not intialized correctly, use default values
+	else if(checksum != calculateWIFIChecksum()){
 		//copy default SSID to EEPROM and to the ssid variable
 		const char* default_ssid = DEFAULT_SSID;
 		for(uint8_t i = 0; i < SSID_MAX_LEN+1; i++){

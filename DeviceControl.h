@@ -11,6 +11,8 @@
 #include "HW_config.h"
 #include "Arduino.h"
 #include "TSIC.h"
+#include "MCP23017.h"
+#include "Wire.h"
 
 #define SSR_PERIOD_TIME			5000
 #define	BUTTON_DEPRELL_TIME		300
@@ -70,6 +72,8 @@ public:
 	void disableLEDPower();
 	void enableLEDTank();
 	void disableLEDTank();
+	void enableDisplayBacklight();
+	void disableDisplayBacklight();
 
 
 private:
@@ -79,9 +83,13 @@ private:
 	virtual ~DeviceControl();
 
 	void init();
-	void updateSR();
+	void boilerHeaterOn(bool send);
+	void boilerHeaterOff(bool send);
+	void BUHeaterOn(bool send);
+	void BUHeaterOff(bool send);
 
-	uint16_t srData;
+	uint16_t mcpWriteBuffer;
+	uint16_t mcpReadBuffer;
 	double pumpTickToVolumeFactor;
 	double bypassTickToVolumeFactor;
 //	static volatile long pumpTicks;

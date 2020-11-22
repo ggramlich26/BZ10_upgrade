@@ -45,8 +45,12 @@ void MachineStatusStateMachine::update(){
 		break;
 	case running:
 		//set outputs
+		if(dev->getBoilerFull())
+			dev->enableLEDLeft();
+		else
+			dev->disableLEDLeft();
 		dev->enableLEDPower();
-		dev->enableLEDLeft();
+//		dev->enableLEDLeft();
 		dev->enableLEDRight();
 		//check transitions
 		if(dev->getButton1ShortPressed() ||
