@@ -16,9 +16,13 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
 
-Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. 
+Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory.
 
 ## Setting your WiFi credentials
+The machine can be configured to connect to your own home WiFi network via a simple web interface:
+ 1. Turn the machine off
+ 2. Set the brewing switch to manual mod
+
 ## Setting up Blynk
 You can use the following virtual pins for communication with your espresso machine:
 - V1: Boiler temperature in °C (display)
@@ -114,7 +118,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMzI4NDIyMzIsODI1ODExNjUsLTIzND
-gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
-LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTgzNzAzODA1NSw4MjU4MTE2NSwtMjM0OD
+EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
+MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
