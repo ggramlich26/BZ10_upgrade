@@ -13,7 +13,7 @@
 #include "Arduino.h"
 
 class BrewStateMachine {
-	enum BrewStates {idle, dist_man, refill_boiler, dist_vol, dist_vol_finished, error_tank_empty, error_sonde,
+	enum BrewStates {idle, dist_man, refill_boiler, dist_vol, dist_vol_finished, error_tank_empty, error_probe,
 		preinf_buildup, preinf_wait, cleaning_buildup, cleaning_flushing};
 public:
 	BrewStateMachine();

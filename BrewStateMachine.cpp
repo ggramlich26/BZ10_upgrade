@@ -43,12 +43,7 @@ void BrewStateMachine::update(){
 			state = refill_boiler;
 		}
 		else if(dev->getManualDistribution()){
-			if(DataManager::getPreinfusionBuildupTime() > 0){
-				state = preinf_buildup;
-			}
-			else{
-				state = dist_man;
-			}
+			state = dist_man;
 		}
 		else if(dev->getVolumetricDistribution()){
 			if(DataManager::getPreinfusionBuildupTime() > 0){
@@ -160,10 +155,10 @@ void BrewStateMachine::update(){
 			}
 		}
 		else if(millis() >= refillBoilerStartTime + DataManager::getBoilerMaxFillTime()){
-			state = error_sonde;
+			state = error_probe;
 		}
 		break;
-	case error_sonde:
+	case error_probe:
 		dev->disablePump();
 		dev->disableBoilerValve();
 		dev->disableBrewingValve();
@@ -193,7 +188,7 @@ void BrewStateMachine::update(){
 			preinfusionStartTime = 0;
 			state = idle;
 		}
-		else if(!dev->getManualDistribution() && !dev->getVolumetricDistribution()){
+		else if(!dev->getVolumetricDistribution()){
 			preinfusionStartTime = 0;
 			state = idle;
 		}
@@ -218,7 +213,7 @@ void BrewStateMachine::update(){
 			preinfusionStartTime = 0;
 			state = idle;
 		}
-		else if(!dev->getManualDistribution() && !dev->getVolumetricDistribution()){
+		else if(!dev->getVolumetricDistribution()){
 			preinfusionStartTime = 0;
 			state = idle;
 		}
@@ -228,12 +223,7 @@ void BrewStateMachine::update(){
 		}
 		else if(millis() >= preinfusionStartTime + DataManager::getPreinfusionWaitTime()){
 			preinfusionStartTime = 0;
-			if(dev->getManualDistribution()){
-				state = dist_man;
-			}
-			else{
-				state = dist_vol;
-			}
+			state = dist_vol;
 		}
 		break;
 	case cleaning_buildup:
