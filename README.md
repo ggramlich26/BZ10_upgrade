@@ -49,7 +49,9 @@ You can use a SuperChart Widget for V1-V3
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
 - Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
-- Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume
+- Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
+- Preinfusion: If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
+- Standby: P
 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
@@ -130,7 +132,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MTkyMzQ4NjEsODI1ODExNjUsLTIzND
-gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
-LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbMTkzNzkxMDM5Miw4MjU4MTE2NSwtMjM0OD
+EyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwt
+MjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
