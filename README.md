@@ -16,7 +16,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
 
-Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries
+Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. 
 
 ## Setting your WiFi credentials
 ## Setting up Blynk
@@ -114,7 +114,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MTEwMTcwNDAsODI1ODExNjUsLTIzND
+eyJoaXN0b3J5IjpbLTEyMzI4NDIyMzIsODI1ODExNjUsLTIzND
 gxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTks
 LTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
