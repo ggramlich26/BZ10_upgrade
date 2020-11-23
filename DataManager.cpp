@@ -38,6 +38,7 @@ unsigned long DataManager::standbyWakeupTime;
 int DataManager::standbyStartTime;
 DeviceControl* DataManager::dev;
 bool DataManager::scheduleRestart;
+bool DataManager::standbyWakeupEnabled;
 
 //	Blynk pins
 // 	V1: Boiler temperature in °C
@@ -63,28 +64,30 @@ bool DataManager::scheduleRestart;
 #define	HOST_NAME_MAX_LEN			30
 #define	HOST_NAME_ADDR				62
 #define	TARGET_TEMP_BOILER_ADDR		93
-#define TARGET_TEMP_BOILER_LEN		8
+#define TARGET_TEMP_BOILER_LEN		sizeof(double)
 #define	TARGET_TEMP_BU_ADDR			101
-#define TARGET_TEMP_BU_LEN			8
+#define TARGET_TEMP_BU_LEN			sizeof(double)
 #define	DIST_VOL_ADDR				109
-#define	DIST_VOL_LEN				8
+#define	DIST_VOL_LEN				sizeof(double)
 #define	VOL_OFFSET_ADDR				117
-#define	VOL_OFFSET_LEN				8
+#define	VOL_OFFSET_LEN				sizeof(double)
 #define	BOILER_CONTROLLER_P_ADDR	125
-#define	BOILER_CONTROLLER_P_LEN		8
+#define	BOILER_CONTROLLER_P_LEN		sizeof(double)
 #define	BU_CONTROLLER_P_ADDR		133
-#define	BU_CONTROLLER_P_LEN			8
+#define	BU_CONTROLLER_P_LEN			sizeof(double)
 #define	BLYNK_ENABLED_ADDR			141
 #define	BLYNK_ENABLED_LEN			1
 #define	PREINFUSION_BUILDUP_TIME_ADDR	142
-#define	PREINFUSION_BUILDUP_TIME_LEN	4
+#define	PREINFUSION_BUILDUP_TIME_LEN	sizeof(int)
 #define	PREINFUSION_WAIT_TIME_ADDR		146
-#define	PREINFUSION_WAIT_TIME_LEN		4
+#define	PREINFUSION_WAIT_TIME_LEN		sizeof(int)
 #define STANDBY_START_TIME_ADDR		150
-#define	STANDBY_START_TIME_LEN		4
+#define	STANDBY_START_TIME_LEN		sizeof(int)
+#define STANDBY_WAKEUP_TIME_ADDR	154
+#define STANDBY_WAKEUP_TIME_LEN		sizeof(long)
 
 
-#define CHECKSUM_ADDR				154
+#define CHECKSUM_ADDR				162
 #define	CHECKSUM_LEN				4
 #define	EEPROM_SIZE					200
 char ssid[SSID_MAX_LEN+1];
@@ -134,6 +137,7 @@ void DataManager::init(){
 	eepromRead((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN);
 	eepromRead((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN);
 	standbyWakeupTime = 0;
+	standbyWakeupEnabled = false;
 //	Serial.println("Boiler target: " + String(targetTempBoiler));
 //	Serial.println("BU target: " + String(targetTempBU));
 //	Serial.println("distribution volume: " + String(distributionVolume));
@@ -196,6 +200,7 @@ void DataManager::init(){
 		preinfusionBuildupTime = DEFAULT_PREINFUSION_BUILDUP_TIME;
 		preinfusionWaitTime = DEFAULT_PREINFUSION_WAIT_TIME;
 		standbyStartTime = DEFAULT_STANDBY_START_TIME;
+		standbyWakeupTime = DEFAULT_STANDBY_WAKEUP_TIME;
 		eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, false);
 		eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, false);
 		eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, false);
@@ -207,6 +212,7 @@ void DataManager::init(){
 		eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, false);
 		eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, false);
+		eepromWrite((uint8_t*)&standbyWakeupTime, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN, false);
 		EEPROM.commit();
 	}
 
@@ -433,13 +439,26 @@ void DataManager::initBlynk(){
 	Blynk.virtualWrite(V9, BUControllerP);
 	Blynk.virtualWrite(V10, preinfusionBuildupTime/1000);
 	Blynk.virtualWrite(V11, preinfusionWaitTime/1000);
-	if(standbyWakeupTime > 0){
-		unsigned long realTime = ((unsigned long)hour()*60*60+minute()*60+second());
-		unsigned long time = (standbyWakeupTime - millis())/1000 + realTime;
-		Blynk.virtualWrite(V12, time%(24*60*60), 0, "Europe/Berlin");
+	//reading from EEPROM: stored in s after midnight
+	long time = 0;
+	eepromRead((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN);
+	if(time >= 0){
+		Blynk.virtualWrite(V12, time, 0, "Europe/Berlin");
+		//conversion to machine time
+		long realTime = ((long)hour()*60*60+minute()*60+second());
+		if(time < realTime){
+			time += 24*60*60;
+		}
+		standbyWakeupTime = millis()+(time-realTime)*1000;
+		while(standbyWakeupTime < millis())
+			standbyWakeupTime += 24*60*60*1000;	//increment wakeup time until it causes and immediate wakeup
+												//or is past the current system time
+		standbyWakeupEnabled = true;
 	}
-	else
+	else{
+		standbyWakeupEnabled = false;
 		Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
+	}
 	if(standbyStartTime > 0)
 		Blynk.virtualWrite(V13, standbyStartTime/1000, 0, "Europe/Berlin");
 	else
@@ -491,25 +510,31 @@ void DataManager::setPreinfusionWaitTime(int time, bool updateBlynk){
 }
 
 /// returns the time in ms after system start when the machine should wake up from standby
+//	Always %(24*60*60*1000) = 1 day.
 unsigned long DataManager::getStandbyWakeupTime(){
 	return standbyWakeupTime;
 }
 
 /// sets the time when the machine should wake up from standby
-// @param time time in s after midnight, 0 to disable
+// @param time time in s after midnight, -1 to disable
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setStandbyWakeupTime(unsigned long time, bool updateBlynk){
-	unsigned long realTime = ((unsigned long)hour()*60*60+minute()*60+second());
-	//if it is later than the wakeup time, add one day to it
-	if(time > 0 && time < realTime){
-		time += 24*60*60;
-	}
-	//disable wakeup if 0
-	if(time > 0){
+void DataManager::setStandbyWakeupTime(long time, bool updateBlynk){
+	eepromWrite((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN, true);
+	long realTime = ((long)hour()*60*60+minute()*60+second());
+	//disable wakeup if -1
+	if(time >= 0){
+		//if it is later than the wakeup time, add one day to it
+		if(time < realTime){
+			time += 24*60*60;
+		}
 		standbyWakeupTime = millis()+(time-realTime)*1000;
+		while(standbyWakeupTime < millis())
+			standbyWakeupTime += 24*60*60*1000;	//increment wakeup time until it causes and immediate wakeup
+												//or is past the current system time
+		standbyWakeupEnabled = true;
 	}
 	else{
-		standbyWakeupTime = 0;
+		standbyWakeupEnabled = false;
 	}
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		if(time >= 0)
@@ -517,6 +542,14 @@ void DataManager::setStandbyWakeupTime(unsigned long time, bool updateBlynk){
 		else
 			Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
 	}
+}
+
+bool DataManager::getStandbyWakeupEnabled(){
+	return standbyWakeupEnabled;
+}
+
+void DataManager::incStandbyWakeupTimeByOneDay(){
+	standbyWakeupTime += 24*60*60*1000;
 }
 
 /// sets the time after which the machine will go in standby mode if no user interaction occurs
@@ -577,12 +610,15 @@ BLYNK_WRITE(V11){
 }
 
 BLYNK_WRITE(V12){
-	DataManager::setStandbyWakeupTime(param.asLong(), false);
+	String str = param.asString();
+	if(str.equals(""))
+		DataManager::setStandbyWakeupTime(-1, false);
+	else
+		DataManager::setStandbyWakeupTime(param.asLong(), false);
 }
 
 BLYNK_WRITE(V13){
 	DataManager::setStandbyStartTime(param.asInt()*1000, false);
-	Serial.println(String("StandbyStartTime: ") + param.asString());
 }
 
 BLYNK_CONNECTED() {

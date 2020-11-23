@@ -50,6 +50,7 @@
 #define	BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL	500
 
 #define DEFAULT_STANDBY_START_TIME				90*60*1000 // time after which standby mode will be entered if no user action
+#define DEFAULT_STANDBY_WAKEUP_TIME				-1			//time in s after midnight at which the device will wake up from standby, -1 to disable wakeup
 
 #define WIFI_CONNECT_INTERVAL					10000	//interval in which the device tries to connect to wifi
 
@@ -84,7 +85,9 @@ public:
 	static void setStandbyStartTime(int time, bool updateBlynk);
 	static int getStandbyStartTime();
 	static unsigned long getStandbyWakeupTime();
-	static void setStandbyWakeupTime(unsigned long time, bool updateBlynk);
+	static void setStandbyWakeupTime(long time, bool updateBlynk);
+	static bool getStandbyWakeupEnabled();
+	static void incStandbyWakeupTimeByOneDay();
 
 	static bool getBlynkEnabled();
 	static void setBlynkEnabled(bool enabled);
@@ -119,6 +122,7 @@ private:
 	static int preinfusionWaitTime;
 	static unsigned long standbyWakeupTime;
 	static int standbyStartTime;	//time after wich standby mode will be entered
+	static bool standbyWakeupEnabled;	//used to disable wakeup functionality
 
 	static uint32_t calculateWIFIChecksum();
 	static void eepromWrite(uint8_t *src, int addr, int len, bool commit);

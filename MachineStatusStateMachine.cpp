@@ -30,18 +30,27 @@ void MachineStatusStateMachine::update(){
 	}
 	switch (state){
 	case standby:
+	{
 		//set outputs
 		dev->disableLEDPower();
 		dev->disableLEDLeft();
 		dev->disableLEDRight();
 		//check transitions
-		if(useraction || (DataManager::getStandbyWakeupTime() != 0 &&
+		//wakeup automatically
+		if((DataManager::getStandbyWakeupEnabled() &&
 				(millis() > DataManager::getStandbyWakeupTime() &&
 						(millis() < DataManager::getStandbyWakeupTime() + DataManager::getStandbyStartTime() ||
 								DataManager::getStandbyStartTime() == 0)))){
+			DataManager::incStandbyWakeupTimeByOneDay();
 			state = running;
 			lastUserActionTime = millis();
 		}
+		//wakeup by useraction
+		else if(useraction){
+			state = running;
+			lastUserActionTime = millis();
+		}
+	}
 		break;
 	case running:
 		//set outputs
