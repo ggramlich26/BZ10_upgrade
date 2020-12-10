@@ -40,7 +40,7 @@ void DeviceControl::init(){
 	mcpWriteBuffer = 0x0000;
 	mcpReadBuffer = 0x0000;
 	pumpTickToVolumeFactor = 0.219298;
-	bypassTickToVolumeFactor = pumpTickToVolumeFactor;
+	bypassTickToVolumeFactor = 0.24;
 	pumpTicks = 5;
 	bypassTicks = 5;
 	boilerPeriodStartTime = 0;
@@ -329,7 +329,7 @@ void DeviceControl::disableLEDRight(){
 
 /// enable the water tank empty indicator LED
 void DeviceControl::enableLEDTank(){
-	mcpWriteBuffer |= (1<<LED_POWER);
+	mcpWriteBuffer |= (1<<LED_TANK);
 }
 
 /// disable the water tank empty indicator LED
@@ -348,13 +348,14 @@ void DeviceControl::disableLEDPower(){
 }
 
 bool DeviceControl::getBoilerFull(){
-	return true; //todo delete
+//	return true; //todo delete
 	return digitalRead(PROBE_DIGITAL_PIN);
 }
 
 bool DeviceControl::getTankFull(){
 	//todo
-	return true;
+	return (mcpReadBuffer & (1<<TANK_PIN))>0;
+//	return true;
 }
 
 bool DeviceControl::getManualDistribution(){
