@@ -19,7 +19,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory.
 
 **Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
-You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment *#define ILI9341_DRIVER* (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
+You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment `#define ILI9341_DRIVER` (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
 ```C++
 #define TFT_DC 		23
 #define TFT_CS 		17
@@ -145,8 +145,8 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg1MTE3NzkwMCwxMjQwNDczMjkzLC0xNj
-Y0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4
-LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03OD
-g3MjI5MDQsLTE3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2Nj
+Q0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MTgs
+LTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4OD
+cyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
