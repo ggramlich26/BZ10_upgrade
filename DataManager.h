@@ -40,6 +40,9 @@
 #define	DEFAULT_BU_CONTROLLER_P					1
 #define	MAX_BU_CONTROLLER_P						100
 #define	MIN_BU_CONTROLLER_P						0.01
+#define DEFAULT_TICK_TO_VOLUME_FACTOR			0.219298
+#define	MAX_TICK_TO_VOLUME_FACTOR				0.001
+#define MIN_TICK_TO_VOLUME_FACTOR				10
 
 #define DEFAULT_PREINFUSION_BUILDUP_TIME		2000
 #define	MAX_PREINFUSION_BUILDUP_TIME			20000
@@ -76,6 +79,10 @@ public:
 	static void setBoilerControllerP(double p, bool updateBlynk);
 	static double getBUControllerP();
 	static void setBUControllerP(double p, bool updateBlynk);
+	static double getPumpTickToVolumeFactor();
+	static void setPumpTickToVolumeFactor(double f, bool updateBlynk);
+	static double getBypassTickToVolumeFactor();
+	static void setBypassTickToVolumeFactor(double f, bool updateBlynk);
 
 	static int getPreinfusionBuildupTime();
 	static void setPreinfusionBuildupTime(int time, bool updateBlynk);
@@ -117,6 +124,8 @@ private:
 
 	static double boilerControllerP;
 	static double BUControllerP;
+	static double pumpTickToVolumeFactor;
+	static double bypassTickToVolumeFactor;
 
 	static int preinfusionBuildupTime;
 	static int preinfusionWaitTime;

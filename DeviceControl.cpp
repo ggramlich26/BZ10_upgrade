@@ -6,6 +6,7 @@
  */
 
 #include "DeviceControl.h"
+#include "DataManager.h"
 
 DeviceControl* DeviceControl::_instance = NULL;
 //TSIC* DeviceControl::tsicBoiler = NULL;
@@ -39,8 +40,6 @@ void DeviceControl::init(){
 	Wire.begin();
 	mcpWriteBuffer = 0x0000;
 	mcpReadBuffer = 0x0000;
-	pumpTickToVolumeFactor = 0.219298;
-	bypassTickToVolumeFactor = 0.24;
 	pumpTicks = 5;
 	bypassTicks = 5;
 	boilerPeriodStartTime = 0;
@@ -376,12 +375,12 @@ bool DeviceControl::getButton2(){
 
 //returns the total volume measured by the pump flowmeter since start in ml
 double DeviceControl::getPumpVolume(){
-	return pumpTicks * pumpTickToVolumeFactor;
+	return pumpTicks * DataManager::getPumpTickToVolumeFactor();
 }
 
 //returns the total volume measured by the bypass flowmeter since start in ml
 double DeviceControl::getBypassVolume(){
-	return bypassTicks * bypassTickToVolumeFactor;
+	return bypassTicks * DataManager::getBypassTickToVolumeFactor();
 }
 
 double	DeviceControl::getBoilerTemp(){

@@ -90,8 +90,6 @@ private:
 
 	uint16_t mcpWriteBuffer;
 	uint16_t mcpReadBuffer;
-	double pumpTickToVolumeFactor;
-	double bypassTickToVolumeFactor;
 //	static volatile long pumpTicks;
 //	static volatile long bypassTicks;
 

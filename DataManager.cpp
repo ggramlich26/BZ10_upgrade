@@ -39,6 +39,8 @@ int DataManager::standbyStartTime;
 DeviceControl* DataManager::dev;
 bool DataManager::scheduleRestart;
 bool DataManager::standbyWakeupEnabled;
+double DataManager::pumpTickToVolumeFactor;
+double DataManager::bypassTickToVolumeFactor;
 
 //	Blynk pins
 // 	V1: Boiler temperature in °C
@@ -55,6 +57,8 @@ bool DataManager::standbyWakeupEnabled;
 //	V12: Standbye wakeup timer: in s after midnight (Blynk time widget), 0 to disable
 //	V13: Standby start time: time after which the machine goes into standby mode if no user interaction occurs,
 			//in s, 0 to disable (Blynk time widget)
+//	V14: Pump flow sensor tick to volume factor
+//	V15: Bypass flow sensor tick to volume factor
 
 //	Flash address parameters
 #define SSID_MAX_LEN				30
@@ -85,9 +89,13 @@ bool DataManager::standbyWakeupEnabled;
 #define	STANDBY_START_TIME_LEN		sizeof(int)
 #define STANDBY_WAKEUP_TIME_ADDR	154
 #define STANDBY_WAKEUP_TIME_LEN		sizeof(long)
+#define PUMP_TICK_TO_VOL_FACTOR_ADDR	162
+#define PUMP_TICK_TO_VOL_FACTOR_LEN		sizeof(double)
+#define BYPASS_TICK_TO_VOL_FACTOR_ADDR	170
+#define BYPASS_TICK_TO_VOL_FACTOR_LEN	sizeof(double)
 
 
-#define CHECKSUM_ADDR				162
+#define CHECKSUM_ADDR				178
 #define	CHECKSUM_LEN				4
 #define	EEPROM_SIZE					200
 char ssid[SSID_MAX_LEN+1];
@@ -136,6 +144,8 @@ void DataManager::init(){
 	eepromRead((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN);
 	eepromRead((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN);
 	eepromRead((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN);
+	eepromRead((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN);
+	eepromRead((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN);
 	standbyWakeupTime = 0;
 	standbyWakeupEnabled = false;
 //	Serial.println("Boiler target: " + String(targetTempBoiler));
@@ -188,7 +198,8 @@ void DataManager::init(){
 	//if EEPROM not initialized yet, write default values
 	if(isnan(targetTempBU) || isnan(targetTempBoiler) || isnan(distributionVolume) || isnan(volumeOffset) ||
 			isnan(boilerControllerP) || isnan(BUControllerP) || isnan(preinfusionBuildupTime) ||
-			isnan(preinfusionWaitTime) || isnan(standbyStartTime)){
+			isnan(preinfusionWaitTime) || isnan(standbyStartTime) || isnan(pumpTickToVolumeFactor) ||
+			isnan(bypassTickToVolumeFactor)){
 		Serial.println("Writing default values");
 		targetTempBoiler = DEFAULT_TEMP_BOILER;
 		targetTempBU = DEFAULT_TEMP_BU;
@@ -201,6 +212,8 @@ void DataManager::init(){
 		preinfusionWaitTime = DEFAULT_PREINFUSION_WAIT_TIME;
 		standbyStartTime = DEFAULT_STANDBY_START_TIME;
 		standbyWakeupTime = DEFAULT_STANDBY_WAKEUP_TIME;
+		pumpTickToVolumeFactor = DEFAULT_TICK_TO_VOLUME_FACTOR;
+		bypassTickToVolumeFactor = DEFAULT_TICK_TO_VOLUME_FACTOR;
 		eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, false);
 		eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, false);
 		eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, false);
@@ -213,6 +226,8 @@ void DataManager::init(){
 		eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyWakeupTime, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN, false);
+		eepromWrite((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN, false);
+		eepromWrite((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN, false);
 		EEPROM.commit();
 	}
 
@@ -427,6 +442,42 @@ void DataManager::setBUControllerP(double p, bool updateBlynk){
 
 }
 
+double DataManager::getPumpTickToVolumeFactor(){
+	return pumpTickToVolumeFactor;
+}
+
+/// saves a new pump flow meter tick to volume conversion factor
+// @param f: the new factor
+// @param updateBlynk: sends the new factor to blynk, if set to true and blynk is enabled
+void DataManager::setPumpTickToVolumeFactor(double f, bool updateBlynk){
+	if(f < MIN_TICK_TO_VOLUME_FACTOR) f = MIN_TICK_TO_VOLUME_FACTOR;
+	else if(f > MAX_TICK_TO_VOLUME_FACTOR) f = MAX_TICK_TO_VOLUME_FACTOR;
+	if(pumpTickToVolumeFactor == f) return;
+	pumpTickToVolumeFactor = f;
+	eepromWrite((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V14, pumpTickToVolumeFactor);
+	}
+}
+
+double DataManager::getBypassTickToVolumeFactor(){
+	return bypassTickToVolumeFactor;
+}
+
+/// saves a new bypass flow meter tick to volume conversion factor
+// @param f: the new factor
+// @param updateBlynk: sends the new factor to blynk, if set to true and blynk is enabled
+void DataManager::setBypassTickToVolumeFactor(double f, bool updateBlynk){
+	if(f < MIN_TICK_TO_VOLUME_FACTOR) f = MIN_TICK_TO_VOLUME_FACTOR;
+	else if(f > MAX_TICK_TO_VOLUME_FACTOR) f = MAX_TICK_TO_VOLUME_FACTOR;
+	if(bypassTickToVolumeFactor == f) return;
+	bypassTickToVolumeFactor = f;
+	eepromWrite((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V15, bypassTickToVolumeFactor);
+	}
+}
+
 /// initialize Blynk by creating the connection and writing current values
 void DataManager::initBlynk(){
 	Blynk.begin(auth, ssid, password);
@@ -465,6 +516,8 @@ void DataManager::initBlynk(){
 		Blynk.virtualWrite(V13, "", 0, "Europe/Berlin");
 
 	setSyncInterval(10 * 60); // Sync interval for RTC in seconds (10 minutes)
+	Blynk.virtualWrite(V14, pumpTickToVolumeFactor);
+	Blynk.virtualWrite(V15, bypassTickToVolumeFactor);
 
 	blynkInitialized = true;
 }
@@ -619,6 +672,14 @@ BLYNK_WRITE(V12){
 
 BLYNK_WRITE(V13){
 	DataManager::setStandbyStartTime(param.asInt()*1000, false);
+}
+
+BLYNK_WRITE(V14){
+	DataManager::setPumpTickToVolumeFactor(param.asDouble(), false);
+}
+
+BLYNK_WRITE(V15){
+	DataManager::setBypassTickToVolumeFactor(param.asDouble(), false);
 }
 
 BLYNK_CONNECTED() {
