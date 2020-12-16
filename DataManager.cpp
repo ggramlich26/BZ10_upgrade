@@ -212,8 +212,8 @@ void DataManager::init(){
 		preinfusionWaitTime = DEFAULT_PREINFUSION_WAIT_TIME;
 		standbyStartTime = DEFAULT_STANDBY_START_TIME;
 		standbyWakeupTime = DEFAULT_STANDBY_WAKEUP_TIME;
-		pumpTickToVolumeFactor = DEFAULT_TICK_TO_VOLUME_FACTOR;
-		bypassTickToVolumeFactor = DEFAULT_TICK_TO_VOLUME_FACTOR;
+		pumpTickToVolumeFactor = DEFAULT_PUMP_TICK_TO_VOLUME_FACTOR;
+		bypassTickToVolumeFactor = DEFAULT_BYP_TICK_TO_VOLUME_FACTOR;
 		eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, false);
 		eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, false);
 		eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, false);
