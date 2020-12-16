@@ -10,7 +10,11 @@
 
 BoilerStateMachine::BoilerStateMachine() {
 	state = disabled;
+#ifdef QUICKSTART
 	quickStart = true;
+#else
+	quickStart = false;
+#endif
 	dev = DeviceControl::instance();
 	machStat = MachineStatusStateMachine::instance();
 }
@@ -52,10 +56,12 @@ void BoilerStateMachine::update(){
 		//check transitions
 		if(!dev->getBoilerFull() || machStat->inStandbye() ||
 				dev->getBoilerFillSensorError() || dev->getBoilerTempSensorError()){
+#ifdef QUICKSTART
 			// reenable faststart after standbye
 			if(machStat->inStandbye()){
 				quickStart = true;
 			}
+#endif
 			state = disabled;
 		}
 		break;

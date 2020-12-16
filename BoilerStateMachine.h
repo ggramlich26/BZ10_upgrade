@@ -11,6 +11,8 @@
 #include "DeviceControl.h"
 #include "MachineStatusStateMachine.h"
 
+//#define QUICKSTART
+
 class BoilerStateMachine {
 	enum BoilerStates {enabled, disabled};
 
