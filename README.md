@@ -47,14 +47,15 @@ You can use the following virtual pins for communication with your espresso mach
 - V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
 - V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
-- V8: Boiler heater controller P parameter (Numeric Input widget, values 0.01-100, step size 0.05)
-- V9: BU heater controller P parameter (Numeric Input widget, values 0.01-100, step size 0.05)
+- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
+- V9: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
 - V10: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V11: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
 - V14: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
+- V15: Bypass flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
 
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
@@ -146,7 +147,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NDY3MzcxMTIsNjQyODI2MzQ4LDEyND
+eyJoaXN0b3J5IjpbLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyND
 A0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4
 NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMD
 I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
