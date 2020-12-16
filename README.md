@@ -20,6 +20,14 @@ Some libraries are also added as source code. If you use the Arduino IDE, please
 
 **Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
 You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment *#define ILI9341_DRIVER* (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
+```C++
+#define TFT_DC 		23
+#define TFT_CS 		17
+#define	TFT_MOSI	32
+#define	TFT_SCLK	33
+#define	TFT_MISO	14
+#define TFT_RST		16
+```
 
 ## Setting your WiFi credentials
 The machine can be configured to connect to your own home WiFi network via a simple web interface:
@@ -137,7 +145,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM5NDcyNjgzNCwxMjQwNDczMjkzLC0xNj
+eyJoaXN0b3J5IjpbMTg1MTE3NzkwMCwxMjQwNDczMjkzLC0xNj
 Y0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4
 LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03OD
 g3MjI5MDQsLTE3NzA1Mjk3MF19
