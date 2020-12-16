@@ -54,6 +54,7 @@ You can use the following virtual pins for communication with your espresso mach
 - V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable)
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
+- V14: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
 
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
@@ -145,8 +146,8 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2Nj
-Q0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MTgs
-LTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4OD
-cyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTE5NDY3MzcxMTIsNjQyODI2MzQ4LDEyND
+A0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4
+NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMD
+I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
