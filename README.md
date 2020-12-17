@@ -55,7 +55,7 @@ You can use the following virtual pins for communication with your espresso mach
 - V9: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
 - V10: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V11: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
-- V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Caution:** 
+- V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Requirements:** In order for this to work, your machine needs to be connected to a WiFi network, Blynk needs to be enabled and you have to add the Real-time clock widget to your Blynk app. This allows your machine to retrieve the current time from the internet and calculate when it will need to wake up.
 - V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
 - V14: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
@@ -151,10 +151,10 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU2NzY4MDYwOCwtNzg5MjQ0MjczLDE1Nj
-IxNzk3OCwtMTE5NTMwODEyNiwtMTQ0ODk1NjkzMSw2NDI4MjYz
-NDgsMTI0MDQ3MzI5MywtMTY2NDQ3NDIwNCw4MjU4MTE2NSwtMj
-M0ODEyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5
-OSwtMjEwMjkyNTk1MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ
-==
+eyJoaXN0b3J5IjpbLTE0MzEzMzYxODIsLTc4OTI0NDI3MywxNT
+YyMTc5NzgsLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2
+MzQ4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLT
+IzNDgxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQz
+OTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX
+0=
 -->
