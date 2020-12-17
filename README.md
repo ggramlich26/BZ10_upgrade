@@ -20,7 +20,7 @@ Some libraries are also added as source code. If you use the Arduino IDE, please
 
 **Board settings:** You need to [install the ESP32 board for Sloeber](http://wiki.lauerbach.de/wiki/view.do?page=ESP32Entwicklungsumgebungen). Select NodeMCU-32S as board, Upload Protocol: Default, Flash Frequency: 40MHz, Upload Speed: 115200
 
-***Windows:*** Under windows you need to make sure you have make command installed (e.g. through MinGW64: select mingw32-make package). You might also have to install CP2102 drivers if you get a t error during
+***Windows:*** Under windows you need to make sure you have make command installed (e.g. through MinGW64: select mingw32-make package). You might also have to [install CP2102 drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers) if you get a timeout error when trying to upload your sketch.
 
 **Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
 You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment `#define ILI9341_DRIVER` (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
@@ -151,9 +151,9 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNzA0OTQyODUsMTU2MjE3OTc4LC0xMT
-k1MzA4MTI2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDcz
-MjkzLC0xNjY0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMj
-EzNDg3NjE4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1
-OTUzLC03ODg3MjI5MDQsLTE3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOT
+UzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMy
+OTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMT
+M0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5
+NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
