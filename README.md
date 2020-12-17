@@ -16,7 +16,9 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
 
-Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory.
+Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. If you use Sloeber, you might have to add the library paths in the project settings: Right click your project/Properties/"C/C++ Build"/Settings. In the Tool Settings Tab, expand the compiler and click Include Folders. Add the following paths ```"${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}"``` and ```"${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}"``` under each of the three compilers.
+
+**Board settings:** Select NodeMCU-32S as board, Upload Protocol: Default, Flash Frequency: 40MHz, Upload Speed: 115200
 
 **Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
 You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment `#define ILI9341_DRIVER` (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
@@ -147,8 +149,9 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyND
-A0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4
-NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMD
-I5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNj
+QyODI2MzQ4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODEx
+NjUsLTIzNDgxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNj
+M3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUy
+OTcwXX0=
 -->
