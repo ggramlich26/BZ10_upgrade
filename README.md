@@ -20,6 +20,8 @@ Some libraries are also added as source code. If you use the Arduino IDE, please
 
 **Board settings:** You need to [install the ESP32 board for Sloeber](http://wiki.lauerbach.de/wiki/view.do?page=ESP32Entwicklungsumgebungen). Select NodeMCU-32S as board, Upload Protocol: Default, Flash Frequency: 40MHz, Upload Speed: 115200
 
+***Windows:*** Under windows you need to make sure you have make command installed (e.g. through MinGW64). You might also have to install
+
 **Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
 You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment `#define ILI9341_DRIVER` (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
 ```C++
@@ -149,9 +151,9 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU2MjE3OTc4LC0xMTk1MzA4MTI2LC0xND
-Q4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0xNjY0NDc0
-MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4LC0xOD
-I5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5
-MDQsLTE3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbLTgwNDY0ODAyLDE1NjIxNzk3OCwtMTE5NT
+MwODEyNiwtMTQ0ODk1NjkzMSw2NDI4MjYzNDgsMTI0MDQ3MzI5
+MywtMTY2NDQ3NDIwNCw4MjU4MTE2NSwtMjM0ODEyNjg0LDIxMz
+Q4NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwtMjEwMjkyNTk1
+MywtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
