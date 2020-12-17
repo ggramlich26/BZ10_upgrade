@@ -51,6 +51,7 @@ void DisplayStateMachine::update(){
 	static long brewingStartTime = 0;
 	static double brewingStartPumpVolume = 0;
 	static double brewingStartBypassVolume = 0;
+	static bool coolingFlush = false;
 
 	//update no wifi and blynk enabled icons
 	if(DataManager::getBlynkEnabled() && state != standby){
@@ -82,6 +83,23 @@ void DisplayStateMachine::update(){
 			lastTempUpdateTime = millis();
 		}
 
+		// count time up after cooling flush
+		if(coolingFlush && brewingStartTime > 0){
+			if((millis()-brewingStartTime)/1000 >= 99)
+				coolingFlush = false;
+			displayTime((millis()-brewingStartTime)/1000);
+		}
+		if(dev->getButton2ShortPressed()){
+			if(!coolingFlush){
+				coolingFlush = true;
+				brewingStartTime = 0;
+			}
+			else{
+				coolingFlush = false;
+				displayTime(0);
+			}
+		}
+
 		//transitions
 		if(machStat->inStandbye()){
 			tft.fillRect(0, 0, 320, 240, TFT_BLACK);
@@ -90,6 +108,9 @@ void DisplayStateMachine::update(){
 			state = standby;
 		}
 		else if(brewMachine->isBrewing() || brewMachine->isPreinfusing()){
+			if(coolingFlush && brewingStartTime > 0){
+				coolingFlush = false;
+			}
 			brewingStartTime = 0;
 			brewingStartPumpVolume = dev->getPumpVolume();
 			brewingStartBypassVolume = dev->getBypassVolume();
@@ -98,6 +119,7 @@ void DisplayStateMachine::update(){
 			state = brewing;
 		}
 		else if(brewMachine->isCleaning()){
+			coolingFlush = false;
 			state = cleaning;
 		}
 		break;
@@ -119,9 +141,16 @@ void DisplayStateMachine::update(){
 				DataManager::getVolumeOffset();
 		displayWeight(weight>=0?weight:0);	//display 0 while weight smaller than zero
 
+		if(dev->getButton2ShortPressed()){
+			coolingFlush = true;
+		}
+
 		//transitions
 		if(!brewMachine->isBrewing() && !brewMachine->isPreinfusing()){
 			state = idle;
+			if(coolingFlush){
+				brewingStartTime = millis();
+			}
 		}
 		break;
 	}
@@ -147,6 +176,7 @@ void DisplayStateMachine::update(){
 			//get everything drawn again
 			noWifiDisplayed = false;
 			blynkDisplayed = false;
+			coolingFlush = false;
 			displayedTime = -1;
 			displayedWeight = -1;
 			displayedBoilerTemp = "";
