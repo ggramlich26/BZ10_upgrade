@@ -71,7 +71,7 @@ Your new espresso machine has a lot more functions than before. This is how you 
 - **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
 - **Disable WiFi:** You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the Blynk symbol crossed out on the display and once you restart your machine it won't even connect to your WiFi network any more. To enable Blynk (and WiFi) again, just press the left button for 3s or longer again. 
-- **Display:** Pretty obvious but you now have a display showing various temperatures, the volume distributed and the time your distribution took (preinfusion time not included)
+- **Display:** Pretty obvious but you now have a display showing various temperatures, the volume distributed and the time your distribution took (preinfusion time not included). The red circle shows the boiler temperature, the orange circle on the right shows the brewing head temperature and the blue circle in the top shows one additional temperature. I attached this sensor to the tube leading from the heat exchanger to the brewing hea
 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
@@ -152,10 +152,10 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MTk3Mzg2NTIsLTE0MzEzMzYxODIsLT
-c4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUzMDgxMjYsLTE0NDg5
-NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMD
-QsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MTgsLTE4Mjkx
-MDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNC
-wtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbMTM4MDUwODUwOSwtMTQxOTczODY1MiwtMT
+QzMTMzNjE4MiwtNzg5MjQ0MjczLDE1NjIxNzk3OCwtMTE5NTMw
+ODEyNiwtMTQ0ODk1NjkzMSw2NDI4MjYzNDgsMTI0MDQ3MzI5My
+wtMTY2NDQ3NDIwNCw4MjU4MTE2NSwtMjM0ODEyNjg0LDIxMzQ4
+NzYxOCwtMTgyOTEwOTY0Nyw2Mzc0NDM5OSwtMjEwMjkyNTk1My
+wtNzg4NzIyOTA0LC0xNzcwNTI5NzBdfQ==
 -->
