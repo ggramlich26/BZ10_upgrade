@@ -26,6 +26,8 @@ void BrewStateMachine::update(){
 	static long boilerFullStartTime = 0;
 	static unsigned long preinfusionStartTime = 0;
 	static unsigned long cleaningStartTime = 0; //used for both cleaning states as start time
+	static double startPumpVolume = 0;	//used for volumetric distribution
+	static double startBypassVolume = 0;	//used for volumetric distribution
 	switch (state){
 	case idle:
 		dev->disablePump();
@@ -78,8 +80,6 @@ void BrewStateMachine::update(){
 		dev->disableBoilerValve();
 		dev->enableBrewingValve();
 		dev->enablePump();
-		static double startPumpVolume = 0;
-		static double startBypassVolume = 0;
 		if(0 == startPumpVolume){
 			startPumpVolume = dev->getPumpVolume();
 		}
@@ -180,20 +180,32 @@ void BrewStateMachine::update(){
 		dev->enablePump();
 		dev->enableBrewingValve();
 		dev->disableBoilerValve();
+		if(0 == startPumpVolume){
+			startPumpVolume = dev->getPumpVolume();
+		}
+		if(0 == startBypassVolume){
+			startBypassVolume = dev->getBypassVolume();
+		}
 		//transitions
 		if(preinfusionStartTime == 0){
 			preinfusionStartTime = millis();
 		}
 		if(machStat->inStandbye()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = idle;
 		}
 		else if(!dev->getVolumetricDistribution()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = idle;
 		}
 		else if(!dev->getTankFull()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = error_tank_empty;
 		}
 		else if(millis() >= preinfusionStartTime + DataManager::getPreinfusionBuildupTime()){
@@ -211,14 +223,20 @@ void BrewStateMachine::update(){
 		}
 		if(machStat->inStandbye()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = idle;
 		}
 		else if(!dev->getVolumetricDistribution()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = idle;
 		}
 		else if(!dev->getTankFull()){
 			preinfusionStartTime = 0;
+			startPumpVolume = 0;
+			startBypassVolume = 0;
 			state = error_tank_empty;
 		}
 		else if(millis() >= preinfusionStartTime + DataManager::getPreinfusionWaitTime()){
