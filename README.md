@@ -66,6 +66,7 @@ Your new espresso machine has a lot more functions than before. This is how you 
 - **Standard manual distribution:** Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
 - **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
 - **Preinfusion:** If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
+- **Cooling flush:** Since the BZ10 is a HX machine, you will still need to perform a cooling flush j
 - **Standby:** Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
 - **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
@@ -151,10 +152,10 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MzEzMzYxODIsLTc4OTI0NDI3MywxNT
-YyMTc5NzgsLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2
-MzQ4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLT
-IzNDgxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQz
-OTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX
-0=
+eyJoaXN0b3J5IjpbMjQ5NjMyNTczLC0xNDMxMzM2MTgyLC03OD
+kyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MTI2LC0xNDQ4OTU2
+OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0xNjY0NDc0MjA0LD
+gyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4LC0xODI5MTA5
+NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5MDQsLT
+E3NzA1Mjk3MF19
 -->
