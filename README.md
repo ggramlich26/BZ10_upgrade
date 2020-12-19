@@ -66,7 +66,7 @@ Your new espresso machine has a lot more functions than before. This is how you 
 - **Standard manual distribution:** Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
 - **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
 - **Preinfusion:** If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
-- **Cooling flush:** Since the BZ10 is a HX machine, you will still need to perform a cooling flush j
+- **Cooling flush:** Since the BZ10 is a HX machine, you will still need to perform a cooling flush just like before the upgrade. But in order to make this process more repeatable, you get a timer showing the time passed after your cooling flush. In order to get this functionality, short press the right button before starting your cooling flush. You will see, that the timer starts counting up once 
 - **Standby:** Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
 - **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
@@ -152,10 +152,10 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjQ5NjMyNTczLC0xNDMxMzM2MTgyLC03OD
-kyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MTI2LC0xNDQ4OTU2
-OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0xNjY0NDc0MjA0LD
-gyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4LC0xODI5MTA5
-NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5MDQsLT
-E3NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbMTYzMzcxOTYwMywtMTQzMTMzNjE4MiwtNz
+g5MjQ0MjczLDE1NjIxNzk3OCwtMTE5NTMwODEyNiwtMTQ0ODk1
+NjkzMSw2NDI4MjYzNDgsMTI0MDQ3MzI5MywtMTY2NDQ3NDIwNC
+w4MjU4MTE2NSwtMjM0ODEyNjg0LDIxMzQ4NzYxOCwtMTgyOTEw
+OTY0Nyw2Mzc0NDM5OSwtMjEwMjkyNTk1MywtNzg4NzIyOTA0LC
+0xNzcwNTI5NzBdfQ==
 -->
