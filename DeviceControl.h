@@ -13,6 +13,7 @@
 #include "TSIC.h"
 #include "MCP23017.h"
 #include "Wire.h"
+#include "Button.h"
 
 #define SSR_PERIOD_TIME			5000
 #define	BUTTON_DEPRELL_TIME		300
@@ -48,14 +49,16 @@ public:
 
 	bool getManualDistribution();
 	bool getVolumetricDistribution();
-	bool getButton1();
-	bool getButton2();
-	bool getButtonVolDist();
-	bool getButtonManDist();
-	bool getButton1LongPressed(){return button1LongPressed;}
-	bool getButton1ShortPressed(){return button1ShortPressed;}
-	bool getButton2LongPressed(){return button2LongPressed;}
-	bool getButton2ShortPressed(){return button2ShortPressed;}
+	bool readButton1();
+	bool readButton2();
+	bool readButtonVolDist();
+	bool readButtonManDist();
+	bool getButton1State();
+	bool getButton2State();
+	bool getButton1LongPressed(){return button1->isLongPressed();}
+	bool getButton1ShortPressed(){return button1->isShortPressed();}
+	bool getButton2LongPressed(){return button2->isLongPressed();}
+	bool getButton2ShortPressed(){return button2->isShortPressed();}
 
 	double getPumpVolume();
 	double getBypassVolume();
@@ -93,8 +96,6 @@ private:
 
 	uint16_t mcpWriteBuffer;
 	uint16_t mcpReadBuffer;
-//	static volatile long pumpTicks;
-//	static volatile long bypassTicks;
 
 	unsigned long boilerPeriodStartTime;
 	int boilerLevel;
@@ -103,33 +104,11 @@ private:
 
 	bool boilerFillSensorError;
 
-	bool button1LastState;
-	bool button2LastState;
-	bool volDistEnabled;
-	bool manDistEnabled;
-	unsigned long button1LastChangeTime;
-	unsigned long button2LastChangeTime;
-	unsigned long buttonVolDistLastChangeTime;
-	unsigned long buttonManDistLastChangeTime;
-	bool button1LongPressed;
-	bool button2LongPressed;
-	bool button1ShortPressed;
-	bool button2ShortPressed;
+	Button *button1;
+	Button *button2;
+	Button *buttonVolDist;
+	Button *buttonManDist;
 
-//	static TSIC *tsicBoiler;
-//	static TSIC *tsicBU;
-//	static TSIC *tsicTube;
-//	static void tsicBoilerWrapper(){
-//		tsicBoiler->TSIC_ISR();
-//	}
-//	static void tsicBUWrapper(){
-//		tsicBU->TSIC_ISR();
-//	}
-//	static void tsicTubeWrapper(){
-//		tsicTube->TSIC_ISR();
-//	}
-//	static void pumpFlowmeterISR(){pumpTicks++;}
-//	static void bypassFlowmeterISR(){bypassTicks++;}
 };
 
 #endif /* DEVICECONTROL_H_ */

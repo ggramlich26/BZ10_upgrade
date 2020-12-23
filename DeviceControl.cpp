@@ -9,11 +9,6 @@
 #include "DataManager.h"
 
 DeviceControl* DeviceControl::_instance = NULL;
-//TSIC* DeviceControl::tsicBoiler = NULL;
-//TSIC* DeviceControl::tsicBU = NULL;
-//TSIC* DeviceControl::tsicTube = NULL;
-//volatile long DeviceControl::pumpTicks = 0;
-//volatile long DeviceControl::bypassTicks = 0;
 
 static TSIC *tsicBoiler;
 static TSIC *tsicBU;
@@ -47,18 +42,10 @@ void DeviceControl::init(){
 	boilerLevel = 0;
 	BULevel = 0;
 	boilerFillSensorError = false;
-	button1LastState = false;
-	button2LastState = false;
-	volDistEnabled = false;
-	manDistEnabled = false;
-	button1LastChangeTime = 0;
-	button2LastChangeTime = 0;
-	buttonVolDistLastChangeTime = 0;
-	buttonManDistLastChangeTime = 0;
-	button1ShortPressed = false;
-	button2ShortPressed = false;
-	button1LongPressed = false;
-	button2LongPressed = false;
+	button1 = new Button([](){return DeviceControl::instance()->readButton1();});
+	button2 = new Button([](){return DeviceControl::instance()->readButton2();});
+	buttonVolDist = new Button([](){return DeviceControl::instance()->readButtonVolDist();});
+	buttonManDist = new Button([](){return DeviceControl::instance()->readButtonManDist();});
 
 	mcp.init();
 
@@ -156,82 +143,10 @@ void DeviceControl::update(){
 
 	mcpReadBuffer = mcp.read();
 	//update buttons
-	button1ShortPressed = false;
-	button1LongPressed = false;
-	//button 1
-	if(millis() >= button1LastChangeTime + BUTTON_DEPRELL_TIME){
-		bool state = getButton1();
-		//falling edge
-		if(button1LastState && !state){
-			if(millis() >= button1LastChangeTime + BUTTON_LONG_PRESS_TIME){
-				button1LongPressed = true;
-			}
-			else{
-				button1ShortPressed = true;
-			}
-			button1LastChangeTime = millis();
-		}
-		//rising edge
-		else if(!button1LastState && state){
-			button1LastChangeTime = millis();
-		}
-		button1LastState = state;
-	}
-	//button 2
-	button2ShortPressed = false;
-	button2LongPressed = false;
-	if(millis() >= button2LastChangeTime + BUTTON_DEPRELL_TIME){
-		bool state = getButton2();
-		//falling edge
-		if(button2LastState && !state){
-			if(millis() >= button2LastChangeTime + BUTTON_LONG_PRESS_TIME){
-				button2LongPressed = true;
-			}
-			else{
-				button2ShortPressed = true;
-			}
-			button2LastChangeTime = millis();
-		}
-		//rising edge
-		else if(!button2LastState && state){
-			button2LastChangeTime = millis();
-		}
-		button2LastState = state;
-	}
-	//button volumetric distribution
-	static bool buttonVolDistLastState = false;
-	if(millis() >= buttonVolDistLastChangeTime + DIST_SWITCH_DEPRELL_TIME){
-		bool state = getButtonVolDist();
-		if(state != volDistEnabled){
-			if(buttonVolDistLastState == state){
-				volDistEnabled = state;
-			}
-			else{
-				buttonVolDistLastState = state;
-				buttonVolDistLastChangeTime = millis();
-			}
-		}
-		else{
-			buttonVolDistLastState = state;
-		}
-	}
-	//button manual distribution
-	static bool buttonManDistLastState = false;
-	if(millis() >= buttonManDistLastChangeTime + DIST_SWITCH_DEPRELL_TIME){
-		bool state = getButtonManDist();
-		if(state != manDistEnabled){
-			if(buttonManDistLastState == state){
-				manDistEnabled = state;
-			}
-			else{
-				buttonManDistLastState = state;
-				buttonManDistLastChangeTime = millis();
-			}
-		}
-		else{
-			buttonManDistLastState = state;
-		}
-	}
+	button1->update();
+	button2->update();
+	buttonManDist->update();
+	buttonVolDist->update();
 
 }
 
@@ -400,30 +315,44 @@ bool DeviceControl::getTankFull(){
  * returns the deprelled manual distribution switch state
  */
 bool DeviceControl::getManualDistribution(){
-	return manDistEnabled;
+	return buttonManDist->isPressed();
 }
 
 /**
  * Returns the deprelled volumetric distribution switch state
  */
 bool DeviceControl::getVolumetricDistribution(){
-	return volDistEnabled;
+	return buttonVolDist->isPressed();
 }
 
-bool DeviceControl::getButton1(){
+bool DeviceControl::readButton1(){
 	return (mcpReadBuffer & (1<<BUTTON_LEFT_PIN))>0;
 }
 
-bool DeviceControl::getButton2(){
+bool DeviceControl::readButton2(){
 	return (mcpReadBuffer & (1<<BUTTON_RIGHT_PIN))>0;
 }
 
-bool DeviceControl::getButtonVolDist(){
+bool DeviceControl::readButtonVolDist(){
 	return (mcpReadBuffer & (1<<BREW_VOL_PIN))>0;
 }
 
-bool DeviceControl::getButtonManDist(){
+bool DeviceControl::readButtonManDist(){
 	return (mcpReadBuffer & (1<<BREW_MAN_PIN))>0;
+}
+
+/***
+ * returns the debounced button 1 state
+ */
+bool DeviceControl::getButton1State(){
+	return button1->isPressed();
+}
+
+/***
+ * returns the debounced button 2 state
+ */
+bool DeviceControl::getButton2State(){
+	return button2->isPressed();
 }
 
 //returns the total volume measured by the pump flowmeter since start in ml
@@ -549,9 +478,3 @@ void DeviceControl::enableDisplayBacklight(){
 void DeviceControl::disableDisplayBacklight(){
 	digitalWrite(TFT_LED, HIGH);
 }
-//void DeviceControl::updateSR(){
-//	digitalWrite(SR_RCK, LOW);
-//	shiftOut(SR_SER, SR_SCK, MSBFIRST, (srData >> 8));
-//	shiftOut(SR_SER, SR_SCK, MSBFIRST, srData);
-//	digitalWrite(SR_RCK, HIGH);
-//}

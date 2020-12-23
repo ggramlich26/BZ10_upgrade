@@ -157,7 +157,7 @@ void DataManager::init(){
 //	Serial.println("password: " + String(password));
 
 	//enter wifi setup mode
-	if(dev->getManualDistribution() && dev->getButton1() && dev->getButton2()){
+	if(dev->readButtonManDist() && dev->readButton1() && dev->readButton2()){
 		WIFISetupMode();
 	}
 	//if wifi not intialized correctly, use default values
