@@ -16,6 +16,7 @@
 
 #define SSR_PERIOD_TIME			5000
 #define	BUTTON_DEPRELL_TIME		300
+#define DIST_SWITCH_DEPRELL_TIME	100
 #define	BUTTON_LONG_PRESS_TIME	3000
 
 class DeviceControl {
@@ -49,6 +50,8 @@ public:
 	bool getVolumetricDistribution();
 	bool getButton1();
 	bool getButton2();
+	bool getButtonVolDist();
+	bool getButtonManDist();
 	bool getButton1LongPressed(){return button1LongPressed;}
 	bool getButton1ShortPressed(){return button1ShortPressed;}
 	bool getButton2LongPressed(){return button2LongPressed;}
@@ -102,8 +105,12 @@ private:
 
 	bool button1LastState;
 	bool button2LastState;
+	bool volDistEnabled;
+	bool manDistEnabled;
 	unsigned long button1LastChangeTime;
 	unsigned long button2LastChangeTime;
+	unsigned long buttonVolDistLastChangeTime;
+	unsigned long buttonManDistLastChangeTime;
 	bool button1LongPressed;
 	bool button2LongPressed;
 	bool button1ShortPressed;

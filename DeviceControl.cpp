@@ -49,8 +49,12 @@ void DeviceControl::init(){
 	boilerFillSensorError = false;
 	button1LastState = false;
 	button2LastState = false;
+	volDistEnabled = false;
+	manDistEnabled = false;
 	button1LastChangeTime = 0;
 	button2LastChangeTime = 0;
+	buttonVolDistLastChangeTime = 0;
+	buttonManDistLastChangeTime = 0;
 	button1ShortPressed = false;
 	button2ShortPressed = false;
 	button1LongPressed = false;
@@ -194,6 +198,41 @@ void DeviceControl::update(){
 		}
 		button2LastState = state;
 	}
+	//button volumetric distribution
+	static bool buttonVolDistLastState = false;
+	if(millis() >= buttonVolDistLastChangeTime + DIST_SWITCH_DEPRELL_TIME){
+		bool state = getButtonVolDist();
+		if(state != volDistEnabled){
+			if(buttonVolDistLastState == state){
+				volDistEnabled = state;
+			}
+			else{
+				buttonVolDistLastState = state;
+				buttonVolDistLastChangeTime = millis();
+			}
+		}
+		else{
+			buttonVolDistLastState = state;
+		}
+	}
+	//button manual distribution
+	static bool buttonManDistLastState = false;
+	if(millis() >= buttonManDistLastChangeTime + DIST_SWITCH_DEPRELL_TIME){
+		bool state = getButtonManDist();
+		if(state != manDistEnabled){
+			if(buttonManDistLastState == state){
+				manDistEnabled = state;
+			}
+			else{
+				buttonManDistLastState = state;
+				buttonManDistLastChangeTime = millis();
+			}
+		}
+		else{
+			buttonManDistLastState = state;
+		}
+	}
+
 }
 
 /// enables the boiler heater
@@ -357,12 +396,18 @@ bool DeviceControl::getTankFull(){
 //	return true;
 }
 
+/**
+ * returns the deprelled manual distribution switch state
+ */
 bool DeviceControl::getManualDistribution(){
-	return (mcpReadBuffer & (1<<BREW_MAN_PIN))>0;
+	return manDistEnabled;
 }
 
+/**
+ * Returns the deprelled volumetric distribution switch state
+ */
 bool DeviceControl::getVolumetricDistribution(){
-	return (mcpReadBuffer & (1<<BREW_VOL_PIN))>0;
+	return volDistEnabled;
 }
 
 bool DeviceControl::getButton1(){
@@ -371,6 +416,14 @@ bool DeviceControl::getButton1(){
 
 bool DeviceControl::getButton2(){
 	return (mcpReadBuffer & (1<<BUTTON_RIGHT_PIN))>0;
+}
+
+bool DeviceControl::getButtonVolDist(){
+	return (mcpReadBuffer & (1<<BREW_VOL_PIN))>0;
+}
+
+bool DeviceControl::getButtonManDist(){
+	return (mcpReadBuffer & (1<<BREW_MAN_PIN))>0;
 }
 
 //returns the total volume measured by the pump flowmeter since start in ml
