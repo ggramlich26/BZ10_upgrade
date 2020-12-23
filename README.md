@@ -66,11 +66,12 @@ Your new espresso machine has a lot more functions than before. This is how you 
 - **Standard manual distribution:** Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
 - **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
 - **Preinfusion:** If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
+- **Cooling flush:** Since the BZ10 is a HX machine, you will still need to perform a cooling flush just like before the upgrade. But in order to make this process more repeatable, you get a timer showing the time passed after your cooling flush. In order to get this functionality, short press the right button before starting your cooling flush. You will see, that the timer starts counting up once you finished your cooling flush.
 - **Standby:** Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
 - **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
 - **Disable WiFi:** You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the Blynk symbol crossed out on the display and once you restart your machine it won't even connect to your WiFi network any more. To enable Blynk (and WiFi) again, just press the left button for 3s or longer again. 
-- **Display:** Pretty obvious but you now have a display showing various temperatures, the volume distributed and the time your distribution took (preinfusion time not included)
+- **Display:** Pretty obvious but you now have a display showing various temperatures, the volume distributed and the time your distribution took (preinfusion time not included). The red circle shows the boiler temperature, the orange circle on the right shows the brewing head temperature and the blue circle in the top shows one additional temperature. I attached this sensor to the tube leading from the heat exchanger to the brewing head.
 
 ## Code overview
 The machine functionality is based on state machines. There are two state machines for boiler and brewing unit temperature control. Another state machine controls the brewing cycle, one is used for the display, and a last one is responsible for the overall machine state including standby functionality. All state machines are visually shown under `/State machines/State machines.odg`. 
@@ -151,10 +152,10 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MzEzMzYxODIsLTc4OTI0NDI3MywxNT
-YyMTc5NzgsLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2
-MzQ4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLT
-IzNDgxMjY4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQz
-OTksLTIxMDI5MjU5NTMsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX
-0=
+eyJoaXN0b3J5IjpbLTE5NTUxNjg5NDEsLTE0MTk3Mzg2NTIsLT
+E0MzEzMzYxODIsLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUz
+MDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOT
+MsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0
+ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NT
+MsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
 -->
