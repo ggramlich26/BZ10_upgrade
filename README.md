@@ -52,12 +52,12 @@ You can use the following virtual pins for communication with your espresso mach
 - V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
 - V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
-- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V9: Boiler heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V10: Boiler heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V11: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V11: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V1: BU heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
+- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 1)
+- V9: Boiler heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
+- V10: Boiler heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
+- V11: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
+- V12: BU heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
+- V13: BU heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
 - V14: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V15: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
 - V16: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Requirements:** In order for this to work, your machine needs to be connected to a WiFi network, Blynk needs to be enabled and you have to add the Real-time clock widget to your Blynk app. This allows your machine to retrieve the current time from the internet and calculate when it will need to wake up.
@@ -157,11 +157,11 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEwODQ0NjMyLC0xODM3NjAxMzg5LC0xOT
-U1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMxMzM2MTgyLC03ODky
-NDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MTI2LC0xNDQ4OTU2OT
-MxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0xNjY0NDc0MjA0LDgy
-NTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3NjE4LC0xODI5MTA5Nj
-Q3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03ODg3MjI5MDQsLTE3
-NzA1Mjk3MF19
+eyJoaXN0b3J5IjpbLTY3MjAxODQ2NCwtMTgzNzYwMTM4OSwtMT
+k1NTE2ODk0MSwtMTQxOTczODY1MiwtMTQzMTMzNjE4MiwtNzg5
+MjQ0MjczLDE1NjIxNzk3OCwtMTE5NTMwODEyNiwtMTQ0ODk1Nj
+kzMSw2NDI4MjYzNDgsMTI0MDQ3MzI5MywtMTY2NDQ3NDIwNCw4
+MjU4MTE2NSwtMjM0ODEyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOT
+Y0Nyw2Mzc0NDM5OSwtMjEwMjkyNTk1MywtNzg4NzIyOTA0LC0x
+NzcwNTI5NzBdfQ==
 -->
