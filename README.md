@@ -15,6 +15,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - TFT_eSPI (Version 1.4.16)
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
+- PID (Version 1.2.0)
 
 Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. If you use Sloeber, you might have to add the library paths in the project settings: Right click your project/Properties/"C/C++ Build"/Settings. In the Tool Settings Tab, expand the compiler and click Include Folders. Add the following paths ```"${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}"``` and ```"${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}"``` under each of the three compilers.
 
@@ -51,15 +52,19 @@ You can use the following virtual pins for communication with your espresso mach
 - V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
 - V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
 - V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
-- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V9: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 0.05)
-- V10: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
-- V11: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
-- V12: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Requirements:** In order for this to work, your machine needs to be connected to a WiFi network, Blynk needs to be enabled and you have to add the Real-time clock widget to your Blynk app. This allows your machine to retrieve the current time from the internet and calculate when it will need to wake up.
-- V13: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
+- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 1)
+- V9: Boiler heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
+- V10: Boiler heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
+- V11: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
+- V12: BU heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
+- V13: BU heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
+- V14: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
+- V15: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
+- V16: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Requirements:** In order for this to work, your machine needs to be connected to a WiFi network, Blynk needs to be enabled and you have to add the Real-time clock widget to your Blynk app. This allows your machine to retrieve the current time from the internet and calculate when it will need to wake up.
+- V17: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
 You can use a SuperChart Widget for V1-V3
-- V14: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
-- V15: Bypass flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
+- V18: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
+- V19: Bypass flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
 
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
@@ -152,10 +157,11 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NTUxNjg5NDEsLTE0MTk3Mzg2NTIsLT
-E0MzEzMzYxODIsLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUz
-MDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOT
-MsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0
-ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NT
-MsLTc4ODcyMjkwNCwtMTc3MDUyOTcwXX0=
+eyJoaXN0b3J5IjpbLTY3MjAxODQ2NCwtMTgzNzYwMTM4OSwtMT
+k1NTE2ODk0MSwtMTQxOTczODY1MiwtMTQzMTMzNjE4MiwtNzg5
+MjQ0MjczLDE1NjIxNzk3OCwtMTE5NTMwODEyNiwtMTQ0ODk1Nj
+kzMSw2NDI4MjYzNDgsMTI0MDQ3MzI5MywtMTY2NDQ3NDIwNCw4
+MjU4MTE2NSwtMjM0ODEyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOT
+Y0Nyw2Mzc0NDM5OSwtMjEwMjkyNTk1MywtNzg4NzIyOTA0LC0x
+NzcwNTI5NzBdfQ==
 -->
