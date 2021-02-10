@@ -10,8 +10,9 @@
 
 #include "DeviceControl.h"
 #include "MachineStatusStateMachine.h"
+#include <PID_v1.h>
 
-//#define QUICKSTART
+//#define BOILER_QUICKSTART
 
 class BoilerStateMachine {
 	enum BoilerStates {enabled, disabled};
@@ -25,6 +26,10 @@ private:
 	DeviceControl *dev;
 	MachineStatusStateMachine *machStat;
 	bool quickStart;
+	double pid_input;
+	double pid_output;
+	double pid_setpoint;
+	PID *boilerPID;
 };
 
 #endif /* BOILERSTATEMACHINE_H_ */

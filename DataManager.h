@@ -40,6 +40,12 @@
 #define	DEFAULT_BU_CONTROLLER_P					1
 #define	MAX_BU_CONTROLLER_P						100
 #define	MIN_BU_CONTROLLER_P						0.01
+#define DEFAULT_CONTROLLER_I					0
+#define MAX_CONTROLLER_I						100
+#define MIN_CONTROLLER_I						0
+#define DEFAULT_CONTROLLER_D					0
+#define MAX_CONTROLLER_D						100
+#define MIN_CONTROLLER_D						0
 #define DEFAULT_PUMP_TICK_TO_VOLUME_FACTOR		0.448
 #define DEFAULT_BYP_TICK_TO_VOLUME_FACTOR		0.4579
 #define MIN_TICK_TO_VOLUME_FACTOR				0.001
@@ -78,8 +84,16 @@ public:
 	static void setVolumeOffset(double offset, bool updateBlynk);
 	static double getBoilerControllerP();
 	static void setBoilerControllerP(double p, bool updateBlynk);
+	static double getBoilerControllerI();
+	static void setBoilerControllerI(double i, bool updateBlynk);
+	static double getBoilerControllerD();
+	static void setBoilerControllerD(double d, bool updateBlynk);
 	static double getBUControllerP();
 	static void setBUControllerP(double p, bool updateBlynk);
+	static double getBUControllerI();
+	static void setBUControllerI(double i, bool updateBlynk);
+	static double getBUControllerD();
+	static void setBUControllerD(double d, bool updateBlynk);
 	static double getPumpTickToVolumeFactor();
 	static void setPumpTickToVolumeFactor(double f, bool updateBlynk);
 	static double getBypassTickToVolumeFactor();
@@ -124,7 +138,11 @@ private:
 	static bool blynkEnabled;
 
 	static double boilerControllerP;
+	static double boilerControllerI;
+	static double boilerControllerD;
 	static double BUControllerP;
+	static double BUControllerI;
+	static double BUControllerD;
 	static double pumpTickToVolumeFactor;
 	static double bypassTickToVolumeFactor;
 

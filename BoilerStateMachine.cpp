@@ -10,13 +10,20 @@
 
 BoilerStateMachine::BoilerStateMachine() {
 	state = disabled;
-#ifdef QUICKSTART
+#ifdef BOILER_QUICKSTART
 	quickStart = true;
 #else
 	quickStart = false;
 #endif
 	dev = DeviceControl::instance();
 	machStat = MachineStatusStateMachine::instance();
+	pid_input = dev->getBoilerTemp();
+	pid_output = 0;
+	pid_setpoint = DataManager::getTargetTempBoiler();
+	boilerPID = new PID(&pid_input, &pid_output, &pid_setpoint, DataManager::getBoilerControllerP(),
+			DataManager::getBoilerControllerI(), DataManager::getBoilerControllerD(), DIRECT);
+	boilerPID->SetOutputLimits(0, 100);
+	boilerPID->SetMode(AUTOMATIC);
 }
 
 BoilerStateMachine::~BoilerStateMachine() {
@@ -34,6 +41,11 @@ void BoilerStateMachine::update(){
 		}
 		break;
 	case enabled:
+		pid_input = dev->getBoilerTemp();
+		pid_setpoint = DataManager::getTargetTempBoiler();
+		boilerPID->SetTunings(DataManager::getBoilerControllerP(), DataManager::getBoilerControllerI(),
+				DataManager::getBoilerControllerD());
+		boilerPID->Compute();
 		//set outputs
 		if(quickStart){
 			dev->enableBoilerHeater(100);
@@ -42,16 +54,17 @@ void BoilerStateMachine::update(){
 			}
 		}
 		else{
-			double diff = DataManager::getTargetTempBoiler() - dev->getBoilerTemp();
-			if(diff <= 0){
-				dev->enableBoilerHeater(0);
-			}
-			else{
-				int heaterValue = DataManager::getBoilerControllerP()*diff;
-				heaterValue = heaterValue>100?100:heaterValue;
-				heaterValue = heaterValue<0?0:heaterValue;
-				dev->enableBoilerHeater(heaterValue);
-			}
+//			double diff = DataManager::getTargetTempBoiler() - dev->getBoilerTemp();
+//			if(diff <= 0){
+//				dev->enableBoilerHeater(0);
+//			}
+//			else{
+//				int heaterValue = DataManager::getBoilerControllerP()*diff;
+//				heaterValue = heaterValue>100?100:heaterValue;
+//				heaterValue = heaterValue<0?0:heaterValue;
+//				dev->enableBoilerHeater(heaterValue);
+//			}
+			dev->enableBoilerHeater(pid_output);
 		}
 		//check transitions
 		if(!dev->getBoilerFull() || machStat->inStandbye() ||

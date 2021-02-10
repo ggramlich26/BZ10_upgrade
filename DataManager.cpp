@@ -29,7 +29,11 @@ long DataManager::boilerMaxFillTime = DEFAULT_BOILER_FILL_MAX_TIME;
 double DataManager::distributionVolume;
 double DataManager::volumeOffset;
 double DataManager::boilerControllerP;
+double DataManager::boilerControllerI;
+double DataManager::boilerControllerD;
 double DataManager::BUControllerP;
+double DataManager::BUControllerI;
+double DataManager::BUControllerD;
 bool DataManager::blynkInitialized;
 unsigned long DataManager::lastWifiConnectTryTime;
 int DataManager::preinfusionBuildupTime;
@@ -51,14 +55,18 @@ double DataManager::bypassTickToVolumeFactor;
 //	V6: distribution volume in ml (integers only)
 //	V7: volume offset in ml (integers only)
 //	V8: Boiler P param
-//	V9: BU P param
-//	V10: Preinfusion buildup time in s (fractions are ok)
-//	V11: Preinfusion wait time in s (fractions are ok)
-//	V12: Standbye wakeup timer: in s after midnight (Blynk time widget), 0 to disable
-//	V13: Standby start time: time after which the machine goes into standby mode if no user interaction occurs,
+//	V9: Boiler I param
+//	V10: Boiler D param
+//	V11: BU P param
+//	V12: BU I param
+//	V13: BU D param
+//	V14: Preinfusion buildup time in s (fractions are ok)
+//	V15: Preinfusion wait time in s (fractions are ok)
+//	V16: Standbye wakeup timer: in s after midnight (Blynk time widget), 0 to disable
+//	V17: Standby start time: time after which the machine goes into standby mode if no user interaction occurs,
 			//in s, 0 to disable (Blynk time widget)
-//	V14: Pump flow sensor tick to volume factor
-//	V15: Bypass flow sensor tick to volume factor
+//	V18: Pump flow sensor tick to volume factor
+//	V19: Bypass flow sensor tick to volume factor
 
 //	Flash address parameters
 #define SSID_MAX_LEN				30
@@ -93,11 +101,19 @@ double DataManager::bypassTickToVolumeFactor;
 #define PUMP_TICK_TO_VOL_FACTOR_LEN		sizeof(double)
 #define BYPASS_TICK_TO_VOL_FACTOR_ADDR	170
 #define BYPASS_TICK_TO_VOL_FACTOR_LEN	sizeof(double)
+#define BOILER_CONTROLLER_I_ADDR		178
+#define BOILER_CONTROLLER_I_LEN			sizeof(double)
+#define BOILER_CONTROLLER_D_ADDR		186
+#define BOILER_CONTROLLER_D_LEN			sizeof(double)
+#define	BU_CONTROLLER_I_ADDR			194
+#define BU_CONTROLLER_I_LEN				sizeof(double)
+#define	BU_CONTROLLER_D_ADDR			202
+#define BU_CONTROLLER_D_LEN				sizeof(double)
 
 
-#define CHECKSUM_ADDR				178
+#define CHECKSUM_ADDR				210
 #define	CHECKSUM_LEN				4
-#define	EEPROM_SIZE					200
+#define	EEPROM_SIZE					250
 char ssid[SSID_MAX_LEN+1];
 char password[WIFI_PW_MAX_LEN+1];
 char hostName[HOST_NAME_MAX_LEN+1];
@@ -140,7 +156,11 @@ void DataManager::init(){
 	eepromRead((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN);
 	blynkEnabled = temp==0xFF;
 	eepromRead((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN);
+	eepromRead((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN);
+	eepromRead((uint8_t*)&boilerControllerD, BOILER_CONTROLLER_D_ADDR, BOILER_CONTROLLER_D_LEN);
 	eepromRead((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN);
+	eepromRead((uint8_t*)&BUControllerI, BU_CONTROLLER_I_ADDR, BU_CONTROLLER_I_LEN);
+	eepromRead((uint8_t*)&BUControllerD, BU_CONTROLLER_D_ADDR, BU_CONTROLLER_D_LEN);
 	eepromRead((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN);
 	eepromRead((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN);
 	eepromRead((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN);
@@ -197,9 +217,10 @@ void DataManager::init(){
 	}
 	//if EEPROM not initialized yet, write default values
 	if(isnan(targetTempBU) || isnan(targetTempBoiler) || isnan(distributionVolume) || isnan(volumeOffset) ||
-			isnan(boilerControllerP) || isnan(BUControllerP) || isnan(preinfusionBuildupTime) ||
-			isnan(preinfusionWaitTime) || isnan(standbyStartTime) || isnan(pumpTickToVolumeFactor) ||
-			isnan(bypassTickToVolumeFactor)){
+			isnan(boilerControllerP) || isnan(boilerControllerI) || isnan(boilerControllerD) ||
+			isnan(BUControllerP) || isnan(BUControllerI) || isnan(BUControllerD) ||
+			isnan(preinfusionBuildupTime) || isnan(preinfusionWaitTime) || isnan(standbyStartTime) ||
+			isnan(pumpTickToVolumeFactor) || isnan(bypassTickToVolumeFactor)){
 		Serial.println("Writing default values");
 		targetTempBoiler = DEFAULT_TEMP_BOILER;
 		targetTempBU = DEFAULT_TEMP_BU;
@@ -207,7 +228,11 @@ void DataManager::init(){
 		volumeOffset = DEFAULT_VOLUME_OFFSET;
 		blynkEnabled = DEFAULT_BLYNK_ENABLED;
 		boilerControllerP = DEFAULT_BOILER_CONTROLLER_P;
+		boilerControllerI = DEFAULT_CONTROLLER_I;
+		boilerControllerD = DEFAULT_CONTROLLER_D;
 		BUControllerP = DEFAULT_BU_CONTROLLER_P;
+		BUControllerI = DEFAULT_CONTROLLER_I;
+		BUControllerD = DEFAULT_CONTROLLER_D;
 		preinfusionBuildupTime = DEFAULT_PREINFUSION_BUILDUP_TIME;
 		preinfusionWaitTime = DEFAULT_PREINFUSION_WAIT_TIME;
 		standbyStartTime = DEFAULT_STANDBY_START_TIME;
@@ -221,7 +246,11 @@ void DataManager::init(){
 		uint8_t temp = blynkEnabled?0xFF:0x00;
 		eepromWrite((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN, false);
 		eepromWrite((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN, false);
+		eepromWrite((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN, false);
+		eepromWrite((uint8_t*)&boilerControllerD, BOILER_CONTROLLER_D_ADDR, BOILER_CONTROLLER_D_LEN, false);
 		eepromWrite((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN, false);
+		eepromWrite((uint8_t*)&BUControllerI, BU_CONTROLLER_I_ADDR, BU_CONTROLLER_I_LEN, false);
+		eepromWrite((uint8_t*)&BUControllerD, BU_CONTROLLER_D_ADDR, BU_CONTROLLER_D_LEN, false);
 		eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, false);
 		eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, false);
@@ -423,6 +452,42 @@ void DataManager::setBoilerControllerP(double p, bool updateBlynk){
 	}
 }
 
+double DataManager::getBoilerControllerI(){
+	return boilerControllerI;
+}
+
+/// saves a new boiler controller I parameter
+// @param i: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setBoilerControllerI(double i, bool updateBlynk){
+	if(i < MIN_CONTROLLER_I) i = MIN_CONTROLLER_I;
+	else if(i > MAX_CONTROLLER_I) i = MAX_CONTROLLER_I;
+	if(boilerControllerI == i) return;
+	boilerControllerI = i;
+	eepromWrite((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V9, boilerControllerI);
+	}
+}
+
+double DataManager::getBoilerControllerD(){
+	return boilerControllerD;
+}
+
+/// saves a new boiler controller D parameter
+// @param d: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setBoilerControllerD(double d, bool updateBlynk){
+	if(d < MIN_CONTROLLER_D) d = MIN_CONTROLLER_D;
+	else if(d > MAX_CONTROLLER_D) d = MAX_CONTROLLER_D;
+	if(boilerControllerD == d) return;
+	boilerControllerD = d;
+	eepromWrite((uint8_t*)&boilerControllerD, BOILER_CONTROLLER_D_ADDR, BOILER_CONTROLLER_D_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V10, boilerControllerD);
+	}
+}
+
 double DataManager::getBUControllerP(){
 	return BUControllerP;
 }
@@ -437,9 +502,44 @@ void DataManager::setBUControllerP(double p, bool updateBlynk){
 	BUControllerP = p;
 	eepromWrite((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V9, BUControllerP);
+		Blynk.virtualWrite(V11, BUControllerP);
 	}
+}
 
+double DataManager::getBUControllerI(){
+	return BUControllerI;
+}
+
+/// saves a new BU controller I parameter
+// @param i: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setBUControllerI(double i, bool updateBlynk){
+	if(i < MIN_CONTROLLER_I) i = MIN_CONTROLLER_I;
+	else if(i > MAX_CONTROLLER_I) i = MAX_CONTROLLER_I;
+	if(BUControllerI == i) return;
+	BUControllerI = i;
+	eepromWrite((uint8_t*)&BUControllerI, BU_CONTROLLER_I_ADDR, BU_CONTROLLER_I_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V12, BUControllerI);
+	}
+}
+
+double DataManager::getBUControllerD(){
+	return BUControllerD;
+}
+
+/// saves a new BU controller D parameter
+// @param d: the new parameter
+// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
+void DataManager::setBUControllerD(double d, bool updateBlynk){
+	if(d < MIN_CONTROLLER_D) d = MIN_CONTROLLER_D;
+	else if(d > MAX_CONTROLLER_D) d = MAX_CONTROLLER_D;
+	if(BUControllerD == d) return;
+	BUControllerD = d;
+	eepromWrite((uint8_t*)&BUControllerD, BU_CONTROLLER_D_ADDR, BU_CONTROLLER_D_LEN, true);
+	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
+		Blynk.virtualWrite(V13, BUControllerD);
+	}
 }
 
 double DataManager::getPumpTickToVolumeFactor(){
@@ -456,7 +556,7 @@ void DataManager::setPumpTickToVolumeFactor(double f, bool updateBlynk){
 	pumpTickToVolumeFactor = f;
 	eepromWrite((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V14, pumpTickToVolumeFactor);
+		Blynk.virtualWrite(V18, pumpTickToVolumeFactor);
 	}
 }
 
@@ -474,7 +574,7 @@ void DataManager::setBypassTickToVolumeFactor(double f, bool updateBlynk){
 	bypassTickToVolumeFactor = f;
 	eepromWrite((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V15, bypassTickToVolumeFactor);
+		Blynk.virtualWrite(V19, bypassTickToVolumeFactor);
 	}
 }
 
@@ -487,14 +587,14 @@ void DataManager::initBlynk(){
 	Blynk.virtualWrite(V6, distributionVolume);
 	Blynk.virtualWrite(V7, volumeOffset);
 	Blynk.virtualWrite(V8, boilerControllerP);
-	Blynk.virtualWrite(V9, BUControllerP);
-	Blynk.virtualWrite(V10, preinfusionBuildupTime/1000);
-	Blynk.virtualWrite(V11, preinfusionWaitTime/1000);
+	Blynk.virtualWrite(V11, BUControllerP);
+	Blynk.virtualWrite(V14, preinfusionBuildupTime/1000);
+	Blynk.virtualWrite(V15, preinfusionWaitTime/1000);
 	//reading from EEPROM: stored in s after midnight
 	long time = 0;
 	eepromRead((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN);
 	if(time >= 0){
-		Blynk.virtualWrite(V12, time, 0, "Europe/Berlin");
+		Blynk.virtualWrite(V16, time, 0, "Europe/Berlin");
 		//conversion to machine time
 		long realTime = ((long)hour()*60*60+minute()*60+second());
 		if(time < realTime){
@@ -508,16 +608,16 @@ void DataManager::initBlynk(){
 	}
 	else{
 		standbyWakeupEnabled = false;
-		Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
+		Blynk.virtualWrite(V16, "", 0, "Europe/Berlin");
 	}
 	if(standbyStartTime > 0)
-		Blynk.virtualWrite(V13, standbyStartTime/1000, 0, "Europe/Berlin");
+		Blynk.virtualWrite(V17, standbyStartTime/1000, 0, "Europe/Berlin");
 	else
-		Blynk.virtualWrite(V13, "", 0, "Europe/Berlin");
+		Blynk.virtualWrite(V17, "", 0, "Europe/Berlin");
 
 	setSyncInterval(10 * 60); // Sync interval for RTC in seconds (10 minutes)
-	Blynk.virtualWrite(V14, pumpTickToVolumeFactor);
-	Blynk.virtualWrite(V15, bypassTickToVolumeFactor);
+	Blynk.virtualWrite(V18, pumpTickToVolumeFactor);
+	Blynk.virtualWrite(V19, bypassTickToVolumeFactor);
 
 	blynkInitialized = true;
 }
@@ -540,7 +640,7 @@ void DataManager::setPreinfusionBuildupTime(int time, bool updateBlynk){
 	preinfusionBuildupTime = time;
 	eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V10, preinfusionBuildupTime/1000);
+		Blynk.virtualWrite(V14, preinfusionBuildupTime/1000);
 	}
 }
 
@@ -558,7 +658,7 @@ void DataManager::setPreinfusionWaitTime(int time, bool updateBlynk){
 	preinfusionWaitTime = time;
 	eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V11, preinfusionWaitTime/1000);
+		Blynk.virtualWrite(V15, preinfusionWaitTime/1000);
 	}
 }
 
@@ -591,9 +691,9 @@ void DataManager::setStandbyWakeupTime(long time, bool updateBlynk){
 	}
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
 		if(time >= 0)
-			Blynk.virtualWrite(V12, time%(24*60*60), 0, "Europe/Berlin");
+			Blynk.virtualWrite(V16, time%(24*60*60), 0, "Europe/Berlin");
 		else
-			Blynk.virtualWrite(V12, "", 0, "Europe/Berlin");
+			Blynk.virtualWrite(V16, "", 0, "Europe/Berlin");
 	}
 }
 
@@ -614,7 +714,7 @@ void DataManager::setStandbyStartTime(int time, bool updateBlynk){
 	standbyStartTime = time;
 	eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, true);
 	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V13, standbyStartTime/1000);
+		Blynk.virtualWrite(V17, standbyStartTime/1000);
 	}
 }
 
@@ -651,18 +751,34 @@ BLYNK_WRITE(V8){
 }
 
 BLYNK_WRITE(V9){
-	DataManager::setBUControllerP(param.asDouble(), false);
+	DataManager::setBoilerControllerI(param.asDouble(), false);
 }
 
 BLYNK_WRITE(V10){
-	DataManager::setPreinfusionBuildupTime((int)(param.asDouble()*1000), false);
+	DataManager::setBoilerControllerD(param.asDouble(), false);
 }
 
 BLYNK_WRITE(V11){
-	DataManager::setPreinfusionWaitTime((int)(param.asDouble()*1000), false);
+	DataManager::setBUControllerP(param.asDouble(), false);
 }
 
 BLYNK_WRITE(V12){
+	DataManager::setBUControllerI(param.asDouble(), false);
+}
+
+BLYNK_WRITE(V13){
+	DataManager::setBUControllerD(param.asDouble(), false);
+}
+
+BLYNK_WRITE(V14){
+	DataManager::setPreinfusionBuildupTime((int)(param.asDouble()*1000), false);
+}
+
+BLYNK_WRITE(V15){
+	DataManager::setPreinfusionWaitTime((int)(param.asDouble()*1000), false);
+}
+
+BLYNK_WRITE(V16){
 	String str = param.asString();
 	if(str.equals(""))
 		DataManager::setStandbyWakeupTime(-1, false);
@@ -670,15 +786,15 @@ BLYNK_WRITE(V12){
 		DataManager::setStandbyWakeupTime(param.asLong(), false);
 }
 
-BLYNK_WRITE(V13){
+BLYNK_WRITE(V17){
 	DataManager::setStandbyStartTime(param.asInt()*1000, false);
 }
 
-BLYNK_WRITE(V14){
+BLYNK_WRITE(V18){
 	DataManager::setPumpTickToVolumeFactor(param.asDouble(), false);
 }
 
-BLYNK_WRITE(V15){
+BLYNK_WRITE(V19){
 	DataManager::setBypassTickToVolumeFactor(param.asDouble(), false);
 }
 
