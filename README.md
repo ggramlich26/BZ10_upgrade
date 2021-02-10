@@ -15,7 +15,7 @@ This project is set up to be built with Eclipse Sloeber, which adds Arduino supp
 - TFT_eSPI (Version 1.4.16)
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
-- PID
+- PID (Version 1.2.0)
 
 Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. If you use Sloeber, you might have to add the library paths in the project settings: Right click your project/Properties/"C/C++ Build"/Settings. In the Tool Settings Tab, expand the compiler and click Include Folders. Add the following paths ```"${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}"``` and ```"${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}"``` under each of the three compilers.
 
@@ -153,7 +153,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MTE5OTYyMDcsLTE5NTUxNjg5NDEsLT
+eyJoaXN0b3J5IjpbLTE4Mzc2MDEzODksLTE5NTUxNjg5NDEsLT
 E0MTk3Mzg2NTIsLTE0MzEzMzYxODIsLTc4OTI0NDI3MywxNTYy
 MTc5NzgsLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2Mz
 Q4LDEyNDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIz
