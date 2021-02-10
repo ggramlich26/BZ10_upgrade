@@ -66,6 +66,8 @@
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
                                     								
                                 </option>
                                 								
@@ -104,6 +106,8 @@
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
                                     								
                                 </option>
                                 								
@@ -138,6 +142,8 @@
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
                                     								
                                 </option>
                                 								

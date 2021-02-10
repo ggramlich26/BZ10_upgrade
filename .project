@@ -62,6 +62,11 @@
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/MCP23017/1.1.2</locationURI>
 		</link>
 		<link>
+			<name>libraries/PID</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/PID/1.2.0</locationURI>
+		</link>
+		<link>
 			<name>libraries/SPI</name>
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPI</locationURI>
