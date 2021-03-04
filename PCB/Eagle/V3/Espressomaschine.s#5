@@ -11518,8 +11518,6 @@ at 30/07/2012 17:45:58</description>
 <wire x1="66.04" y1="-55.88" x2="53.34" y2="-55.88" width="0.1524" layer="91"/>
 <label x="53.34" y="-55.88" size="1.778" layer="95"/>
 </segment>
-</net>
-<net name="N$15" class="0">
 <segment>
 <pinref part="R32" gate="G$1" pin="1"/>
 <pinref part="JP5" gate="G$1" pin="1"/>
@@ -11530,6 +11528,7 @@ at 30/07/2012 17:45:58</description>
 <wire x1="-48.26" y1="-48.26" x2="-48.26" y2="-45.72" width="0.1524" layer="91"/>
 <wire x1="-48.26" y1="-45.72" x2="-35.56" y2="-45.72" width="0.1524" layer="91"/>
 <junction x="-35.56" y="-45.72"/>
+<label x="-48.26" y="-45.72" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

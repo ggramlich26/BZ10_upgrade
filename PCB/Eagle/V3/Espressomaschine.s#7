@@ -10949,6 +10949,10 @@ at 30/07/2012 17:45:58</description>
 <wire x1="20.32" y1="-60.96" x2="7.62" y2="-60.96" width="0.1524" layer="91"/>
 <junction x="7.62" y="-60.96"/>
 </segment>
+<segment>
+<pinref part="GND11" gate="1" pin="GND"/>
+<wire x1="-45.72" y1="48.26" x2="-45.72" y2="53.34" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="+5V" class="0">
 <segment>
@@ -10961,6 +10965,10 @@ at 30/07/2012 17:45:58</description>
 <wire x1="-83.82" y1="-12.7" x2="-63.5" y2="-12.7" width="0.1524" layer="91"/>
 <pinref part="U$3" gate="G$1" pin="VIN"/>
 <label x="-83.82" y="-12.7" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="P+8" gate="1" pin="+5V"/>
+<wire x1="-76.2" y1="48.26" x2="-76.2" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="LED_LEFT" class="0">
@@ -11136,6 +11144,15 @@ at 30/07/2012 17:45:58</description>
 <wire x1="0" y1="-27.94" x2="7.62" y2="-27.94" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="-27.94" x2="7.62" y2="-30.48" width="0.1524" layer="91"/>
 <junction x="0" y="-27.94"/>
+</segment>
+<segment>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
+<wire x1="-17.78" y1="48.26" x2="-17.78" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<wire x1="-83.82" y1="33.02" x2="-63.5" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="3V3"/>
+<label x="-83.82" y="33.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="DISP_CS" class="0">
@@ -11341,13 +11358,6 @@ at 30/07/2012 17:45:58</description>
 <segment>
 <pinref part="U$3" gate="G$1" pin="CLK"/>
 <wire x1="-27.94" y1="-12.7" x2="-7.62" y2="-12.7" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="3V3" class="0">
-<segment>
-<wire x1="-83.82" y1="33.02" x2="-63.5" y2="33.02" width="0.1524" layer="91"/>
-<pinref part="U$3" gate="G$1" pin="3V3"/>
-<label x="-83.82" y="33.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$49" class="0">

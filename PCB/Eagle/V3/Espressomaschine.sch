@@ -10768,6 +10768,7 @@ at 30/07/2012 17:45:58</description>
 <part name="U$12" library="PINHD_eigen" deviceset="PINHD-1X1" device="SMD_RM1.27"/>
 <part name="U$13" library="PINHD_eigen" deviceset="PINHD-1X1" device="SMD_RM1.27"/>
 <part name="U$14" library="PINHD_eigen" deviceset="PINHD-1X1" device="SMD_RM1.27"/>
+<part name="R19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="10k"/>
 </parts>
 <sheets>
 <sheet>
@@ -10897,6 +10898,10 @@ at 30/07/2012 17:45:58</description>
 <instance part="U$12" gate="G$1" x="-91.44" y="22.86" smashed="yes" rot="R180"/>
 <instance part="U$13" gate="G$1" x="-91.44" y="15.24" smashed="yes" rot="R180"/>
 <instance part="U$14" gate="G$1" x="-91.44" y="10.16" smashed="yes" rot="R180"/>
+<instance part="R19" gate="G$1" x="27.94" y="40.64" smashed="yes" rot="R90">
+<attribute name="NAME" x="26.4414" y="36.83" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="31.242" y="36.83" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -11143,6 +11148,9 @@ at 30/07/2012 17:45:58</description>
 <junction x="20.32" y="48.26"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 <wire x1="20.32" y1="48.26" x2="20.32" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="R19" gate="G$1" pin="2"/>
+<wire x1="20.32" y1="48.26" x2="27.94" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="48.26" x2="27.94" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U5" gate="A" pin="VDD"/>
@@ -11539,6 +11547,11 @@ at 30/07/2012 17:45:58</description>
 <wire x1="-83.82" y1="2.54" x2="-63.5" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="U$3" gate="G$1" pin="D12"/>
 <label x="-83.82" y="2.54" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R19" gate="G$1" pin="1"/>
+<wire x1="27.94" y1="35.56" x2="27.94" y2="30.48" width="0.1524" layer="91"/>
+<label x="27.94" y="25.4" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>
