@@ -141,15 +141,14 @@ You will need all need the components listed below to complete the PCB. All of t
 pinheader 2.54mm|1|2|f+m|4|boiler SSR, boiler probe, NTC, tank switch
 pinheader 2.54mm|1|3|f+m|5|connecting TSIC temperature and flow sensors
 pinheader 2.54mm|1|6|f+m|2|connecting arduino SSR board
+pinheader 2.54mm|1|8|f+m|2|connecting switches and LEDs
 pinheader 2.54mm|1|9|f+m|2|display
-pinheader 2.54mm|1|9|f+m|2|display
-
 wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
 
 
 ### Hardware off the PCB in the machine
 - Arduino SSR board with 4 SSRs (e.g. [Arduino SSR module on Amazon](https://www.amazon.de/Ecloud-4-Channel-Trigger-SSR-Modul-Brett-Arduino-resistivem/dp/B01E6KUMTI/ref=sr_1_4?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=arduino%20ssr%204&qid=1605773053&quartzVehicle=812-409&replacementKeywords=arduino%20ssr&sr=8-4))
-- Two SSRs for 230V, switchable by 3-5VDC (called SSR-40 DA) for boiler heater and electric brewing unit heater (e.g. [SSR on Amazon](https://www.amazon.de/KKmoon-24V-380V-SSR-40-Relaismodul-Temperaturregler/dp/B010Q6898C/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=ssr&qid=1605773227&sr=8-3))
+- One SSRs for 230V, switchable by 3-5VDC (called SSR-40 DA) for boiler heater and electric brewing unit heater (e.g. [SSR on Amazon](https://www.amazon.de/KKmoon-24V-380V-SSR-40-Relaismodul-Temperaturregler/dp/B010Q6898C/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=ssr&qid=1605773227&sr=8-3))
 - SPI TFT Display 320x240 Pixels with ILI9341 (e.g. [Display on Amazon](https://www.amazon.de/gp/product/B01E0MGZU2/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1))
 - Alternative switches: Brewing switch should be replaced by a 3 fixed positions switch, indicator lights should be replaced by push buttons with LEDs, so that they can serve as indicator lights and inputs at the same time. (I used [those](https://www.aliexpress.com/item/4000454624299.html?spm=a2g0s.9042311.0.0.27424c4dZZ9bgU) instead of the indicator lights (3-6V, momentary version) and [those](https://www.aliexpress.com/item/4000028451024.html?spm=a2g0s.9042311.0.0.27424c4dZZ9bgU) for the original two push buttons (5V, latching fixation, blue LED, 2 positions for on/off, 3 positions for brewing switch). If you want to use those switches for on/off, you will need to add a relay in the power supply chain because they are not strong enough for the entire espresso machine power!
 - TSIC 306 temperature sensors, 3 pieces
@@ -157,11 +156,11 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzU1ODMyNjI0LC02NzIwMTg0NjQsLTE4Mz
-c2MDEzODksLTE5NTUxNjg5NDEsLTE0MTk3Mzg2NTIsLTE0MzEz
-MzYxODIsLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUzMDgxMj
-YsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2
-NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MT
-gsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4
-ODcyMjkwNF19
+eyJoaXN0b3J5IjpbMTYzMTkzODAwMiwtNjcyMDE4NDY0LC0xOD
+M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
+MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
+I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
+NjY0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3Nj
+E4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03
+ODg3MjI5MDRdfQ==
 -->
