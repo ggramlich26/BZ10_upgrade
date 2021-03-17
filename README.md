@@ -138,9 +138,8 @@ You will need all need the components listed below to complete the PCB. All of t
 **Connectors:**
 |Name|rows|positions|m/f| Quantity | Comment |
 |--|--|--|--|--|--
-pinheader 2.54mm|1|2|f|5|boiler SSR, boiler probe, NTC, tank switch
-pinheader 2.54mm|1|3|m|5|boiler SSR, boiler probe, NTC, tank switch
-pinheader 2.54mm|1|3|f|5|connecting temperature and flow sensors
+pinheader 2.54mm|1|2|f+m|4|boiler SSR, boiler probe, NTC, tank switch
+pinheader 2.54mm|1|3|f|5|connecting TSIC temperature and flow sensors
 pinheader 2.54mm|1|3|m|5|possibly soldering to temperature and flow sensor wires
 pinheader 2.54mm|1|9|f|2|display
 pinheader 2.54mm|1|9|m|1|display
@@ -159,7 +158,7 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcyODM3Nzc1MiwtNjcyMDE4NDY0LC0xOD
+eyJoaXN0b3J5IjpbLTM0MDY4MzE5NiwtNjcyMDE4NDY0LC0xOD
 M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
 MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
 I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
