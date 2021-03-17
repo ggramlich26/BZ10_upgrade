@@ -161,11 +161,5 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk4NDQ4MzQ3MCwxOTY4NzYxMjAyLC05Mz
-QzOTYxODQsLTY3MjAxODQ2NCwtMTgzNzYwMTM4OSwtMTk1NTE2
-ODk0MSwtMTQxOTczODY1MiwtMTQzMTMzNjE4MiwtNzg5MjQ0Mj
-czLDE1NjIxNzk3OCwtMTE5NTMwODEyNiwtMTQ0ODk1NjkzMSw2
-NDI4MjYzNDgsMTI0MDQ3MzI5MywtMTY2NDQ3NDIwNCw4MjU4MT
-E2NSwtMjM0ODEyNjg0LDIxMzQ4NzYxOCwtMTgyOTEwOTY0Nyw2
-Mzc0NDM5OV19
+eyJoaXN0b3J5IjpbMTk4NDQ4MzQ3MF19
 -->
