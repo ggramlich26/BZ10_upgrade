@@ -139,13 +139,12 @@ You will need all need the components listed below to complete the PCB. All of t
 |Name|rows|positions|m/f| Quantity | Comment |
 |--|--|--|--|--|--
 pinheader 2.54mm|1|2|f+m|4|boiler SSR, boiler probe, NTC, tank switch
-pinheader 2.54mm|1|3|f|5|connecting TSIC temperature and flow sensors
-pinheader 2.54mm|1|3|m|5|possibly soldering to temperature and flow sensor wires
-pinheader 2.54mm|1|9|f|2|display
-pinheader 2.54mm|1|9|m|1|display
-pinheader 2.54mm|1|6|f|2|connecting arduino SSR board
-pinheader 2.54mm|1|6|m|1|connecting arduino SSR board
-wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
+pinheader 2.54mm|1|3|f+m|5|connecting TSIC temperature and flow sensors
+pinheader 2.54mm|1|6|f+m|2|connecting arduino SSR board
+pinheader 2.54mm|1|9|f+m|2|display
+pinheader 2.54mm|1|9|f+m|2|display
+
+wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https://de.farnell.com/camdenboss/ctb1500-2/terminal-block-5mm-2-way/dp/3377326?st=wire%20to%20board%20rm5)
 
 
 ### Hardware off the PCB in the machine
@@ -158,11 +157,11 @@ wire to board connectors, RM5 with screws|1|2|f|13|connecting everyhing else [fa
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM0MDY4MzE5NiwtNjcyMDE4NDY0LC0xOD
-M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
-MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
-I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
-NjY0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3Nj
-E4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03
-ODg3MjI5MDRdfQ==
+eyJoaXN0b3J5IjpbNzU1ODMyNjI0LC02NzIwMTg0NjQsLTE4Mz
+c2MDEzODksLTE5NTUxNjg5NDEsLTE0MTk3Mzg2NTIsLTE0MzEz
+MzYxODIsLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUzMDgxMj
+YsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2
+NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MT
+gsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4
+ODcyMjkwNF19
 -->
