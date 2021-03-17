@@ -97,24 +97,24 @@ You will need all need the components listed below to complete the PCB. All of t
 **Resistors:**
 |Value|Package | Quantity | Link |
 |--|--|--|--
-|2.2k|0603|1
-|4.7k|0603|2
-|10k|0603|5
-|22k|0603|1
-|47k|0603|2
-|100k|0603|1
-220k|0603|2
-330k|0603|3
-1M|0603|1
-4.7M|0603|1
+|2.2k|0603|
+|4.7k|0603|
+|10k|0603|
+|22k|0603|
+|47k|0603|
+|100k|0603|
+220k|0603|
+330k|0603|
+1M|0603|
+4.7M|0603|
 
 **Capacitors:**
 |Value|Package | Quantity | Link |
 |--|--|--|--
-2.2n|0603|1
-10n|0603|2
-22n|0603|1
-100n|0603|1
+2.2n|0603|
+10n|0603|
+22n|0603|
+100n|0603|
 
 
 **Semiconductors:**
@@ -161,11 +161,11 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkzNDM5NjE4NCwtNjcyMDE4NDY0LC0xOD
-M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
-MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
-I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
-NjY0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3Nj
-E4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03
-ODg3MjI5MDRdfQ==
+eyJoaXN0b3J5IjpbMTk2ODc2MTIwMiwtOTM0Mzk2MTg0LC02Nz
+IwMTg0NjQsLTE4Mzc2MDEzODksLTE5NTUxNjg5NDEsLTE0MTk3
+Mzg2NTIsLTE0MzEzMzYxODIsLTc4OTI0NDI3MywxNTYyMTc5Nz
+gsLTExOTUzMDgxMjYsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEy
+NDA0NzMyOTMsLTE2NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMj
+Y4NCwyMTM0ODc2MTgsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIx
+MDI5MjU5NTNdfQ==
 -->
