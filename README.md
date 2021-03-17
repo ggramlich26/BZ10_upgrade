@@ -129,6 +129,7 @@ You will need all need the components listed below to complete the PCB. All of t
  MCP23017SO|SO28W|1|[farnell](https://de.farnell.com/microchip/mcp23017-e-so/16bit-expander-i-o-i2c-i-f-smd/dp/1332087?st=mcp23017)
  NE555D|SO-8|1|[farnell](https://de.farnell.com/texas-instruments/ne555d/precision-timers-linear/dp/3121191?st=ne555d)
  MCP6002-E/SN|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
+  ADS1115|SOIC-8|1|[farnell](https://de.farnell.com/microchip/mcp6002-e-sn/op-verst-rker-1mhz-0-6v-us-4500uv/dp/1332118?st=mcp6002-e/sn)
 
 **Boards:**
 |Name|Package | Quantity | Link |
@@ -156,11 +157,11 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - 5V power supply
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYzMTkzODAwMiwtNjcyMDE4NDY0LC0xOD
-M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
-MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
-I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
-NjY0NDc0MjA0LDgyNTgxMTY1LC0yMzQ4MTI2ODQsMjEzNDg3Nj
-E4LC0xODI5MTA5NjQ3LDYzNzQ0Mzk5LC0yMTAyOTI1OTUzLC03
-ODg3MjI5MDRdfQ==
+eyJoaXN0b3J5IjpbOTk4NzE3MzA1LC02NzIwMTg0NjQsLTE4Mz
+c2MDEzODksLTE5NTUxNjg5NDEsLTE0MTk3Mzg2NTIsLTE0MzEz
+MzYxODIsLTc4OTI0NDI3MywxNTYyMTc5NzgsLTExOTUzMDgxMj
+YsLTE0NDg5NTY5MzEsNjQyODI2MzQ4LDEyNDA0NzMyOTMsLTE2
+NjQ0NzQyMDQsODI1ODExNjUsLTIzNDgxMjY4NCwyMTM0ODc2MT
+gsLTE4MjkxMDk2NDcsNjM3NDQzOTksLTIxMDI5MjU5NTMsLTc4
+ODcyMjkwNF19
 -->
