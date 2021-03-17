@@ -134,7 +134,7 @@ You will need all need the components listed below to complete the PCB. All of t
 **Boards:**
 |Name|Package | Quantity | Link |
 |--|--|--|--
-| ESP32 nodeMCU with external antenna||1|[from far east](https://www.aliexpress.com/item/32867696371.html?spm=a2g0s.9042311.0.0.27424c4dZ5DEit)|
+| ESP32 nodeMCU with external antenna||1|[from far east](https://www.aliexpress.com/item/4000155919030.html?spm=a2g0s.9042311.0.0.27424c4d4ySog2)|
 
 **Power supply:**
 |Name|Package | Quantity | Link |
@@ -161,7 +161,7 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMzOTU2MDMxMCwtNjcyMDE4NDY0LC0xOD
+eyJoaXN0b3J5IjpbLTkzNDM5NjE4NCwtNjcyMDE4NDY0LC0xOD
 M3NjAxMzg5LC0xOTU1MTY4OTQxLC0xNDE5NzM4NjUyLC0xNDMx
 MzM2MTgyLC03ODkyNDQyNzMsMTU2MjE3OTc4LC0xMTk1MzA4MT
 I2LC0xNDQ4OTU2OTMxLDY0MjgyNjM0OCwxMjQwNDczMjkzLC0x
