@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preset>
+  <name>Color G3B5R5G3</name>
+  <prepare>
+    <convType>2</convType>
+    <monoType>1</monoType>
+    <edge>128</edge>
+    <scanMain>0</scanMain>
+    <scanSub>0</scanSub>
+    <inverse>0</inverse>
+    <bandScanning>0</bandScanning>
+    <bandWidth>1</bandWidth>
+    <useCustomScript>0</useCustomScript>
+    <customScript><![CDATA[]]></customScript>
+    <customPreprocessScript><![CDATA[]]></customPreprocessScript>
+  </prepare>
+  <matrix>
+    <maskUsed>0000ffff</maskUsed>
+    <maskAnd>ffffffff</maskAnd>
+    <maskOr>00000000</maskOr>
+    <maskFill>ffffffff</maskFill>
+    <operations count="4">
+      <operation index="0">
+        <mask>00f80000</mask>
+        <shift>8</shift>
+        <left>0</left>
+      </operation>
+      <operation index="1">
+        <mask>0000E000</mask>
+        <shift>13</shift>
+        <left>0</left>
+      </operation>
+      <operation index="2">
+        <mask>00001c00</mask>
+        <shift>-3</shift>
+        <left>0</left>
+      </operation>
+      <operation index="3">
+        <mask>000000f8</mask>
+        <shift>-5</shift>
+        <left>0</left>
+      </operation>
+    </operations>
+  </matrix>
+  <reordering>
+    <operations count="0"/>
+  </reordering>
+  <image>
+    <bytesOrder>0</bytesOrder>
+    <blockSize>3</blockSize>
+    <blockDefaultOnes>0</blockDefaultOnes>
+    <splitToRows>1</splitToRows>
+    <compressionRle>0</compressionRle>
+    <compressionRleMinLength>2</compressionRleMinLength>
+    <blockPrefix><![CDATA[0x]]></blockPrefix>
+    <blockSuffix><![CDATA[empty]]></blockSuffix>
+    <blockDelimiter><![CDATA[, ]]></blockDelimiter>
+    <previewPrefix><![CDATA[// ]]></previewPrefix>
+    <previewSuffix><![CDATA[empty]]></previewSuffix>
+    <previewDelimiter><![CDATA[empty]]></previewDelimiter>
+    <previewLevels><![CDATA[∙
+░
+▒
+▓
+█]]></previewLevels>
+  </image>
+  <font>
+    <bom>0</bom>
+    <sortOrder>1</sortOrder>
+    <codec>ASMO-708</codec>
+  </font>
+  <templates>
+    <images>:/templates/image_convert</images>
+    <fonts>:/templates/font_convert</fonts>
+  </templates>
+</preset>
