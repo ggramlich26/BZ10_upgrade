@@ -12,6 +12,7 @@
 #include "Arduino.h"
 #include "TSIC.h"
 #include "MCP23017.h"
+#include "ADSTempSensor.h"
 #include "Wire.h"
 #include "Button.h"
 

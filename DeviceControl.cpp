@@ -10,13 +10,17 @@
 
 DeviceControl* DeviceControl::_instance = NULL;
 
+#ifndef BOILER_TEMP_ON_ADS
 static TSIC *tsicBoiler;
+#endif
 static TSIC *tsicBU;
 static TSIC *tsicTube;
 static volatile long pumpTicks;
 static volatile long bypassTicks;
 
+#ifndef BOILER_TEMP_ON_ADS
 void IRAM_ATTR tsicBoilerWrapper(){tsicBoiler->TSIC_ISR();}
+#endif
 void IRAM_ATTR tsicBUWrapper(){tsicBU->TSIC_ISR();}
 void IRAM_ATTR tsicTubeWrapper(){tsicTube->TSIC_ISR();}
 void IRAM_ATTR pumpFlowmeterISR(){pumpTicks++;}
@@ -30,6 +34,9 @@ DeviceControl::~DeviceControl() {
 }
 
 MCP23017 mcp = MCP23017(MCP_ADDR);
+#ifdef BOILER_TEMP_ON_ADS
+ADSTempSensor adsSensor = ADSTempSensor();
+#endif
 /// initializes all pins and interrupts etc. necessary
 void DeviceControl::init(){
 	Wire.begin();
@@ -78,11 +85,18 @@ void DeviceControl::init(){
 	pinMode(TFT_LED, OUTPUT);
 	digitalWrite(TFT_LED, LOW);
 
+#ifdef BOILER_TEMP_ON_ADS
+	adsSensor.init();
+#endif
 
+#ifndef BOILER_TEMP_ON_ADS
 	tsicBoiler = new TSIC(TEMP_BOILER_PIN);
+#endif
 	tsicBU = new TSIC(TEMP_BU_PIN);
 	tsicTube = new TSIC(TEMP_TUBE_PIN);
+#ifndef BOILER_TEMP_ON_ADS
 	attachInterrupt(TEMP_BOILER_PIN, tsicBoilerWrapper, CHANGE);
+#endif
 	attachInterrupt(TEMP_BU_PIN, tsicBUWrapper, CHANGE);
 	attachInterrupt(TEMP_TUBE_PIN, tsicTubeWrapper, CHANGE);
 	attachInterrupt(FLOW_PUMP_PIN, pumpFlowmeterISR, RISING);
@@ -147,6 +161,10 @@ void DeviceControl::update(){
 	button2->update();
 	buttonManDist->update();
 	buttonVolDist->update();
+
+#ifdef BOILER_TEMP_ON_ADS
+	adsSensor.update();
+#endif
 
 }
 
@@ -366,7 +384,11 @@ double DeviceControl::getBypassVolume(){
 }
 
 double	DeviceControl::getBoilerTemp(){
+#ifndef BOILER_TEMP_ON_ADS
 	return tsicBoiler->getTemperature();
+#else
+	return adsSensor.getBoilerTemp();
+#endif
 }
 
 double DeviceControl::getBUTemp(){
@@ -378,7 +400,11 @@ double DeviceControl::getTubeTemp(){
 }
 
 bool DeviceControl::getBoilerTempSensorError(){
+#ifndef BOILER_TEMP_ON_ADS
 	return tsicBoiler->sensorError();
+#else
+	return adsSensor.getBoilerTempSensorError();
+#endif
 }
 
 bool DeviceControl::getBUTempSensorError(){
