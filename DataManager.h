@@ -13,7 +13,7 @@
 
 #define DEFAULT_TEMP_BOILER		108
 #define	DEFAULT_TEMP_BU			83
-#define	MAX_TEMP_BOILER			120
+#define	MAX_TEMP_BOILER			125
 #define	MAX_TEMP_BU				110
 #define	MIN_TEMP_BOILER			10
 #define	MIN_TEMP_BU				10
