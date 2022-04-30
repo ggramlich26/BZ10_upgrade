@@ -63,6 +63,7 @@
 #define DEFAULT_STANDBY_WAKEUP_TIME				-1			//time in s after midnight at which the device will wake up from standby, -1 to disable wakeup
 
 #define WIFI_CONNECT_INTERVAL					10000	//interval in which the device tries to connect to wifi
+#define BLYNK_CONNECT_INTERVAL					10000	//interval in which the device tries to connect to the Blynk server. This is relevant, if WIFI is up, but internet is down
 
 
 class DataManager {

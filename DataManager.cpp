@@ -265,9 +265,6 @@ void DataManager::init(){
 		WiFi.begin(ssid, password);
 		lastWifiConnectTryTime = millis();
 		delay(500);
-		if(WiFi.isConnected()){
-			initBlynk();
-		}
 	}
 }
 
@@ -277,12 +274,19 @@ void DataManager::update(){
 		WiFi.begin(ssid, password);
 		lastWifiConnectTryTime = millis();
 	}
-	if(DataManager::getBlynkEnabled() && !blynkInitialized && WiFi.isConnected()){
+	static unsigned long lastBlynkConnectTime = 0;
+	if(DataManager::getBlynkEnabled() && !blynkInitialized && WiFi.isConnected() &&
+			(lastBlynkConnectTime == 0 || millis() >= lastBlynkConnectTime + BLYNK_CONNECT_INTERVAL)){
 		initBlynk();
+		lastBlynkConnectTime = millis();
 	}
 	if(DataManager::getBlynkEnabled() && blynkInitialized){
 		Blynk.run();
 		timer.run();
+		if(!Blynk.connected()){
+			Serial.println("Connection to Blynk lost");
+			blynkInitialized = false;
+		}
 	}
 }
 
@@ -580,7 +584,18 @@ void DataManager::setBypassTickToVolumeFactor(double f, bool updateBlynk){
 
 /// initialize Blynk by creating the connection and writing current values
 void DataManager::initBlynk(){
-	Blynk.begin(auth, ssid, password);
+	static bool blynkConfigured = false;
+	if(!blynkConfigured){
+		Blynk.config(auth);
+		blynkConfigured = true;
+	}
+	Blynk.connect(100);
+	if(!Blynk.connected()){
+		Serial.println("Blynk not connected");
+		return;
+	}
+	Serial.println("Blynk connected");
+
 	//write current values to cloud
 	Blynk.virtualWrite(V4, targetTempBoiler);
 	Blynk.virtualWrite(V5, targetTempBU);
