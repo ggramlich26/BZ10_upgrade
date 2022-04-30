@@ -91,7 +91,7 @@ void ADSTempSensor::calculateBoilerTemp(){
 
 void ADSTempSensor::checkBoilerTempSensorForError(){
 	bool error = false;
-	static long lastErrorFoundTime = 0;
+	static unsigned long lastErrorFoundTime = 0;
 	if(millis() > lastErrorFoundTime + ADS_PLAUSIBILITY_STAY_IN_ERROR_TIME){
 		boilerTempSensorError = false;
 	}

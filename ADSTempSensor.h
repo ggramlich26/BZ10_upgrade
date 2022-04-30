@@ -33,7 +33,7 @@ private:
 	void checkBoilerTempSensorForError();
 	double boilerTemp;
 	bool boilerTempSensorError;
-	long lastUpdateTime;
+	unsigned long lastUpdateTime;
 	adsStates state;
 	float boilerVoltage;
 	float supplyVoltage;
