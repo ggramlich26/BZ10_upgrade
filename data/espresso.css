@@ -1,0 +1,281 @@
+body, h1,h2,h3,h4,h5,h6 {
+	font-family: "Montserrat", sans-serif
+}
+
+.w3-row-padding img {
+	margin-bottom: 12px
+}
+
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {
+	width: 120px;background: #222;
+}
+
+/* Hide inpput number arrows on Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none; !important
+	margin: 0;
+}
+
+/* Hide input number arrows on Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+/* border color of activated inputs */
+input:focus {
+	outline: none !important;
+	box-shadow: 0 0 8px 1px #ccc;
+}
+
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {
+	margin-left: 120px
+}
+
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {
+	#main {margin-left: 0}
+}
+
+/* ---------------------------------------------- */
+/* ----------------- GENERAL -------------------- */
+/* ---------------------------------------------- */
+
+ .helpButton {
+	 font-size: 15px;
+	 color: #ccc;
+	 background-color: transparent;
+	 border: none;
+	 margin-bottom: auto;
+ }
+
+ .helpButton:hover {
+	 background-color: #f1f1f1;
+	 color: black;
+	 border-radius: 4px;
+ }
+
+ .help {
+	 display: none;
+	 color: #f1f1f1;
+	 /*box-shadow: 4px 4px 8px 1px #ccc;*/
+	 box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+	 padding-left: 8px;
+	 padding-right: 8px;
+	 margin-bottom: 32px;
+ }
+
+ .helpCloseButton {
+	 float: right;
+	 color: #f1f1f1;
+	 background-color: transparent;
+	 border: none;
+	 border-radius: 4px;
+ }
+
+ .helpCloseButton:hover {
+	 background-color: #ccc;
+ }
+
+ .w3-button, .w3-btn, .w3-input, .w3-select {
+	 border-radius: 4px;
+ }
+
+ .w3-row-padding {
+	 padding-left: 0;
+	 padding-right: 0;
+ }
+
+ .esp-third-first {
+	 padding-left: 0 !important;
+ }
+
+ .esp-third-last {
+	 padding-right: 0 !important;
+ }
+
+ .esp-half-first {
+	 padding-left: 0 !important;
+ }
+
+ .esp-half-last {
+	 padding-right: 0 !important;
+ }
+
+/* ---------------------------------------------- */
+/* ------------------- PLOTS -------------------- */
+/* ---------------------------------------------- */
+
+  .plotsCanvas {
+	 width: 100%;
+     aspect-ratio: 2 / 1;
+     max-height: 100vh;
+	 border: none;
+	 --axisColor: #f1f1f1;
+	 --axisWidth: 1; /* unit is pixels, but don't write it here! */
+	 --axisPadding: 50; /* unit is pixels, but don't write it here! */
+	 --tickLength: 5;
+	 --mainTickLength: 10;
+	 --ticksPerDiv: 4;
+	 --numberSize: 15;
+	 --labelSize: 15;
+	 --labelColor: #f1f1f1;
+	 --arrowH: 5;
+	 --arrowL: 10;
+	 --flowColor: #999;
+	 --pressureColor: #f1f1f1;
+	 --plotLineWidth: 1;
+  }
+
+/* ---------------------------------------------- */
+/* ----------------- EDIT ----------------------- */
+/* ---------------------------------------------- */
+ #modeEditProfiling {
+	 position: relative;
+	 width: 100%;
+     aspect-ratio: 2 / 1;
+     max-height: 100vh;
+ }
+ .pEditContainer {
+	 width: 100%;
+	 margin-left: 25px;
+	 margin-bottom: 25px;
+     aspect-ratio: 2 / 1;
+     max-height: 100vh;
+     display: flex;
+     flex-direction: row;
+     flex-wrap: nowrap;
+ }
+
+ .pEditAxis {
+	 position: absolute;
+	 top: 18px;
+	 left: 0;
+	 right: 0;
+	 bottom: 0;
+	 z-index: -1;
+	 --axisColor: #f1f1f1;
+	 --axisWidth: 1; /* unit is pixels, but don't write it here! */
+	 --axisPadding: 20; /* unit is pixels, but don't write it here! */
+	 --labelColor: #f1f1f1;
+	 --labelSize: 15;
+	 --arrowH: 5;
+	 --arrowL: 10;
+ }
+
+ /* don't show axis on small screens */
+@media only screen and (max-width: 600px) {
+	.pEditAxis {visibility: hidden;}
+	.pEditContainer {margin-left: 0; margin-bottom: 0;}
+}
+
+ .pEditStep {
+     width: 8%;
+	 max-width: 100%;
+	 min-width: 2.5em;
+     margin-top: 0px;
+     margin-bottom: 0px;
+     margin-left: 8px;
+     display: flex;
+     flex-direction: column;
+     flex-wrap: nowrap;
+ }
+
+ .pEditPlusButton, .pEditMinusButton {
+     flex-grow: 0.3;
+     z-index: 1;
+     padding-top: 0px;
+     padding-bottom: 0px;
+     border-radius: 4px;
+ }
+
+ .pEditDeleteButton {
+     position: absolute;
+     top: 0;
+     right: 0;
+     z-index: 1;
+     width: 50%;
+     max-width: 3em;
+     aspect-ratio: 1 / 1;
+     padding: 0 0;
+     /*background-color: #f1f1f1;*/
+     background-color: invisible;
+     /*color: #f44336;*/
+     color: #ccc;
+     border-radius: 4;
+ }
+
+ .pEditStepWidth {
+     position: absolute;
+     top: 50%;
+	 transform: translate(0, -50%);
+	 width: 100%;
+	 z-index: 1;
+     display: flex;
+     flex-direction: row;
+     flex-wrap: nowrap;
+	 align-items: center;
+	 color: #f1f1f1;
+ }
+
+ .pEditStepWidthInput {
+	 background: transparent;
+	 border: none;
+	 color: #f1f1f1;
+     text-align: center;
+	 flex-grow: 0;
+ }
+
+ .pEditValueInput {
+     position: absolute;
+     bottom: 0;
+     text-align: center;
+     color: white;
+     background: transparent;
+     border: none;
+ }
+
+ .pEditStepWidthInput:hover, .pEditValueInput:hover {
+	 color: #ccc;
+ }
+ 
+ .pEditLevel {
+     position: absolute;
+     bottom: 0;
+     height: 100%;
+     width: 100%;
+     background-image: linear-gradient(white, black);
+     border-radius: 4px;
+ }
+
+ .pEditLevelBackground {
+     flex-grow: 10;
+     position: relative;
+     margin-top: 8px;
+     margin-bottom: 8px;
+ }
+
+ .pEditAddStepButton {
+     width: 8%;
+     font-size: large;
+     margin: 0 0 0 8px;
+     border-radius: 4px;
+ }
+
+ .languageSelector {
+	 padding: 16px 8px 16px 8px;
+ }
+
+ .settingsInput {
+	 margin-bottom: 8px;
+ }
+ 
+ .settingsSaveButton {
+	 margin-top: 32px;
+ }
+
+ .headingSettings {
+	 margin-top: 32px;
+ }

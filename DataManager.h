@@ -11,6 +11,13 @@
 #include "Arduino.h"
 #include "DeviceControl.h"
 
+#define SSID_MAX_LEN				30
+#define WIFI_PW_MAX_LEN				30
+#define	HOST_NAME_MAX_LEN			30
+#define LANG_MAX_LEN				5
+#define BONJOUR_NAME_MAX_LEN		30
+
+
 #define DEFAULT_TEMP_BOILER		121
 #define	DEFAULT_TEMP_BU			85
 #define	MAX_TEMP_BOILER			125
@@ -74,50 +81,62 @@ public:
 
 	static double getTargetTempBoiler();
 	static double getTargetTempBU();
-	static void setTargetTempBoiler(double temp, bool updateBlynk);
-	static void setTargetTempBU(double temp, bool updateBlynk);
+	static void setTargetTempBoiler(double temp);
+	static void setTargetTempBU(double temp);
 
 	static long getFillBoilerOverSondeTime();
 	static long getBoilerMaxFillTime();
 	static double getDistributionVolume();
-	static void setDistributionVolume(double volume, bool updateBlynk);
+	static void setDistributionVolume(double volume);
 	static double getVolumeOffset();
-	static void setVolumeOffset(double offset, bool updateBlynk);
+	static void setVolumeOffset(double offset);
 	static double getBoilerControllerP();
-	static void setBoilerControllerP(double p, bool updateBlynk);
+	static void setBoilerControllerP(double p);
 	static double getBoilerControllerI();
-	static void setBoilerControllerI(double i, bool updateBlynk);
+	static void setBoilerControllerI(double i);
 	static double getBoilerControllerD();
-	static void setBoilerControllerD(double d, bool updateBlynk);
+	static void setBoilerControllerD(double d);
 	static double getBUControllerP();
-	static void setBUControllerP(double p, bool updateBlynk);
+	static void setBUControllerP(double p);
 	static double getBUControllerI();
-	static void setBUControllerI(double i, bool updateBlynk);
+	static void setBUControllerI(double i);
 	static double getBUControllerD();
-	static void setBUControllerD(double d, bool updateBlynk);
+	static void setBUControllerD(double d);
 	static double getPumpTickToVolumeFactor();
-	static void setPumpTickToVolumeFactor(double f, bool updateBlynk);
+	static void setPumpTickToVolumeFactor(double f);
 	static double getBypassTickToVolumeFactor();
-	static void setBypassTickToVolumeFactor(double f, bool updateBlynk);
+	static void setBypassTickToVolumeFactor(double f);
 
 	static int getPreinfusionBuildupTime();
-	static void setPreinfusionBuildupTime(int time, bool updateBlynk);
+	static void setPreinfusionBuildupTime(int time);
 	static int getPreinfusionWaitTime();
-	static void setPreinfusionWaitTime(int time, bool updateBlynk);
+	static void setPreinfusionWaitTime(int time);
 
-	static void setStandbyStartTime(int time, bool updateBlynk);
+	static void setStandbyStartTime(int time);
+	static void setStandbyStartTime(const char* time);
 	static int getStandbyStartTime();
+	static String getStandbyStartTimeString();
 	static unsigned long getStandbyWakeupTime();
-	static void setStandbyWakeupTime(long time, bool updateBlynk);
+	static void convertStandbyWakeupTimeToMachineTime();
+	static String getStandbyWakeupTimeString();
+	static void setStandbyWakeupTime(long time);
+	static void setStandbyWakeupTime(const char* time);
 	static bool getStandbyWakeupEnabled();
 	static void incStandbyWakeupTimeByOneDay();
 
-	static bool getBlynkEnabled();
-	static void setBlynkEnabled(bool enabled);
+	static bool getWifiEnabled();
+	static void setWifiEnabled(bool enabled);
 
 	static bool getWifiConnected();
 
 	static String setWIFICredentials(const char* newSSID, const char* newPassword, const char* newHostName);
+	static String getWifiSSID();
+	static String getWifiPassword();
+	static String getWifiHostName();
+	static String getLanguage();
+	static String getBonjourName();
+	static void setLanguage(const char* language);
+	static void setBonjourName(const char* name);
 
 	static void init();
 	static void update();
@@ -136,8 +155,6 @@ private:
 	static double distributionVolume;
 	static double volumeOffset;
 
-	static bool blynkEnabled;
-
 	static double boilerControllerP;
 	static double boilerControllerI;
 	static double boilerControllerD;
@@ -153,15 +170,19 @@ private:
 	static int standbyStartTime;	//time after wich standby mode will be entered
 	static bool standbyWakeupEnabled;	//used to disable wakeup functionality
 
+	static char wifiSsid[SSID_MAX_LEN+1];
+	static char wifiPassword[WIFI_PW_MAX_LEN+1];
+	static char wifiHostName[HOST_NAME_MAX_LEN+1];
+	static bool wifiEnabled;
+	static char language[LANG_MAX_LEN+1];
+	static char bonjourName[BONJOUR_NAME_MAX_LEN+1];
+
 	static uint32_t calculateWIFIChecksum();
 	static void eepromWrite(uint8_t *src, int addr, int len, bool commit);
 	static void eepromRead(uint8_t *dst, int addr, int len);
-	static void WIFISetupMode();
 
 	static bool scheduleRestart;
 
-	static void initBlynk();
-	static bool blynkInitialized;
 	static unsigned long lastWifiConnectTryTime;
 };
 #endif /* DATAMANAGER_H_ */

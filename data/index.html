@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title data-mlr-id="title">BZ10</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+    <link rel="stylesheet" href="w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="espresso.css">
+
+    <script src="main.js"></script>
+    <script src="settings.js"></script>
+    <script src="languages.js"></script>
+    <script src="mlr.js"></script>
+  </head>
+<body class="w3-black" onload="onLoad()">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="http://techpresso.de/coffee_steam_LQ_reduced_contrast.jpg" style="width:100%">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p data-mlr-id="menuHome">HOME</p>
+  </a>
+  <a href="#edit" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-coffee w3-xxlarge"></i>
+    <p data-mlr-id="menuEdit">BREW</p>
+  </a>
+  <a href="#settings" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-wrench w3-xxlarge"></i>
+    <p data-mlr-id="menuSettings">SETTINGS</p>
+  </a>
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+    <a href="#" class="w3-bar-item w3-button" style="width:25% !important" data-mlr-id="menuHome">HOME</a>
+    <a href="#edit" class="w3-bar-item w3-button" style="width:25% !important" data-mlr-id="menuEdit">BREW</a>
+    <a href="#settings" class="w3-bar-item w3-button" style="width:25% !important" data-mlr-id="menuSettings">SETTINGS</a>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+	  <h1 class="w3-jumbo"><span data-mlr-id="heading">BZ10 upgrade</span></h1>
+    <p data-mlr-id="secondTitle">PID and volumetry for the BZ10.</p>
+  </header>
+
+  <!-- Edit -->
+  <div class="w3-padding-16 w3-content w3-text-grey" id="edit">
+    <h2 class="w3-text-light-grey" data-mlr-id="headingEdit">Edit</h2>
+    <hr style="width:200px" class="w3-opacity">
+
+    <!-- Preinfusion editing -->
+    <div id="modeEditPreinfusion">
+    	<h4 class="w3-text-light-grey" data-mlr-id="headingTemperature">Temperature</h2>
+      <div class="w3-row-padding"> 
+        <div class="w3-half esp-half-first">
+          <label data-mlr-id="inputLabelBoilerTemp">Boiler temperature [°C]</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Boiler temp" id="boilerTemp"></input>
+        </div>
+        <div class="w3-half esp-half-last">
+          <label data-mlr-id="inputLabelHeadTemp">Head temperature [°C]</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Head temp" id="headTemp"></input>
+        </div>
+		<div class="w3-row w3-padding-16"></div>
+    	<h4 class="w3-text-light-grey" data-mlr-id="headingVolumetric">Volumetric</h2>
+        <div class="w3-half esp-half-first">
+          <label data-mlr-id="inputLabelVolOffset">Volume offset</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Volume offset" id="volOffset"></input>
+        </div>
+        <div class="w3-half esp-half-last">
+          <label data-mlr-id="inputLabelDistVol">Distribution Volume</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Distribution volume" id="volDist"></input>
+        </div>
+		<div class="w3-row w3-padding-16"></div>
+    	<h4 class="w3-text-light-grey" data-mlr-id="headingPreinfusion">Preinfusion</h2>
+        <div class="w3-half esp-half-first">
+          <label data-mlr-id="inputLabelPreinfBuildup">Preinfusion Buildup</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Preinf Buildup" id="preinfBuildup"></input>
+        </div>
+        <div class="w3-half esp-half-last">
+          <label data-mlr-id="inputLabelPreinfWait">Preinfusion Wait</label>
+          <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Preinf Wait" id="preinfWait"></input>
+        </div>
+		<div class="w3-row w3-padding-16"></div>
+        <div class="w3-row w3-padding-16">
+          <button onClick="saveBrewingParams()" class="w3-button w3-light-grey w3-padding-16 w3-block" data-mlr-id="buttonSave">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="w3-padding-16 w3-content w3-text-grey" id="settings">
+    <h2 class="w3-text-light-grey" data-mlr-id="headingSettings">Settings</h2>
+    <hr style="width:200px" class="w3-opacity">
+
+	<h3 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsTime">Time</h3>
+    <div class="w3-row-padding"> 
+    	<div class="w3-half esp-half-first">
+        	<label data-mlr-id="inputLabelWakeupTime">Wakeup time</label>
+        	<input class="w3-input w3-border w3-padding-16 w3-light-grey" type="time" placeholder="time" id="wakeupTime"></input>
+    	</div>
+    	<div class="w3-half esp-half-last">
+        	<label data-mlr-id="inputLabelStandbyTime">Standby start time</label>
+        	<input class="w3-input w3-border w3-padding-16 w3-light-grey" type="time" placeholder="time" id="standbyTime"></input>
+    	</div>
+	</div>
+	<button onClick="saveTime()" class="settingsSaveButton w3-button w3-light-grey w3-padding-16 w3-block" data-mlr-id="buttonSave">Save</button>
+
+	<h3 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsWifi">WiFi</h3>
+	<label data-mlr-id="wifiSSID">WiFi Name</label>
+	<input class="settingsInput w3-input w3-border w3-padding-16 w3-light-grey" type="text" id="settingsWifiSSID"></input>
+
+	<label class="settingsLabel" data-mlr-id="wifiPW">WiFi Password</label>
+	<input class="settingsInput w3-input w3-border w3-padding-16 w3-light-grey" type="password" id="settingsWifiPW"></input>
+
+	<label class="settingsLabel" data-mlr-id="bonjourName">Bonjour Name</label>
+	<input class="settingsInput w3-input w3-border w3-padding-16 w3-light-grey" type="text" id="settingsWifiBonjour"></input>
+
+	  <button onClick="saveWifi()" class="settingsSaveButton w3-button w3-light-grey w3-padding-16 w3-block" data-mlr-id="buttonSave">Save</button>
+
+	<h3 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsGeneral">General</h3>
+	<label data-mlr-id="inputLabelLanguage">Language</label>
+	<select name="language" class="settingsInput w3-select languageSelector mb-POCControls_Selector" id="settingsMLDrop">
+	</select>
+	  <button onClick="saveGeneralSettings()" class="settingsSaveButton w3-button w3-light-grey w3-padding-16 w3-block" data-mlr-id="buttonSave">Save</button>
+
+
+	<h3 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsMachine">Machine</h3>
+    <div class="w3-row-padding"> 
+	  <h4 class="headingSettings w3-text-light-grey" style="margin-top:16px" data-mlr-id="headingSettingsBoilerPID">Boiler PID</h3>
+      <div class="w3-third esp-third-first">
+        <label data-mlr-id="inputLabelBoilerP">Boiler P</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Boiler P" id="boilerP"></input>
+      </div>
+      <div class="w3-third">
+        <label data-mlr-id="inputLabelBoilerI">Boiler I</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Boiler I" id="boilerI"></input>
+      </div>
+      <div class="w3-third esp-third-last">
+        <label data-mlr-id="inputLabelBoilerD">Boiler D</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="Boiler D" id="boilerD"></input>
+      </div>
+
+	  <div class="w3-row w3-padding-16"></div>
+	  <h4 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsBUPID">BU PID</h3>
+      <div class="w3-third esp-third-first">
+        <label data-mlr-id="inputLabelBUP">BU P</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="BU P" id="BUP"></input>
+      </div>
+      <div class="w3-third">
+        <label data-mlr-id="inputLabelBUI">BU I</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="BU I" id="BUI"></input>
+      </div>
+      <div class="w3-third esp-third-last">
+        <label data-mlr-id="inputLabelBUD">BU D</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="BU D" id="BUD"></input>
+      </div>
+
+	  <div class="w3-row w3-padding-16"></div>
+	  <h4 class="headingSettings w3-text-light-grey" data-mlr-id="headingSettingsFlowMeters">Flowmeter conversion factors</h3>
+      <div class="w3-half esp-half-first">
+        <label data-mlr-id="inputLabelBoilerFlowmConv">Boiler flowmeter conversion factor</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="conversion factor" id="boilerFlowmConv"></input>
+      </div>
+      <div class="w3-half esp-half-last">
+        <label data-mlr-id="inputLabelBypassFlowmConv">Bypss flowmeter conversion factor</label>
+        <input class="w3-input w3-border w3-padding-16 w3-light-grey" type="number" placeholder="conversion factor" id="bypassFlowmConv"></input>
+      </div>
+
+	</div>
+	<button onClick="saveMachineSettings()" class="settingsSaveButton w3-button w3-light-grey w3-padding-16 w3-block" data-mlr-id="buttonSave">Save</button>
+  </div>	
+  
+  
+<!-- Footer. This section contains an ad for W3Schools Spaces. You can leave it to support us. -->
+<footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+ <p class="w3-small">Here could possibly be an impressium at some point in time but since this is a private web page not intended for public use, this is not necessary at the moment.</p>
+ <!-- End footer -->
+</footer>
+
+<!-- END PAGE CONTENT -->
+</div>
+
+</body>
+</html>
+

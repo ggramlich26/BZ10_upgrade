@@ -12,16 +12,13 @@
 
 #include <WiFi.h>
 #include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
 
 #include "Arduino.h"
 #include "EEPROM.h"
 #include <stdint.h>
-#include <WidgetRTC.h>
 #include <Time.h>
 
 
-bool DataManager::blynkEnabled;
 double DataManager::targetTempBoiler;
 double DataManager::targetTempBU;
 long DataManager::fillBoilerOverSondeTime = DEFAULT_FILL_BOILER_OVER_SONDE_TIME;
@@ -34,7 +31,6 @@ double DataManager::boilerControllerD;
 double DataManager::BUControllerP;
 double DataManager::BUControllerI;
 double DataManager::BUControllerD;
-bool DataManager::blynkInitialized;
 unsigned long DataManager::lastWifiConnectTryTime;
 int DataManager::preinfusionBuildupTime;
 int DataManager::preinfusionWaitTime;
@@ -45,35 +41,17 @@ bool DataManager::scheduleRestart;
 bool DataManager::standbyWakeupEnabled;
 double DataManager::pumpTickToVolumeFactor;
 double DataManager::bypassTickToVolumeFactor;
+char DataManager::wifiSsid[SSID_MAX_LEN+1];
+char DataManager::wifiPassword[WIFI_PW_MAX_LEN+1];
+char DataManager::wifiHostName[HOST_NAME_MAX_LEN+1];
+bool DataManager::wifiEnabled;
+char DataManager::language[LANG_MAX_LEN+1];
+char DataManager::bonjourName[BONJOUR_NAME_MAX_LEN+1];
 
-//	Blynk pins
-// 	V1: Boiler temperature in °C
-//	V2: BU temperature in °C
-//	V3: Tube temperature in °C
-//	V4: Boiler target temperature in °C
-//	V5: BU target temperature in °C
-//	V6: distribution volume in ml (integers only)
-//	V7: volume offset in ml (integers only)
-//	V8: Boiler P param
-//	V9: Boiler I param
-//	V10: Boiler D param
-//	V11: BU P param
-//	V12: BU I param
-//	V13: BU D param
-//	V14: Preinfusion buildup time in s (fractions are ok)
-//	V15: Preinfusion wait time in s (fractions are ok)
-//	V16: Standbye wakeup timer: in s after midnight (Blynk time widget), 0 to disable
-//	V17: Standby start time: time after which the machine goes into standby mode if no user interaction occurs,
-			//in s, 0 to disable (Blynk time widget)
-//	V18: Pump flow sensor tick to volume factor
-//	V19: Bypass flow sensor tick to volume factor
 
 //	Flash address parameters
-#define SSID_MAX_LEN				30
 #define SSID_ADDR					0
-#define WIFI_PW_MAX_LEN				30
 #define WIFI_PW_ADDR				31
-#define	HOST_NAME_MAX_LEN			30
 #define	HOST_NAME_ADDR				62
 #define	TARGET_TEMP_BOILER_ADDR		93
 #define TARGET_TEMP_BOILER_LEN		sizeof(double)
@@ -109,24 +87,16 @@ double DataManager::bypassTickToVolumeFactor;
 #define BU_CONTROLLER_I_LEN				sizeof(double)
 #define	BU_CONTROLLER_D_ADDR			202
 #define BU_CONTROLLER_D_LEN				sizeof(double)
+#define BONJOUR_NAME_ADDR				210
+#define	LANGUAGE_ADDR					241
 
-
-#define CHECKSUM_ADDR				210
-#define	CHECKSUM_LEN				4
-#define	EEPROM_SIZE					250
-char ssid[SSID_MAX_LEN+1];
-char password[WIFI_PW_MAX_LEN+1];
-char hostName[HOST_NAME_MAX_LEN+1];
-
-char auth[] = BLYNK_AUTH_TOKEN;
-
-BlynkTimer timer;
-WidgetRTC rtc;
+#define CHECKSUM_ADDR					247
+#define	CHECKSUM_LEN					4
+#define	EEPROM_SIZE						300
 
 
 void DataManager::init(){
 	dev = DeviceControl::instance();
-	blynkInitialized = false;
 	lastWifiConnectTryTime = 0;
 	scheduleRestart = false;
 
@@ -135,17 +105,23 @@ void DataManager::init(){
 
 	//read SSID and password from flash
 	for(uint8_t i = 0; i < SSID_MAX_LEN+1; i++){
-		ssid[i] = EEPROM.read(SSID_ADDR+i);
+		wifiSsid[i] = EEPROM.read(SSID_ADDR+i);
 	}
 	for(uint8_t i = 0; i < WIFI_PW_MAX_LEN+1; i++){
-		password[i] = EEPROM.read(WIFI_PW_ADDR+i);
+		wifiPassword[i] = EEPROM.read(WIFI_PW_ADDR+i);
 	}
 	for(uint8_t i = 0; i < HOST_NAME_MAX_LEN+1; i++){
-		hostName[i] = EEPROM.read(HOST_NAME_ADDR+i);
+		wifiHostName[i] = EEPROM.read(HOST_NAME_ADDR+i);
 	}
 	uint32_t checksum = 0;
 	for(uint8_t i = 0; i < CHECKSUM_LEN; i++){
 		checksum |= ((uint32_t)EEPROM.read(CHECKSUM_ADDR+i))<<(8*i);
+	}
+	for(uint8_t i = 0; i < LANG_MAX_LEN+1; i++){
+		language[i] = EEPROM.read(LANGUAGE_ADDR+i);
+	}
+	for(uint8_t i = 0; i < BONJOUR_NAME_MAX_LEN+1; i++){
+		bonjourName[i] = EEPROM.read(BONJOUR_NAME_ADDR+i);
 	}
 
 	eepromRead((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN);
@@ -154,7 +130,7 @@ void DataManager::init(){
 	eepromRead((uint8_t*)&volumeOffset, VOL_OFFSET_ADDR, VOL_OFFSET_LEN);
 	uint8_t temp;
 	eepromRead((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN);
-	blynkEnabled = temp==0xFF;
+	wifiEnabled = temp==0xFF;
 	eepromRead((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN);
 	eepromRead((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN);
 	eepromRead((uint8_t*)&boilerControllerD, BOILER_CONTROLLER_D_ADDR, BOILER_CONTROLLER_D_LEN);
@@ -166,8 +142,9 @@ void DataManager::init(){
 	eepromRead((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN);
 	eepromRead((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN);
 	eepromRead((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN);
-	standbyWakeupTime = 0;
+	eepromRead((uint8_t*)&standbyWakeupTime, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN);
 	standbyWakeupEnabled = false;
+	convertStandbyWakeupTimeToMachineTime();
 //	Serial.println("Boiler target: " + String(targetTempBoiler));
 //	Serial.println("BU target: " + String(targetTempBU));
 //	Serial.println("distribution volume: " + String(distributionVolume));
@@ -176,17 +153,19 @@ void DataManager::init(){
 //	Serial.println("SSID: " + String(ssid));
 //	Serial.println("password: " + String(password));
 
-	//enter wifi setup mode
+	bool resetWifiCredentials = false;
+	//reset wifi credentials
 	if(dev->readButtonManDist() && dev->readButton1() && dev->readButton2()){
-		WIFISetupMode();
+		//resetWifiCredentials = true; //todo: uncomment this line
+		Serial.println("Resetting WiFi credentials");
 	}
 	//if wifi not intialized correctly, use default values
-	else if(checksum != calculateWIFIChecksum()){
+	if(resetWifiCredentials || checksum != calculateWIFIChecksum()){
 		//copy default SSID to EEPROM and to the ssid variable
 		const char* default_ssid = DEFAULT_SSID;
 		for(uint8_t i = 0; i < SSID_MAX_LEN+1; i++){
 			EEPROM.write(SSID_ADDR + i, default_ssid[i]);
-			ssid[i] = default_ssid[i];
+			wifiSsid[i] = default_ssid[i];
 			if(default_ssid[i] == '\0'){
 				break;
 			}
@@ -195,7 +174,7 @@ void DataManager::init(){
 		const char* default_pw = DEFAULT_PASSWORD;
 		for(uint8_t i = 0; i < WIFI_PW_MAX_LEN+1; i++){
 			EEPROM.write(WIFI_PW_ADDR + i, default_pw[i]);
-			password[i] = default_pw[i];
+			wifiPassword[i] = default_pw[i];
 			if(default_pw[i] == '\0'){
 				break;
 			}
@@ -204,7 +183,7 @@ void DataManager::init(){
 		const char* default_host_name = DEFAULT_HOST_NAME;
 		for(uint8_t i = 0; i < HOST_NAME_MAX_LEN+1; i++){
 			EEPROM.write(HOST_NAME_ADDR + i, default_host_name[i]);
-			hostName[i] = default_host_name[i];
+			wifiHostName[i] = default_host_name[i];
 			if(default_host_name[i] == '\0'){
 				break;
 			}
@@ -214,6 +193,10 @@ void DataManager::init(){
 			EEPROM.write(CHECKSUM_ADDR+i, (uint8_t)(checksum>>(8*i)));
 		}
 		EEPROM.commit();
+		const char* default_language = DEFAULT_LANGUAGE;
+		setLanguage(default_language);
+		const char* default_bonjourName = DEFAULT_BONJOUR_NAME;
+		setBonjourName(default_bonjourName);
 	}
 	//if EEPROM not initialized yet, write default values
 	if(isnan(targetTempBU) || isnan(targetTempBoiler) || isnan(distributionVolume) || isnan(volumeOffset) ||
@@ -226,7 +209,7 @@ void DataManager::init(){
 		targetTempBU = DEFAULT_TEMP_BU;
 		distributionVolume = DEFAULT_DISTRIBUTION_VOLUME;
 		volumeOffset = DEFAULT_VOLUME_OFFSET;
-		blynkEnabled = DEFAULT_BLYNK_ENABLED;
+		wifiEnabled = DEFAULT_BLYNK_ENABLED;
 		boilerControllerP = DEFAULT_BOILER_CONTROLLER_P;
 		boilerControllerI = DEFAULT_CONTROLLER_I;
 		boilerControllerD = DEFAULT_CONTROLLER_D;
@@ -243,7 +226,7 @@ void DataManager::init(){
 		eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, false);
 		eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, false);
 		eepromWrite((uint8_t*)&volumeOffset, VOL_OFFSET_ADDR, VOL_OFFSET_LEN, false);
-		uint8_t temp = blynkEnabled?0xFF:0x00;
+		uint8_t temp = wifiEnabled?0xFF:0x00;
 		eepromWrite((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN, false);
 		eepromWrite((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN, false);
 		eepromWrite((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN, false);
@@ -255,72 +238,53 @@ void DataManager::init(){
 		eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, false);
 		eepromWrite((uint8_t*)&standbyWakeupTime, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN, false);
+		convertStandbyWakeupTimeToMachineTime();
 		eepromWrite((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN, false);
 		eepromWrite((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN, false);
 		EEPROM.commit();
-	}
-
-	if(DataManager::getBlynkEnabled()){
-		WiFi.setHostname(hostName);
-		WiFi.begin(ssid, password);
-		lastWifiConnectTryTime = millis();
-		delay(500);
 	}
 }
 
 /// standard update routine
 void DataManager::update(){
-	if(DataManager::getBlynkEnabled() && !WiFi.isConnected() && millis() >= lastWifiConnectTryTime + WIFI_CONNECT_INTERVAL){
-		WiFi.begin(ssid, password);
-		lastWifiConnectTryTime = millis();
-	}
-	static unsigned long lastBlynkConnectTime = 0;
-	if(DataManager::getBlynkEnabled() && !blynkInitialized && WiFi.isConnected() &&
-			(lastBlynkConnectTime == 0 || millis() >= lastBlynkConnectTime + BLYNK_CONNECT_INTERVAL)){
-		initBlynk();
-		lastBlynkConnectTime = millis();
-	}
-	if(DataManager::getBlynkEnabled() && blynkInitialized){
-		Blynk.run();
-		timer.run();
-		if(!Blynk.connected()){
-			Serial.println("Connection to Blynk lost");
-			blynkInitialized = false;
-		}
+	if (scheduleRestart){
+		scheduleRestart = false;
+		delay(1000);
+		ESP.restart();
 	}
 }
 
 /// sends the current boiler temperature to blynk, if enabled
 void DataManager::pushTempBoiler(double temp){
-	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() && blynkInitialized &&
-			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
-					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
-		lastUpdateTime = millis();
-		Blynk.virtualWrite(V1, temp);
-	}
+//	static long lastUpdateTime = 0;
+//	if(DataManager::getBlynkEnabled() && blynkInitialized &&
+//			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
+//					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
+//		lastUpdateTime = millis();
+//		Blynk.virtualWrite(V1, temp);
+//	}
 }
 
 /// sends the current BU temperature to blynk, if enabled
 void DataManager::pushTempBU(double temp){
-	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() && blynkInitialized &&
-			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
-					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
-		lastUpdateTime = millis();
-		Blynk.virtualWrite(V2, temp);
-	}
+//	static long lastUpdateTime = 0;
+//	if(DataManager::getBlynkEnabled() && blynkInitialized &&
+//			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
+//					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
+//		lastUpdateTime = millis();
+//		Blynk.virtualWrite(V2, temp);
+//	}
 }
 
 /// sends the current tube temperature to blynk, if enabled
 void DataManager::pushTempTube(double temp){
-	static long lastUpdateTime = 0;
-	if(DataManager::getBlynkEnabled() && blynkInitialized &&
-			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
-					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
-		lastUpdateTime = millis();
-		Blynk.virtualWrite(V3, temp);
-	}
+//	static long lastUpdateTime = 0;
+//	if(DataManager::getBlynkEnabled() && blynkInitialized &&
+//			(millis() >= lastUpdateTime+IDLE_BLYNK_MIN_TEMP_UPDATE_INTERVAL ||
+//					millis() >= lastUpdateTime + BREWING_BLYNK_MIN_TEMP_UPDATE_INTERVAL)){
+//		lastUpdateTime = millis();
+//		Blynk.virtualWrite(V3, temp);
+//	}
 }
 
 
@@ -335,7 +299,7 @@ double DataManager::getTargetTempBU(){
 // saves a new target temperature for the boiler
 // @param temp: new target temperature
 // @param updateBlynk: updates the target temperature in blynk, if set to true and blynk is enabled
-void DataManager::setTargetTempBoiler(double temp, bool updateBlynk){
+void DataManager::setTargetTempBoiler(double temp){
 	if(temp > MAX_TEMP_BOILER){
 		temp = MAX_TEMP_BOILER;
 	}
@@ -348,15 +312,12 @@ void DataManager::setTargetTempBoiler(double temp, bool updateBlynk){
 
 	targetTempBoiler = temp;
 	eepromWrite((uint8_t*)&targetTempBoiler, TARGET_TEMP_BOILER_ADDR, TARGET_TEMP_BOILER_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V4, targetTempBoiler);
-	}
 }
 
 // saves a new target temperature for the brewing unit
 // @param temp: new target temperature
 // @param updateBlynk: updates the target temperature in blynk, if set to true and blynk is enabled
-void DataManager::setTargetTempBU(double temp, bool updateBlynk){
+void DataManager::setTargetTempBU(double temp){
 	if(temp > MAX_TEMP_BU){
 		temp = MAX_TEMP_BU;
 	}
@@ -369,9 +330,6 @@ void DataManager::setTargetTempBU(double temp, bool updateBlynk){
 
 	targetTempBU = temp;
 	eepromWrite((uint8_t*)&targetTempBU, TARGET_TEMP_BU_ADDR, TARGET_TEMP_BU_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V5, targetTempBU);
-	}
 }
 
 long DataManager::getFillBoilerOverSondeTime(){
@@ -389,7 +347,7 @@ double DataManager::getDistributionVolume(){
 /// saves a new target distribution volume
 // @param volume: the new target volume
 // @param updateBlynk: sends the new value to blynk, if set to true and blynk is enabled
-void DataManager::setDistributionVolume(double volume, bool updateBlynk){
+void DataManager::setDistributionVolume(double volume){
 	if(volume > MAX_DISTRIBUTION_VOLUME) volume = MAX_DISTRIBUTION_VOLUME;
 	else if(volume < MIN_DISTRIBUTION_VOLUME) volume = MIN_DISTRIBUTION_VOLUME;
 	if(distributionVolume == volume){
@@ -398,9 +356,6 @@ void DataManager::setDistributionVolume(double volume, bool updateBlynk){
 
 	distributionVolume = volume;
 	eepromWrite((uint8_t*)&distributionVolume, DIST_VOL_ADDR, DIST_VOL_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V6, distributionVolume);
-	}
 }
 
 double DataManager::getVolumeOffset(){
@@ -410,7 +365,7 @@ double DataManager::getVolumeOffset(){
 /// saves a new volume offset
 // @param offset: the new volume offset
 // @param updateBlynk: sends the new value to blynk, if set to true and blynk is enabled
-void DataManager::setVolumeOffset(double offset, bool updateBlynk){
+void DataManager::setVolumeOffset(double offset){
 	if(offset > MAX_VOLUME_OFFSET) offset = MAX_VOLUME_OFFSET;
 	if(offset < MIN_VOLUME_OFFSET) offset = MIN_VOLUME_OFFSET;
 	if(offset == volumeOffset){
@@ -418,23 +373,15 @@ void DataManager::setVolumeOffset(double offset, bool updateBlynk){
 	}
 	volumeOffset = offset;
 	eepromWrite((uint8_t*)&volumeOffset, VOL_OFFSET_ADDR, VOL_OFFSET_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V7, volumeOffset);
-	}
 }
 
-bool DataManager::getBlynkEnabled(){
-	return blynkEnabled;
+bool DataManager::getWifiEnabled(){
+	return wifiEnabled;
 }
 
-void DataManager::setBlynkEnabled(bool enabled){
-	if(enabled && !blynkInitialized && !WiFi.isConnected()){
-		WiFi.setHostname(hostName);
-		WiFi.begin(ssid, password);
-		lastWifiConnectTryTime = millis();
-	}
-	blynkEnabled = enabled;
-	uint8_t temp = blynkEnabled?0xFF:0x00;
+void DataManager::setWifiEnabled(bool enabled){
+	wifiEnabled = enabled;
+	uint8_t temp = wifiEnabled?0xFF:0x00;
 	eepromWrite((uint8_t*)&temp, BLYNK_ENABLED_ADDR, BLYNK_ENABLED_LEN, true);
 }
 
@@ -445,15 +392,12 @@ double DataManager::getBoilerControllerP(){
 /// saves a new boiler controller P parameter
 // @param p: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBoilerControllerP(double p, bool updateBlynk){
+void DataManager::setBoilerControllerP(double p){
 	if(p < MIN_BOILER_CONTROLLER_P) p = MIN_BOILER_CONTROLLER_P;
 	else if(p > MAX_BOILER_CONTROLLER_P) p = MAX_BOILER_CONTROLLER_P;
 	if(boilerControllerP == p) return;
 	boilerControllerP = p;
 	eepromWrite((uint8_t*)&boilerControllerP, BOILER_CONTROLLER_P_ADDR, BOILER_CONTROLLER_P_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V8, boilerControllerP);
-	}
 }
 
 double DataManager::getBoilerControllerI(){
@@ -463,15 +407,12 @@ double DataManager::getBoilerControllerI(){
 /// saves a new boiler controller I parameter
 // @param i: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBoilerControllerI(double i, bool updateBlynk){
+void DataManager::setBoilerControllerI(double i){
 	if(i < MIN_CONTROLLER_I) i = MIN_CONTROLLER_I;
 	else if(i > MAX_CONTROLLER_I) i = MAX_CONTROLLER_I;
 	if(boilerControllerI == i) return;
 	boilerControllerI = i;
 	eepromWrite((uint8_t*)&boilerControllerI, BOILER_CONTROLLER_I_ADDR, BOILER_CONTROLLER_I_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V9, boilerControllerI);
-	}
 }
 
 double DataManager::getBoilerControllerD(){
@@ -481,15 +422,12 @@ double DataManager::getBoilerControllerD(){
 /// saves a new boiler controller D parameter
 // @param d: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBoilerControllerD(double d, bool updateBlynk){
+void DataManager::setBoilerControllerD(double d){
 	if(d < MIN_CONTROLLER_D) d = MIN_CONTROLLER_D;
 	else if(d > MAX_CONTROLLER_D) d = MAX_CONTROLLER_D;
 	if(boilerControllerD == d) return;
 	boilerControllerD = d;
 	eepromWrite((uint8_t*)&boilerControllerD, BOILER_CONTROLLER_D_ADDR, BOILER_CONTROLLER_D_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V10, boilerControllerD);
-	}
 }
 
 double DataManager::getBUControllerP(){
@@ -499,15 +437,12 @@ double DataManager::getBUControllerP(){
 /// saves a new BU controller P parameter
 // @param p: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBUControllerP(double p, bool updateBlynk){
+void DataManager::setBUControllerP(double p){
 	if(p < MIN_BU_CONTROLLER_P) p = MIN_BU_CONTROLLER_P;
 	else if(p > MAX_BU_CONTROLLER_P) p = MAX_BU_CONTROLLER_P;
 	if(BUControllerP == p) return;
 	BUControllerP = p;
 	eepromWrite((uint8_t*)&BUControllerP, BU_CONTROLLER_P_ADDR, BU_CONTROLLER_P_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V11, BUControllerP);
-	}
 }
 
 double DataManager::getBUControllerI(){
@@ -517,15 +452,12 @@ double DataManager::getBUControllerI(){
 /// saves a new BU controller I parameter
 // @param i: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBUControllerI(double i, bool updateBlynk){
+void DataManager::setBUControllerI(double i){
 	if(i < MIN_CONTROLLER_I) i = MIN_CONTROLLER_I;
 	else if(i > MAX_CONTROLLER_I) i = MAX_CONTROLLER_I;
 	if(BUControllerI == i) return;
 	BUControllerI = i;
 	eepromWrite((uint8_t*)&BUControllerI, BU_CONTROLLER_I_ADDR, BU_CONTROLLER_I_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V12, BUControllerI);
-	}
 }
 
 double DataManager::getBUControllerD(){
@@ -535,15 +467,12 @@ double DataManager::getBUControllerD(){
 /// saves a new BU controller D parameter
 // @param d: the new parameter
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setBUControllerD(double d, bool updateBlynk){
+void DataManager::setBUControllerD(double d){
 	if(d < MIN_CONTROLLER_D) d = MIN_CONTROLLER_D;
 	else if(d > MAX_CONTROLLER_D) d = MAX_CONTROLLER_D;
 	if(BUControllerD == d) return;
 	BUControllerD = d;
 	eepromWrite((uint8_t*)&BUControllerD, BU_CONTROLLER_D_ADDR, BU_CONTROLLER_D_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V13, BUControllerD);
-	}
 }
 
 double DataManager::getPumpTickToVolumeFactor(){
@@ -553,15 +482,12 @@ double DataManager::getPumpTickToVolumeFactor(){
 /// saves a new pump flow meter tick to volume conversion factor
 // @param f: the new factor
 // @param updateBlynk: sends the new factor to blynk, if set to true and blynk is enabled
-void DataManager::setPumpTickToVolumeFactor(double f, bool updateBlynk){
+void DataManager::setPumpTickToVolumeFactor(double f){
 	if(f < MIN_TICK_TO_VOLUME_FACTOR) f = MIN_TICK_TO_VOLUME_FACTOR;
 	else if(f > MAX_TICK_TO_VOLUME_FACTOR) f = MAX_TICK_TO_VOLUME_FACTOR;
 	if(pumpTickToVolumeFactor == f) return;
 	pumpTickToVolumeFactor = f;
 	eepromWrite((uint8_t*)&pumpTickToVolumeFactor, PUMP_TICK_TO_VOL_FACTOR_ADDR, PUMP_TICK_TO_VOL_FACTOR_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V18, pumpTickToVolumeFactor);
-	}
 }
 
 double DataManager::getBypassTickToVolumeFactor(){
@@ -571,70 +497,12 @@ double DataManager::getBypassTickToVolumeFactor(){
 /// saves a new bypass flow meter tick to volume conversion factor
 // @param f: the new factor
 // @param updateBlynk: sends the new factor to blynk, if set to true and blynk is enabled
-void DataManager::setBypassTickToVolumeFactor(double f, bool updateBlynk){
+void DataManager::setBypassTickToVolumeFactor(double f){
 	if(f < MIN_TICK_TO_VOLUME_FACTOR) f = MIN_TICK_TO_VOLUME_FACTOR;
 	else if(f > MAX_TICK_TO_VOLUME_FACTOR) f = MAX_TICK_TO_VOLUME_FACTOR;
 	if(bypassTickToVolumeFactor == f) return;
 	bypassTickToVolumeFactor = f;
 	eepromWrite((uint8_t*)&bypassTickToVolumeFactor, BYPASS_TICK_TO_VOL_FACTOR_ADDR, BYPASS_TICK_TO_VOL_FACTOR_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V19, bypassTickToVolumeFactor);
-	}
-}
-
-/// initialize Blynk by creating the connection and writing current values
-void DataManager::initBlynk(){
-	static bool blynkConfigured = false;
-	if(!blynkConfigured){
-		Blynk.config(auth);
-		blynkConfigured = true;
-	}
-	Blynk.connect(100);
-	if(!Blynk.connected()){
-		Serial.println("Blynk not connected");
-		return;
-	}
-	Serial.println("Blynk connected");
-
-	//write current values to cloud
-	Blynk.virtualWrite(V4, targetTempBoiler);
-	Blynk.virtualWrite(V5, targetTempBU);
-	Blynk.virtualWrite(V6, distributionVolume);
-	Blynk.virtualWrite(V7, volumeOffset);
-	Blynk.virtualWrite(V8, boilerControllerP);
-	Blynk.virtualWrite(V11, BUControllerP);
-	Blynk.virtualWrite(V14, preinfusionBuildupTime/1000);
-	Blynk.virtualWrite(V15, preinfusionWaitTime/1000);
-	//reading from EEPROM: stored in s after midnight
-	long time = 0;
-	eepromRead((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN);
-	if(time >= 0){
-		Blynk.virtualWrite(V16, time, 0, "Europe/Berlin");
-		//conversion to machine time
-		long realTime = ((long)hour()*60*60+minute()*60+second());
-		if(time < realTime){
-			time += 24*60*60;
-		}
-		standbyWakeupTime = millis()+(time-realTime)*1000;
-		while(standbyWakeupTime < millis())
-			standbyWakeupTime += 24*60*60*1000;	//increment wakeup time until it causes and immediate wakeup
-												//or is past the current system time
-		standbyWakeupEnabled = true;
-	}
-	else{
-		standbyWakeupEnabled = false;
-		Blynk.virtualWrite(V16, "", 0, "Europe/Berlin");
-	}
-	if(standbyStartTime > 0)
-		Blynk.virtualWrite(V17, standbyStartTime/1000, 0, "Europe/Berlin");
-	else
-		Blynk.virtualWrite(V17, "", 0, "Europe/Berlin");
-
-	setSyncInterval(10 * 60); // Sync interval for RTC in seconds (10 minutes)
-	Blynk.virtualWrite(V18, pumpTickToVolumeFactor);
-	Blynk.virtualWrite(V19, bypassTickToVolumeFactor);
-
-	blynkInitialized = true;
 }
 
 bool DataManager::getWifiConnected(){
@@ -648,15 +516,12 @@ int DataManager::getPreinfusionBuildupTime(){
 /// sets the preinfusion pressure buildup time
 // @param time time in ms, 0 to disable preinfusion
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setPreinfusionBuildupTime(int time, bool updateBlynk){
+void DataManager::setPreinfusionBuildupTime(int time){
 	if(time > MAX_PREINFUSION_BUILDUP_TIME) time = MAX_PREINFUSION_BUILDUP_TIME;
 	else if(time < 0) time = 0;
 	if(preinfusionBuildupTime == time) return;
 	preinfusionBuildupTime = time;
 	eepromWrite((uint8_t*)&preinfusionBuildupTime, PREINFUSION_BUILDUP_TIME_ADDR, PREINFUSION_BUILDUP_TIME_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V14, preinfusionBuildupTime/1000);
-	}
 }
 
 int DataManager::getPreinfusionWaitTime(){
@@ -666,15 +531,12 @@ int DataManager::getPreinfusionWaitTime(){
 /// sets the preinfusion waiting time
 // @param time time in ms
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setPreinfusionWaitTime(int time, bool updateBlynk){
+void DataManager::setPreinfusionWaitTime(int time){
 	if(time > MAX_PREINFUSION_WAIT_TIME) time = MAX_PREINFUSION_WAIT_TIME;
 	else if(time < 0) time = 0;
 	if(preinfusionWaitTime == time) return;
 	preinfusionWaitTime = time;
 	eepromWrite((uint8_t*)&preinfusionWaitTime, PREINFUSION_WAIT_TIME_ADDR, PREINFUSION_WAIT_TIME_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V15, preinfusionWaitTime/1000);
-	}
 }
 
 /// returns the time in ms after system start when the machine should wake up from standby
@@ -683,14 +545,41 @@ unsigned long DataManager::getStandbyWakeupTime(){
 	return standbyWakeupTime;
 }
 
+/// returns the standby wakeup time in the format hh:mm
+String DataManager::getStandbyWakeupTimeString(){
+	unsigned long time;
+	eepromRead((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN);
+	int hour = time/60/60;
+	int minute = (time/60)%60;
+	return String(hour/10) + String(hour%10) + ":" + String(minute/10) + String(minute%10);
+}
+
+void DataManager::setStandbyWakeupTime(const char* time){
+	if(time[2] != ':')
+		return;
+	int hour = atoi(time);
+	int minute = atoi(time+3);
+	if(hour >= 24 || hour < 0 || minute >= 60 || minute < 0)
+		return;
+	long numberTime = hour*60*60 + minute*60;
+	setStandbyWakeupTime(numberTime);
+}
+
 /// sets the time when the machine should wake up from standby
 // @param time time in s after midnight, -1 to disable
-// @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setStandbyWakeupTime(long time, bool updateBlynk){
+void DataManager::setStandbyWakeupTime(long time){
 	eepromWrite((uint8_t*)&time, STANDBY_WAKEUP_TIME_ADDR, STANDBY_WAKEUP_TIME_LEN, true);
-	long realTime = ((long)hour()*60*60+minute()*60+second());
-	//disable wakeup if -1
-	if(time >= 0){
+	standbyWakeupTime = time;
+	convertStandbyWakeupTimeToMachineTime();
+}
+
+void DataManager::convertStandbyWakeupTimeToMachineTime(){
+	unsigned long time = standbyWakeupTime;
+	//todo: fix with correct real time
+	//long realTime = ((long)hour()*60*60+minute()*60+second());
+	long realTime = 0;
+	//disable wakeup if 00:00
+	if(time > 0){
 		//if it is later than the wakeup time, add one day to it
 		if(time < realTime){
 			time += 24*60*60;
@@ -704,12 +593,6 @@ void DataManager::setStandbyWakeupTime(long time, bool updateBlynk){
 	else{
 		standbyWakeupEnabled = false;
 	}
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		if(time >= 0)
-			Blynk.virtualWrite(V16, time%(24*60*60), 0, "Europe/Berlin");
-		else
-			Blynk.virtualWrite(V16, "", 0, "Europe/Berlin");
-	}
 }
 
 bool DataManager::getStandbyWakeupEnabled(){
@@ -720,17 +603,27 @@ void DataManager::incStandbyWakeupTimeByOneDay(){
 	standbyWakeupTime += 24*60*60*1000;
 }
 
+/// sets the time when the machine should wake up from standby
+// @param time time in the format hh:mm
+void DataManager::setStandbyStartTime(const char* time){
+	if(time[2] != ':')
+		return;
+	int hour = atoi(time);
+	int minute = atoi(time+3);
+	if(hour >= 24 || hour < 0 || minute >= 60 || minute < 0)
+		return;
+	long numberTime = hour*60*60 + minute*60;
+	setStandbyStartTime(numberTime*1000);
+}
+
 /// sets the time after which the machine will go in standby mode if no user interaction occurs
 // @param time time in ms
 // @param updateBlynk: sends the new parameter to blynk, if set to true and blynk is enabled
-void DataManager::setStandbyStartTime(int time, bool updateBlynk){
+void DataManager::setStandbyStartTime(int time){
 	if(time < 0) time = 0;
 	if(standbyStartTime == time) return;
 	standbyStartTime = time;
 	eepromWrite((uint8_t*)&standbyStartTime, STANDBY_START_TIME_ADDR, STANDBY_START_TIME_LEN, true);
-	if(getBlynkEnabled() && blynkInitialized && updateBlynk){
-		Blynk.virtualWrite(V17, standbyStartTime/1000);
-	}
 }
 
 /// returns the time in ms after which the machine goes into standby if no user interaction occurs
@@ -738,85 +631,13 @@ int DataManager::getStandbyStartTime(){
 	return standbyStartTime;
 }
 
-
-//////////////////////////////////////////////////////////////////
-//																//
-//				Blynk functions									//
-//																//
-//////////////////////////////////////////////////////////////////
-
-BLYNK_WRITE(V4){
-	DataManager::setTargetTempBoiler(param.asDouble(), false);
+/// returns the time after which the machine goes into standby if no user interaction occurs as hh:mm
+String DataManager::getStandbyStartTimeString(){
+	int hour = standbyStartTime/60/60/1000;
+	int minute = (standbyStartTime/60/1000)%60;
+	return String(hour/10) + String(hour%10) + ":" + String(minute/10) + String(minute%10);
 }
 
-BLYNK_WRITE(V5){
-	DataManager::setTargetTempBU(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V6){
-	DataManager::setDistributionVolume(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V7){
-	DataManager::setVolumeOffset(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V8){
-	DataManager::setBoilerControllerP(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V9){
-	DataManager::setBoilerControllerI(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V10){
-	DataManager::setBoilerControllerD(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V11){
-	DataManager::setBUControllerP(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V12){
-	DataManager::setBUControllerI(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V13){
-	DataManager::setBUControllerD(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V14){
-	DataManager::setPreinfusionBuildupTime((int)(param.asDouble()*1000), false);
-}
-
-BLYNK_WRITE(V15){
-	DataManager::setPreinfusionWaitTime((int)(param.asDouble()*1000), false);
-}
-
-BLYNK_WRITE(V16){
-	String str = param.asString();
-	if(str.equals(""))
-		DataManager::setStandbyWakeupTime(-1, false);
-	else
-		DataManager::setStandbyWakeupTime(param.asLong(), false);
-}
-
-BLYNK_WRITE(V17){
-	DataManager::setStandbyStartTime(param.asInt()*1000, false);
-}
-
-BLYNK_WRITE(V18){
-	DataManager::setPumpTickToVolumeFactor(param.asDouble(), false);
-}
-
-BLYNK_WRITE(V19){
-	DataManager::setBypassTickToVolumeFactor(param.asDouble(), false);
-}
-
-BLYNK_CONNECTED() {
-  // Synchronize time on connection
-  rtc.begin();
-}
 
 //////////////////////////////////////////////////////////////////
 //																//
@@ -829,20 +650,20 @@ BLYNK_CONNECTED() {
 uint32_t DataManager::calculateWIFIChecksum(){
 	uint32_t res = 0;
 	for(uint8_t i = 0, j = 0; i < SSID_MAX_LEN+1; i++, j = (j+1)%CHECKSUM_LEN){
-		res ^= ((uint32_t)(ssid[i])<<(8*j));
-		if(ssid[i] == '\0'){
+		res ^= ((uint32_t)(wifiSsid[i])<<(8*j));
+		if(wifiSsid[i] == '\0'){
 			break;
 		}
 	}
 	for(uint8_t i = 0, j = 0; i < WIFI_PW_MAX_LEN+1; i++, j = (j+1)%CHECKSUM_LEN){
-		res ^= ((uint32_t)(password[i])<<(8*j));
-		if(password[i] == '\0'){
+		res ^= ((uint32_t)(wifiPassword[i])<<(8*j));
+		if(wifiPassword[i] == '\0'){
 			break;
 		}
 	}
 	for(uint8_t i = 0, j = 0; i < HOST_NAME_MAX_LEN+1; i++, j = (j+1)%CHECKSUM_LEN){
-		res ^= ((uint32_t)(hostName[i])<<(8*j));
-		if(hostName[i] == '\0'){
+		res ^= ((uint32_t)(wifiHostName[i])<<(8*j));
+		if(wifiHostName[i] == '\0'){
 			break;
 		}
 	}
@@ -880,37 +701,11 @@ void DataManager::eepromWrite(uint8_t *src, int addr, int len, bool commit){
 	}
 }
 
-/**
- * Enters wifi setup mode: machine will create an access point with default SSID and password.
- * On the machine IP address (192.168.4.1) will be a webserver running to set up the new WIFI credentials
- * No regular operation will be possible in this mode
- */
-void DataManager::WIFISetupMode(){
-	WiFi.softAP(DEFAULT_SSID, DEFAULT_PASSWORD);
-	IPAddress IP = WiFi.softAPIP();
-	Serial.print("AP IP address: ");
-	Serial.println(IP);
-	webserver_init();
-	while(1){
-		dev->enableLEDRight();
-		dev->update();
-		delay(500);
-		dev->disableLEDRight();
-		dev->update();
-		delay(500);
-		if(scheduleRestart){
-			scheduleRestart = false;
-			delay(1000);
-			ESP.restart();
-		}
-	}
-}
-
 String DataManager::setWIFICredentials(const char* newSSID, const char* newPassword, const char* newHostName){
 	if(newSSID != NULL && strcmp(newSSID, "") != 0){
 		for(uint8_t i = 0; i < SSID_MAX_LEN+1; i++){
 			EEPROM.write(SSID_ADDR + i, newSSID[i]);
-			ssid[i] = newSSID[i];
+			wifiSsid[i] = newSSID[i];
 			if(newSSID[i] == '\0'){
 				break;
 			}
@@ -919,7 +714,7 @@ String DataManager::setWIFICredentials(const char* newSSID, const char* newPassw
 	if(newPassword != NULL && strcmp(newPassword, "") != 0){
 		for(uint8_t i = 0; i < WIFI_PW_MAX_LEN+1; i++){
 			EEPROM.write(WIFI_PW_ADDR + i, newPassword[i]);
-			password[i] = newPassword[i];
+			wifiPassword[i] = newPassword[i];
 			if(newPassword[i] == '\0'){
 				break;
 			}
@@ -928,7 +723,7 @@ String DataManager::setWIFICredentials(const char* newSSID, const char* newPassw
 	if(newHostName != NULL && strcmp(newHostName, "") != 0){
 		for(uint8_t i = 0; i < HOST_NAME_MAX_LEN+1; i++){
 			EEPROM.write(HOST_NAME_ADDR + i, newHostName[i]);
-			hostName[i] = newHostName[i];
+			wifiHostName[i] = newHostName[i];
 			if(newHostName[i] == '\0'){
 				break;
 			}
@@ -942,4 +737,50 @@ String DataManager::setWIFICredentials(const char* newSSID, const char* newPassw
 	scheduleRestart = true;
 	return "Successfully set new WIFI credentials. You can change them again by restarting your machine while having both "
 			"buttons pressed and the distribution switch set to manual distribution.";
+}
+
+String DataManager::getWifiSSID(){
+	return String(wifiSsid);
+}
+
+String DataManager::getWifiPassword(){
+	return String(wifiPassword);
+}
+
+String DataManager::getWifiHostName(){
+	return String(wifiHostName);
+}
+
+String DataManager::getLanguage(){
+	return String(language);
+}
+
+String DataManager::getBonjourName(){
+	return String(bonjourName);
+}
+
+void DataManager::setLanguage(const char* newLanguage){
+	if(newLanguage != NULL && strcmp(newLanguage, "") != 0){
+		for(uint8_t i = 0; i < LANG_MAX_LEN+1; i++){
+			EEPROM.write(LANGUAGE_ADDR + i, newLanguage[i]);
+			language[i] = newLanguage[i];
+			if(newLanguage[i] == '\0'){
+				break;
+			}
+		}
+		EEPROM.commit();
+	}
+}
+
+void DataManager::setBonjourName(const char* name){
+	if(name != NULL && strcmp(name, "") != 0){
+		for(uint8_t i = 0; i < BONJOUR_NAME_MAX_LEN+1; i++){
+			EEPROM.write(BONJOUR_NAME_ADDR + i, name[i]);
+			bonjourName[i] = name[i];
+			if(name[i] == '\0'){
+				break;
+			}
+		}
+		EEPROM.commit();
+	}
 }

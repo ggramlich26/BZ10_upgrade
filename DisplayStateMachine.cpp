@@ -54,7 +54,7 @@ void DisplayStateMachine::update(){
 	static bool coolingFlush = false;
 
 	//update no wifi and blynk enabled icons
-	if(DataManager::getBlynkEnabled() && state != standby){
+	if(DataManager::getWifiEnabled() && state != standby){
 		if(!DataManager::getWifiConnected() && !noWifiDisplayed){
 			noWifiDisplayed = true;
 			blynkDisplayed = false;
