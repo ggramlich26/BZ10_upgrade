@@ -11,8 +11,8 @@
 #include "Arduino.h"
 #include "DeviceControl.h"
 
-#define DEFAULT_TEMP_BOILER		108
-#define	DEFAULT_TEMP_BU			83
+#define DEFAULT_TEMP_BOILER		121
+#define	DEFAULT_TEMP_BU			85
 #define	MAX_TEMP_BOILER			125
 #define	MAX_TEMP_BU				110
 #define	MIN_TEMP_BOILER			10

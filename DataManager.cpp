@@ -118,7 +118,7 @@ char ssid[SSID_MAX_LEN+1];
 char password[WIFI_PW_MAX_LEN+1];
 char hostName[HOST_NAME_MAX_LEN+1];
 
-char auth[] = BLYNK_AUTH_KEY;
+char auth[] = BLYNK_AUTH_TOKEN;
 
 BlynkTimer timer;
 WidgetRTC rtc;

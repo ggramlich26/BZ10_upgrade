@@ -34,27 +34,37 @@
 		<link>
 			<name>core/core</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/cores/esp32</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/cores/esp32</locationURI>
 		</link>
 		<link>
 			<name>core/variant</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/variants/nodemcu-32s</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/variants/nodemcu-32s</locationURI>
+		</link>
+		<link>
+			<name>libraries/ADS1115_WE</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/ADS1115_WE/1.3.6</locationURI>
 		</link>
 		<link>
 			<name>libraries/Blynk</name>
 			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Blynk/0.6.1</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Blynk/1.1.0</locationURI>
 		</link>
 		<link>
 			<name>libraries/EEPROM</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/EEPROM</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/EEPROM</locationURI>
+		</link>
+		<link>
+			<name>libraries/Ethernet</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Ethernet/2.0.0</locationURI>
 		</link>
 		<link>
 			<name>libraries/FS</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/FS</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/FS</locationURI>
 		</link>
 		<link>
 			<name>libraries/MCP23017</name>
@@ -69,17 +79,17 @@
 		<link>
 			<name>libraries/SPI</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPI</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/SPI</locationURI>
 		</link>
 		<link>
 			<name>libraries/SPIFFS</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/SPIFFS</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/SPIFFS</locationURI>
 		</link>
 		<link>
 			<name>libraries/TFT_eSPI</name>
 			<type>2</type>
-			<location>/home/tsugua/Arduino/libraries/TFT_eSPI</location>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/TFT_eSPI/1.4.16</locationURI>
 		</link>
 		<link>
 			<name>libraries/Time</name>
@@ -89,12 +99,12 @@
 		<link>
 			<name>libraries/WiFi</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/WiFi</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/WiFi</locationURI>
 		</link>
 		<link>
 			<name>libraries/Wire</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/arduino-esp32/libraries/Wire</locationURI>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/libraries/Wire</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

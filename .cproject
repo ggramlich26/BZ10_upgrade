@@ -1,214 +1,113 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
-    	
-    <storageModule moduleId="org.eclipse.cdt.core.settings">
-        		
-        <cconfiguration id="io.sloeber.core.toolChain.release.195465823">
-            			
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="io.sloeber.core.toolChain.release.195465823" moduleId="org.eclipse.cdt.core.settings" name="Release">
-                				
-                <externalSettings/>
-                				
-                <extensions>
-                    					
-                    <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-                    					
-                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-                    					
-                    <extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-                    					
-                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-                    				
-                </extensions>
-                			
-            </storageModule>
-            			
-            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                				
-                <configuration artifactName="${ProjName}" buildProperties="" description="" id="io.sloeber.core.toolChain.release.195465823" name="Release" parent="org.eclipse.cdt.build.core.emptycfg">
-                    					
-                    <folderInfo id="io.sloeber.core.toolChain.release.195465823.1860038553" name="/" resourcePath="">
-                        						
-                        <toolChain id="io.sloeber.core.toolChain.release.881147549" name="Arduino Toolchain (Sloeber edition)" superClass="io.sloeber.core.toolChain.release">
-                            							
-                            <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="io.sloeber.targetplatform.838204773" name="Arduino Target" osList="all" superClass="io.sloeber.targetplatform"/>
-                            							
-                            <builder buildPath="${workspace_loc:/Espressomaschine}/Release" id="io.sloeber.sketch.builder.1355260836" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="io.sloeber.sketch.builder"/>
-                            							
-                            <tool id="io.sloeber.tool.sketch.compiler.cpp.803092337" name="Arduino C++ Compiler" superClass="io.sloeber.tool.sketch.compiler.cpp">
-                                								
-                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.cpp.sketch.option.incpath.838584187" name="Include Paths (-I)" superClass="io.sloeber.compiler.cpp.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/core}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/variant}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/AsyncTCP/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/ESPAsyncWebServer/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPI/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/WiFi/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Blynk/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/EEPROM/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Time}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/TFT_eSPI}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/FS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPIFFS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/ADS1115_WE/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
-                                    								
-                                </option>
-                                								
-                                <inputType id="io.sloeber.compiler.cpp.sketch.input.121595934" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
-                                							
-                            </tool>
-                            							
-                            <tool id="io.sloeber.tool.compiler.c.1267697479" name="Arduino C Compiler" superClass="io.sloeber.tool.compiler.c">
-                                								
-                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.c.sketch.option.incpath.711534221" name="Include Paths (-I)" superClass="io.sloeber.compiler.c.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/core}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/variant}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/AsyncTCP/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/ESPAsyncWebServer/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPI/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/WiFi/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Blynk/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/EEPROM/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Time}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/TFT_eSPI}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/FS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPIFFS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/ADS1115_WE/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
-                                    								
-                                </option>
-                                								
-                                <inputType id="io.sloeber.compiler.c.sketch.input.1819676818" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
-                                							
-                            </tool>
-                            							
-                            <tool id="io.sloeber.tool.sketch.compiler.s.842520975" name="Arduino Assembler" superClass="io.sloeber.tool.sketch.compiler.s">
-                                								
-                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.asm.sketch.option.incpath.702835728" name="Include Paths (-I)" superClass="io.sloeber.compiler.asm.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/core}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/core/variant}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPI/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/WiFi/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Blynk/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/EEPROM/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Time}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/TFT_eSPI}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/FS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/SPIFFS/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/MCP23017/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/Wire/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/ADS1115_WE/src}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/Espressomaschine/libraries/PID}&quot;"/>
-                                    								
-                                </option>
-                                								
-                                <inputType id="io.sloeber.compiler.S.sketch.input.1888385726" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
-                                							
-                            </tool>
-                            							
-                            <tool id="io.sloeber.tool.ar.966900987" name="Arduino archiver" superClass="io.sloeber.tool.ar"/>
-                            							
-                            <tool id="io.sloeber.tool.combine.954530912" name="Arduino combiner" superClass="io.sloeber.tool.combine"/>
-                            							
-                            <tool id="io.sloeber.tool.objcopy.eep.867466634" name="Arduino tool objcopy command" superClass="io.sloeber.tool.objcopy.eep"/>
-                            							
-                            <tool id="io.sloeber.tool.size.559253989" name="Arduino tool Print Size" superClass="io.sloeber.tool.size"/>
-                            						
-                        </toolChain>
-                        					
-                    </folderInfo>
-                    					
-                    <sourceEntries>
-                        						
-                        <entry excluding="libraries/Wire/doc|libraries/TFT_eSPI/Tools|libraries/TFT_eSPI/Extensions|libraries/TFT_eSPI/User_Setups|libraries/TFT_eSPI/Processors|libraries/TFT_eSPI/TFT_Drivers|libraries/TFT_eSPI/Fonts|libraries/Blynk/scripts|libraries/Blynk/linux|libraries/Adafruit_GFX_Library/fontconvert|libraries/Adafruit_GFX_Library/Fonts|libraries/?*/**/?xamples/**|libraries/?*/**/?xtras/**|libraries/?*/**/test*/**|libraries/?*/**/third-party/**|libraries/**/._*|libraries/?*/utility/*/*" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
-                        					
-                    </sourceEntries>
-                    				
-                </configuration>
-                			
-            </storageModule>
-            			
-            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-            		
-        </cconfiguration>
-        	
-    </storageModule>
-    	
-    <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-        		
-        <project id="Espressomaschine.null.425779578" name="Espressomaschine"/>
-        	
-    </storageModule>
-    	
-    <storageModule moduleId="scannerConfiguration">
-        		
-        <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-        	
-    </storageModule>
-    	
-    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-    	
-    <storageModule moduleId="refreshScope" versionNumber="2">
-        		
-        <configuration configurationName="Release">
-            			
-            <resource resourceType="PROJECT" workspacePath="/Espressomaschine"/>
-            		
-        </configuration>
-        	
-    </storageModule>
-    	
-    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-    
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="io.sloeber.core.toolChain.release.195465823">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="io.sloeber.core.toolChain.release.195465823" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="io.sloeber.core.toolChain.release.195465823" name="Release" parent="org.eclipse.cdt.build.core.emptycfg">
+					<folderInfo id="io.sloeber.core.toolChain.release.195465823.1860038553" name="/" resourcePath="">
+						<toolChain id="io.sloeber.core.toolChain.release.881147549" name="Arduino Toolchain (Sloeber edition)" superClass="io.sloeber.core.toolChain.release">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="io.sloeber.targetplatform.838204773" name="Arduino Target" osList="all" superClass="io.sloeber.targetplatform"/>
+							<builder buildPath="${workspace_loc:/Espressomaschine}/Release" id="io.sloeber.sketch.builder.1355260836" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="io.sloeber.sketch.builder"/>
+							<tool id="io.sloeber.tool.sketch.compiler.cpp.803092337" name="Arduino C++ Compiler" superClass="io.sloeber.tool.sketch.compiler.cpp">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.cpp.sketch.option.incpath.838584187" name="Include Paths (-I)" superClass="io.sloeber.compiler.cpp.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Blynk/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/EEPROM/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPIFFS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/MCP23017/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/TFT_eSPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Time}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/PID}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ADS1115_WE/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Ethernet/src}&quot;"/>
+								</option>
+								<inputType id="io.sloeber.compiler.cpp.sketch.input.121595934" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
+							</tool>
+							<tool id="io.sloeber.tool.compiler.c.1267697479" name="Arduino C Compiler" superClass="io.sloeber.tool.compiler.c">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.c.sketch.option.incpath.711534221" name="Include Paths (-I)" superClass="io.sloeber.compiler.c.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Blynk/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/EEPROM/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPIFFS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/MCP23017/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/TFT_eSPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Time}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/PID}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ADS1115_WE/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Ethernet/src}&quot;"/>
+								</option>
+								<inputType id="io.sloeber.compiler.c.sketch.input.1819676818" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
+							</tool>
+							<tool id="io.sloeber.tool.sketch.compiler.s.842520975" name="Arduino Assembler" superClass="io.sloeber.tool.sketch.compiler.s">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.asm.sketch.option.incpath.702835728" name="Include Paths (-I)" superClass="io.sloeber.compiler.asm.sketch.option.incpath" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Blynk/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/EEPROM/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/SPIFFS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/MCP23017/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/TFT_eSPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Time}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/PID}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/ADS1115_WE/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/BZ10_upgrade/libraries/Ethernet/src}&quot;"/>
+								</option>
+								<inputType id="io.sloeber.compiler.S.sketch.input.1888385726" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
+							</tool>
+							<tool id="io.sloeber.tool.ar.966900987" name="Arduino archiver" superClass="io.sloeber.tool.ar"/>
+							<tool id="io.sloeber.tool.combine.954530912" name="Arduino combiner" superClass="io.sloeber.tool.combine"/>
+							<tool id="io.sloeber.tool.objcopy.eep.867466634" name="Arduino tool objcopy command" superClass="io.sloeber.tool.objcopy.eep"/>
+							<tool id="io.sloeber.tool.size.559253989" name="Arduino tool Print Size" superClass="io.sloeber.tool.size"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="libraries/Wire/doc|libraries/TFT_eSPI/Tools|libraries/TFT_eSPI/Extensions|libraries/TFT_eSPI/User_Setups|libraries/TFT_eSPI/Processors|libraries/TFT_eSPI/TFT_Drivers|libraries/TFT_eSPI/Fonts|libraries/Blynk/scripts|libraries/Blynk/linux|libraries/Adafruit_GFX_Library/fontconvert|libraries/Adafruit_GFX_Library/Fonts|libraries/?*/**/?xamples/**|libraries/?*/**/?xtras/**|libraries/?*/**/test*/**|libraries/?*/**/third-party/**|libraries/**/._*|libraries/?*/utility/*/*" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="Espressomaschine.null.425779578" name="Espressomaschine"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Espressomaschine"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
