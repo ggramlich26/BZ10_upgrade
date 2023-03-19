@@ -6,16 +6,19 @@ This Project is a replacement for the original Bezzera BZ10 electronics bringing
 - Automated wake up from standby, so that the machine is heated up already when you get up in the morning
 - Display of various temperatures, volume distributed and distribution time
 - Preinfusion (time based)
-- WIFI: All parameters (temperatures, distribution volume, wake up time, etc.) can be set with a smartphone
+- WIFI: All parameters (temperatures, distribution volume, wake up time, etc.) can be set with a smartphone or computer
 - Automated cleaning cycle: Ten cycles of switching distribution on and off for 20 seconds each by pressing only one button
 
 ## Building the project
 This project is set up to be built with Eclipse Sloeber, which adds Arduino support to the Eclipse IDE. It uses the following Libraries, which can be installed through the library manager:
-- Blynk (Version 0.6.1)
 - TFT_eSPI (Version 1.4.16)
 - Time (Version 1.5.0)
 - MCP23017 (Version	1.1.2), not Adafruit MCP23017!
 - PID (Version 1.2.0)
+- ADS115_WE (Version 1.3.6)
+- ArduinoJson (Version 6.19.4)
+- ESPmDNS
+- SPIFFS
 
 Some libraries are also added as source code. If you use the Arduino IDE, please move all files from the libraries/library name/src/ directly into your project directory. If you use Sloeber, you might have to add the library paths in the project settings: Right click your project/Properties/"C/C++ Build"/Settings. In the Tool Settings Tab, expand the compiler and click Include Folders. Add the following paths ```"${workspace_loc:/BZ10_upgrade/libraries/AsyncTCP/src}"``` and ```"${workspace_loc:/BZ10_upgrade/libraries/ESPAsyncWebServer/src}"``` under each of the three compilers.
 
@@ -23,7 +26,7 @@ Some libraries are also added as source code. If you use the Arduino IDE, please
 
 ***Windows:*** Under windows you need to make sure you have make command installed (e.g. through MinGW64: select mingw32-make package). You might also have to [install CP2102 drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers) if you get a timeout error when trying to upload your sketch.
 
-**Before building** you need to set your own Blynk auth key. Do so in the file "WIFI_config.h". Leave the " around the auth key. You could also enter your WiFi network SSID and password here but the method described below is preferred. 
+**Before building** 
 You will additionally need to modify User_Setup.h in the TFT_eSPI library folder. Uncomment `#define ILI9341_DRIVER` (line 39) and make sure all other lines in this block are commented out. Then search for the uncommented pin definitions and change them to the following:
 ```C++
 #define TFT_DC 		23
@@ -35,47 +38,31 @@ You will additionally need to modify User_Setup.h in the TFT_eSPI library folder
 ```
 
 ## Setting your WiFi credentials
-The machine can be configured to connect to your own home WiFi network via a simple web interface:
+The machine can be configured to connect to your own home WiFi network via the web interface:
  1. Turn the machine off.
- 2. Set the brewing switch to manual mode, hold both buttons pressed.
- 3. Turn the machine on while holding the buttons pressed. You can release them once the right LED starts blinking.
- 4. Connect with any device to the WiFi network "Espresso" using the password "CoffeeLove" without the ".
- 5. Open your web browser and type 192.168.4.1 into address bar, hit enter.
- 6. Now you will be presented a prompt to enter the new SSID (your WiFi name) and password. You can also give your machine a name in your WiFi Network. Finish by hitting the "Set" button.
+ 2. Set the brewing switch to manual mode, hold both buttons pressed (This step resets the wifi configuration. You can omit it if you have a fresh setup).
+ 3. Turn the machine on while holding the buttons pressed. You can release them once the screen is ready.
+ 4. Wait for 30 seconds
+ 5. Connect with any device to the WiFi network "BZ10" with no password required.
+ 6. Open your web browser and type 192.168.4.1 into address bar, hit enter.
+ 7. Now you will be presented a prompt to enter the new SSID (your WiFi name) and password. You can also set your machines Bonjour name. Finish by hitting the "Set" button.
 
-## Setting up Blynk
-You can use the following virtual pins for communication with your espresso machine:
-- V1: Boiler temperature in °C (display)
-- V2: BU temperature in °C (display)
-- V3: Tube temperature in °C (display)
-- V4: Boiler target temperature in °C (Numeric Input widget, values 0-120, step size 0.5)
-- V5: Brewing unit target temperature in °C (Numeric Input widget, values 0-110, step size 0.5)
-- V6: Distribution volume in ml (Numeric Input widget, values 1-200, step size 1, only integers allowed)
-- V7: Volume offset in ml. This makes up for the water going through the hx but not into the cup (Numeric Input widget, values 0-100, step size 1, only integers allowed)
-- V8: Boiler heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0.01-100, step size 1)
-- V9: Boiler heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
-- V10: Boiler heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
-- V11: BU heater controller P parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
-- V12: BU heater controller I parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 0.1)
-- V13: BU heater controller D parameter: This is not necessary for normal operation but used for initial tuning of your machine (Numeric Input widget, values 0-100, step size 1)
-- V14: Preinfusion buildup time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
-- V15: Preinfusion wait time in s (Numeric Input widget, values 0-20, step size 1, fractions would be ok)
-- V16: Standby wakup timer: in s after midnight (use Blynk time widget, reset widget or set to 0:00 to disable) **Requirements:** In order for this to work, your machine needs to be connected to a WiFi network, Blynk needs to be enabled and you have to add the Real-time clock widget to your Blynk app. This allows your machine to retrieve the current time from the internet and calculate when it will need to wake up.
-- V17: Standby start time: time in s after which the machine goes into standby mode if no user interaction occurs (us Blynk time widget, reset widget or set to 0:00 to disable)
-You can use a SuperChart Widget for V1-V3
-- V18: Pump flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
-- V19: Bypass flow senser tick to volume conversion factor: This is not necessary for normal operation but used for initial tuning of your machine if necessary (Numeric input widget, values 0.001 to 10)
-
+## Connecting to the machine
+You can connect to the machine with a browser on any device. You can use your computer, smartphone or tablet, for example. Please note: The machine currently **only supports http and not https**. If you cannot connect, you might have to change the line ine your browser to http://your-ip. There are multiple ways to connect:
+### Access point mode
+When the machine cannot establish a connection to a wifi network, it automatically creates a hotspot after 30 seconds. Simply connect to the network BZ10 with your device. In the browser type in 192.168.4.1 to go to your machine and change the settings.
+### Local WiFi
+If the machine is connected to your local WiFi network (little wifi icon shown in the bottom), you can reach it by typing its IP in your browser (use your router configuration website to find out what that is and to make it always the same). Alternatively, you can find it with Bonjour. This works out of the box on Apple and Linux machines and requires an extra [installation from the apple resources](https://support.apple.com/downloads/bonjour-for-windows) on windows. You can then reach the machine by typing bz10.local into your browser. If you want to change the address to something else than bz10, you can modify the Bonjour name on the machine website.
 ## Usage
 Your new espresso machine has a lot more functions than before. This is how you can use them
 - **Standard manual distribution:** Flip your distribution switch in the manual distribution position for manual dosing and cooling flush
-- **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via Blynk. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
-- **Preinfusion:** If you set a preinfusion buildup and wait time in Blynk, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
+- **True volumetric distribution:** Flip your distribution switch in the volumetric distribution position for automatic dosing. You can set the desired volume via the website. You will also need to set an offset volume that compensates for the water being moved into the brewing unit but not going through your coffee powder. The best way to do so is to measure the difference between set and actual distribution volume and entering this value via Blynk.
+- **Preinfusion:** If you set a preinfusion buildup and wait time on the website, volumetric distribution will come with a preinfusion. This is achieved by turning on the pump for the preinfusion buildup time and then waiting for the preinfusion wait time before starting the actual extraction.
 - **Cooling flush:** Since the BZ10 is a HX machine, you will still need to perform a cooling flush just like before the upgrade. But in order to make this process more repeatable, you get a timer showing the time passed after your cooling flush. In order to get this functionality, short press the right button before starting your cooling flush. You will see, that the timer starts counting up once you finished your cooling flush.
 - **Standby:** Press the left button shortly to enter standby mode. You can also define a period of time after which the machine will automatically enter standby if it has not been used via Blynk.
-- **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via Blynk. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning.
+- **Automated wake up from standby:** Tired of having to wait for half an hour after getting up until you can finally brew your coffee? Just turn your espresso machine on and press the standby button before going to bed. Now you can set a wake up time via the website. If you set it to half an hour before your alarm goes off, your machine will be all ready for your coffee first thing in the morning. This feature only works if wifi is enabled and the machine has connection to the internet, since it needs to get the current time from a remote server.
 - **Automated cleaning cycle:** Cleaning is boring and time consuming task. But now you can save a lot of time. Pressing the right button for 3s or more will start an automated cleaning cycle: Your machine will build up pressure for 20s and then release it for another 20s. This process is repeated 10 times.
-- **Disable WiFi:** You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the Blynk symbol crossed out on the display and once you restart your machine it won't even connect to your WiFi network any more. To enable Blynk (and WiFi) again, just press the left button for 3s or longer again. 
+- **Disable WiFi:** You got everything set up and don't want your machine to be in the internet any more? Nothing easier than that. Just press the left button for 3s or longer. Now you can see the wifi symbol disappearing from the display and once you restart your machine it won't even connect to your WiFi network any more. To enable WiFi again, just press the left button for 3s or longer again. 
 - **Display:** Pretty obvious but you now have a display showing various temperatures, the volume distributed and the time your distribution took (preinfusion time not included). The red circle shows the boiler temperature, the orange circle on the right shows the brewing head temperature and the blue circle in the top shows one additional temperature. I attached this sensor to the tube leading from the heat exchanger to the brewing head.
 
 ## Code overview
@@ -160,6 +147,4 @@ wire to board connectors, RM5 with screws|1|2|f|1|230V connector [farnell](https
 - TSIC 306 temperature sensors, 3 pieces
 - Flow sensors, 2 pieces (e.g. [from far east](https://www.aliexpress.com/item/32949504762.html?spm=a2g0o.productlist.0.0.4ce346a5MgsR2I&algo_pvid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1&algo_expid=a8a64f8f-1437-4fca-a7c7-6e23d0d647a1-28&btsid=2100bdf016057823158403471e2893&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_))
 - Quite some wiring. I chose Oelflex Heat for its heat resistance up to 180°C (purchased from Conrad electronics)
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk4NDQ4MzQ3MF19
--->
+
