@@ -90,8 +90,8 @@ void Webserver::serializeSettingsData(AsyncResponseStream *response){
 	json["BUTemp"] = DataManager::getTargetTempBU();
 	json["volOffset"] = DataManager::getVolumeOffset();
 	json["volDist"] = DataManager::getDistributionVolume();
-	json["preinfBuildup"] = DataManager::getPreinfusionBuildupTime();
-	json["preinfWait"] = DataManager::getPreinfusionWaitTime();
+	json["preinfBuildup"] = DataManager::getPreinfusionBuildupTime()/1000;
+	json["preinfWait"] = DataManager::getPreinfusionWaitTime()/1000;
 	serializeJson(json, *response);
 }
 
@@ -143,9 +143,9 @@ String Webserver::evaluateSettingsData(uint8_t *data, size_t len){
 	if (doc.containsKey("volDist"))
 		DataManager::setDistributionVolume(doc["volDist"]);
 	if (doc.containsKey("preinfBuildup"))
-		DataManager::setPreinfusionBuildupTime(doc["preinfBuildup"]);
+		DataManager::setPreinfusionBuildupTime((int)(doc["preinfBuildup"])*1000);
 	if (doc.containsKey("preinfWait"))
-		DataManager::setPreinfusionWaitTime(doc["preinfWait"]);
+		DataManager::setPreinfusionWaitTime((int)(doc["preinfWait"])*1000);
 	if(ssid != NULL || pw != NULL)
 		return DataManager::setWIFICredentials(ssid, pw, NULL);
 	return "ok";

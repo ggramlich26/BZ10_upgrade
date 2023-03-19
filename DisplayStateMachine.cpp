@@ -55,22 +55,32 @@ void DisplayStateMachine::update(){
 
 	//update no wifi and blynk enabled icons
 	if(DataManager::getWifiEnabled() && state != standby){
-		if(!DataManager::getWifiConnected() && !noWifiDisplayed){
+		if(DataManager::getHotspotMode() && !hotspotDisplayed){
+			hotspotDisplayed = true;
+			noWifiDisplayed = false;
+			blynkDisplayed = false;
+			tft.fillRect(145, 200, 30, 30, TFT_BLACK);
+			tft.drawBitmap(145, 200, image_data_hotspot_small, 30, 30, TFT_WHITE);
+		}
+		if(!DataManager::getHotspotMode() && !DataManager::getWifiConnected() && !noWifiDisplayed){
 			noWifiDisplayed = true;
 			blynkDisplayed = false;
+			hotspotDisplayed = false;
 			tft.fillRect(145, 200, 30, 30, TFT_BLACK);
 			tft.drawBitmap(145, 200, image_data_no_wifi_small, 30, 24, TFT_WHITE);
 		}
-		else if(DataManager::getWifiConnected() && !blynkDisplayed){
+		else if(!DataManager::getHotspotMode() && DataManager::getWifiConnected() && !blynkDisplayed){
 			blynkDisplayed = true;
 			noWifiDisplayed = false;
+			hotspotDisplayed = false;
 			tft.fillRect(145, 200, 30, 30, TFT_BLACK);
-			tft.drawBitmap(145, 200, image_data_blynk_small, 30, 30, TFT_WHITE);
+			tft.drawBitmap(145, 200, image_data_wifi_small, 30, 24, TFT_WHITE);
 		}
 	}
 	else if((noWifiDisplayed || blynkDisplayed) && state != standby){
 		blynkDisplayed = false;
 		noWifiDisplayed = false;
+		hotspotDisplayed = false;
 		tft.fillRect(145, 200, 30, 30, TFT_BLACK);
 	}
 

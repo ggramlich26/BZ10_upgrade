@@ -9,6 +9,7 @@
 #include "DeviceControl.h"
 #include "Webserver.h"
 #include "WIFI_config.h"
+#include "WifiManager.h"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -47,6 +48,8 @@ char DataManager::wifiHostName[HOST_NAME_MAX_LEN+1];
 bool DataManager::wifiEnabled;
 char DataManager::language[LANG_MAX_LEN+1];
 char DataManager::bonjourName[BONJOUR_NAME_MAX_LEN+1];
+bool DataManager::standbyWakeupTimeConverted;
+WifiManager *DataManager::wifiMan;
 
 
 //	Flash address parameters
@@ -97,8 +100,10 @@ char DataManager::bonjourName[BONJOUR_NAME_MAX_LEN+1];
 
 void DataManager::init(){
 	dev = DeviceControl::instance();
+	wifiMan = WifiManager::instance();
 	lastWifiConnectTryTime = 0;
 	scheduleRestart = false;
+	standbyWakeupTimeConverted = false;
 
 	//read from flash/blynk (update each other) or use default values
 	EEPROM.begin(EEPROM_SIZE);
@@ -252,6 +257,8 @@ void DataManager::update(){
 		delay(1000);
 		ESP.restart();
 	}
+	if(!standbyWakeupTimeConverted)
+		convertStandbyWakeupTimeToMachineTime();
 }
 
 /// sends the current boiler temperature to blynk, if enabled
@@ -506,7 +513,11 @@ void DataManager::setBypassTickToVolumeFactor(double f){
 }
 
 bool DataManager::getWifiConnected(){
-	return WiFi.isConnected();
+	return wifiMan->connected();
+}
+
+bool DataManager::getHotspotMode(){
+	return wifiMan->hotspotMode();
 }
 
 int DataManager::getPreinfusionBuildupTime(){
@@ -575,9 +586,9 @@ void DataManager::setStandbyWakeupTime(long time){
 
 void DataManager::convertStandbyWakeupTimeToMachineTime(){
 	unsigned long time = standbyWakeupTime;
-	//todo: fix with correct real time
-	//long realTime = ((long)hour()*60*60+minute()*60+second());
-	long realTime = 0;
+	long realTime = WifiManager::instance()->getRTCTime();
+	if(realTime < 0)
+		return;
 	//disable wakeup if 00:00
 	if(time > 0){
 		//if it is later than the wakeup time, add one day to it
@@ -593,6 +604,7 @@ void DataManager::convertStandbyWakeupTimeToMachineTime(){
 	else{
 		standbyWakeupEnabled = false;
 	}
+	standbyWakeupTimeConverted = true;
 }
 
 bool DataManager::getStandbyWakeupEnabled(){

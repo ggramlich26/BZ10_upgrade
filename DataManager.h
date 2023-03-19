@@ -10,6 +10,7 @@
 
 #include "Arduino.h"
 #include "DeviceControl.h"
+#include "WifiManager.h"
 
 #define SSID_MAX_LEN				30
 #define WIFI_PW_MAX_LEN				30
@@ -128,6 +129,7 @@ public:
 	static void setWifiEnabled(bool enabled);
 
 	static bool getWifiConnected();
+	static bool getHotspotMode();
 
 	static String setWIFICredentials(const char* newSSID, const char* newPassword, const char* newHostName);
 	static String getWifiSSID();
@@ -145,6 +147,7 @@ private:
 	virtual ~DataManager(){}
 
 	static DeviceControl *dev;
+	static WifiManager *wifiMan;
 
 	static double targetTempBoiler;
 	static double targetTempBU;
@@ -182,6 +185,7 @@ private:
 	static void eepromRead(uint8_t *dst, int addr, int len);
 
 	static bool scheduleRestart;
+	static bool standbyWakeupTimeConverted;
 
 	static unsigned long lastWifiConnectTryTime;
 };

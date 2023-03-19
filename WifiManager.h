@@ -9,7 +9,6 @@
 #define WIFIMANAGER_H_
 
 #include "Arduino.h"
-#include "DataManager.h"
 #include <WiFi.h>
 #include "Wifi_config.h"
 
@@ -21,6 +20,9 @@ public:
 		return _instance;
 	}
 	void update();
+	int getRTCTime();
+	bool connected();
+	bool hotspotMode();
 
 private:
 	static WifiManager *_instance;
@@ -29,9 +31,13 @@ private:
 	WifiManager (const WifiManager& );
 	void init();
 	bool APMode;
+	bool wifiInitialized;
+	bool wifiConnected;
 	unsigned long startConnectTime;
 	void setupBonjour();
 	bool bonjourInitialized;
+	bool RTCInitialized;
+	void setupRTC();
 };
 
 #endif /* WIFIMANAGER_H_ */

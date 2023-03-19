@@ -36,9 +36,6 @@ void setup()
 	dispSM = new DisplayStateMachine(brewSM);
 	wifiMan = WifiManager::instance();
 
-	//webserver only has to be initialized and then runs on its own
-	Webserver::instance()->init();
-
 	Serial.println("Espresso machine initialized");
 }
 
@@ -53,6 +50,12 @@ void loop()
 	dev->update();
 	wifiMan->update();
 
+	static bool webserverInitialized = false;
+	if(DataManager::getWifiEnabled() && !webserverInitialized){
+		//webserver only has to be initialized and then runs on its own
+		Webserver::instance()->init();
+		webserverInitialized = true;
+	}
 	if(dev->getButton1LongPressed()){
 		DataManager::setWifiEnabled(!DataManager::getWifiEnabled());
 	}

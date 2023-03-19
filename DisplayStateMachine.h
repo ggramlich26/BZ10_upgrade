@@ -17,7 +17,8 @@
 #include "graphics/Background_V2_no_symbol.h"
 #include "graphics/scale_small.h"
 #include "graphics/timer_small.h"
-#include "graphics/blynk_small.h"
+#include "graphics/wifi_small.h"
+#include "graphics/hotspot_small.h"
 #include "graphics/no_wifi_small.h"
 #include "graphics/standby.h"
 
@@ -61,6 +62,7 @@ private:
 	String displayedTubeTemp = "";
 	bool blynkDisplayed = false;
 	bool noWifiDisplayed = false;
+	bool hotspotDisplayed = false;
 
 	void readBackground(uint16_t *origin, uint16_t *destination, uint16_t origin_width, uint16_t x, uint16_t y, uint16_t width, uint16_t height);;
 	void drawBackground();
